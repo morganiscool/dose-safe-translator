@@ -38,6 +38,15 @@
         ],
         "createdAt": "2026-11-14T14:19:36.397Z",
         "reason": "Claude: detector could not resolve the served path /static/css/app.css, so it read default sizes; rendered sizes 24/32/16px measured by taste inspect"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "video/app-clips/compositions/roundtrip.html"
+        ],
+        "createdAt": "2026-11-14T14:24:50.608Z",
+        "reason": "Claude: verdict plate is a 100px flex box with vertically centred text (~30px above and below in the rendered snapshot); detector reads it statically as flush"
       }
     ]
   }
