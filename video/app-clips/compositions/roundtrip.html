@@ -6,57 +6,57 @@
       font-weight: 100 900;
     }
     #root { position: absolute; inset: 0; background: #ffffff; color: #111111; font-family: "Public Sans", sans-serif; }
-    #rt-verdict { position: absolute; left: 24px; right: 24px; top: 24px; height: 100px; }
+    #rt-verdict { position: absolute; left: 24px; right: 24px; top: 24px; height: 104px; }
     #rt-plate {
       width: 100%; height: 100%; background: #c8102e; color: #ffffff;
       display: flex; align-items: center; gap: 24px; padding: 0 32px;
-      font-size: 33px; font-weight: 800; letter-spacing: -0.01em;
+      font-size: 38px; font-weight: 800; letter-spacing: -0.01em;
     }
-    #rt-plate svg { width: 46px; height: 46px; flex: none; }
-    .row { position: absolute; left: 24px; right: 24px; display: grid; grid-template-columns: 300px 1fr; align-items: baseline; }
-    .k { font-size: 26px; font-weight: 800; }
-    .v { font-size: 38px; font-weight: 500; white-space: nowrap; }
-    #rt-english { top: 176px; }
-    #rt-vi { top: 264px; }
-    #rt-vi .v { font-size: 46px; font-weight: 600; }
-    #rt-back { top: 358px; }
+    #rt-plate svg { width: 50px; height: 50px; flex: none; }
+    .row { position: absolute; left: 24px; right: 24px; display: grid; grid-template-columns: 330px 1fr; align-items: baseline; }
+    .k { font-size: 32px; font-weight: 800; }
+    .v { font-size: 42px; font-weight: 500; white-space: nowrap; }
+    #rt-vi { top: 168px; }
+    #rt-vi .v { font-size: 56px; font-weight: 600; }
+    #rt-english { top: 268px; }
+    #rt-back { top: 348px; }
     .w { display: inline-block; }
     .mark { position: relative; display: inline-block; }
-    .strike { position: absolute; left: -4px; right: -4px; top: 55%; height: 5px; background: #c8102e; transform-origin: left center; }
-    .under { position: absolute; left: 0; right: 0; bottom: -6px; height: 5px; background: #111111; transform-origin: left center; }
-    #rt-bar2 { position: absolute; left: 0; right: 0; top: 450px; height: 14px; background: #111111; }
-    #rt-checks { position: absolute; left: 24px; right: 24px; top: 492px; }
-    .chk { display: grid; grid-template-columns: 150px 1fr; align-items: center; height: 62px; font-size: 29px; font-weight: 600; border-bottom: 2px solid #dde5ef; }
-    .stamp { justify-self: start; border: 4px solid #c8102e; color: #c8102e; font-size: 23px; font-weight: 800; line-height: 1.2; padding: 6px 14px; }
-    .rest { font-size: 24px; color: #4a4a4a; padding-top: 14px; }
+    .strike { position: absolute; left: -4px; right: -4px; top: 55%; height: 6px; background: #c8102e; transform-origin: left center; }
+    .under { position: absolute; left: 0; right: 0; bottom: -6px; height: 6px; background: #111111; transform-origin: left center; }
+    #rt-bar2 { position: absolute; left: 0; right: 0; top: 436px; height: 14px; background: #111111; }
+    #rt-checks { position: absolute; left: 24px; right: 24px; top: 474px; }
+    .chk { display: grid; grid-template-columns: 170px 1fr; align-items: center; height: 72px; font-size: 34px; font-weight: 600; border-bottom: 2px solid #dde5ef; }
+    .stamp { justify-self: start; border: 4px solid #c8102e; color: #c8102e; font-size: 28px; font-weight: 800; line-height: 1.2; padding: 6px 14px; }
+    .rest { font-size: 30px; color: #4a4a4a; padding-top: 18px; }
   </style>
 
-  <div id="root" data-composition-id="roundtrip" data-width="1600" data-height="700">
+  <div id="root" data-composition-id="roundtrip" data-width="1600" data-height="760" data-hold="true">
     <div id="rt-bar2"></div>
 
-    <div id="rt-verdict" class="clip" data-start="5.3" data-duration="3.6">
+    <div id="rt-verdict" class="clip" data-start="3.8" data-duration="7.95">
       <div id="rt-plate">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 22.5 21h-21z" fill="none" stroke="#ffffff" stroke-width="2.2"/><rect x="11" y="9" width="2" height="6.5" fill="#ffffff"/><rect x="11" y="17" width="2" height="2" fill="#ffffff"/></svg>
         <span>Ask a pharmacist or interpreter to check this translation</span>
       </div>
     </div>
 
-    <div id="rt-english" class="row clip" data-start="0.3" data-duration="8.6">
-      <span class="k">English</span>
-      <span class="v"><span class="w e">do</span> <span class="w e">not</span> <span class="w e">take</span> <span class="w e mark">more<i class="strike" id="rt-s1"></i></span> <span class="w e">than</span> <span class="w e">6</span> <span class="w e mark">caplets<i class="strike" id="rt-s2"></i></span> <span class="w e">in</span> <span class="w e">24</span> <span class="w e">hours</span></span>
-    </div>
-
-    <div id="rt-vi" class="row clip" data-start="1.7" data-duration="7.2">
+    <div id="rt-vi" class="row clip" data-start="0.3" data-duration="11.45">
       <span class="k">Vietnamese</span>
       <span class="v" id="rt-vi-text">không uống ít hơn 6 viên trong 24 giờ</span>
     </div>
 
-    <div id="rt-back" class="row clip" data-start="2.5" data-duration="6.4">
+    <div id="rt-english" class="row clip" data-start="0.8" data-duration="10.95">
+      <span class="k">English</span>
+      <span class="v"><span class="w e">do</span> <span class="w e">not</span> <span class="w e">take</span> <span class="w e mark">more<i class="strike" id="rt-s1"></i></span> <span class="w e">than</span> <span class="w e">6</span> <span class="w e mark">caplets<i class="strike" id="rt-s2"></i></span> <span class="w e">in</span> <span class="w e">24</span> <span class="w e">hours</span></span>
+    </div>
+
+    <div id="rt-back" class="row clip" data-start="1.4" data-duration="10.35">
       <span class="k">Back to English</span>
       <span class="v"><span class="w b">do</span> <span class="w b">not</span> <span class="w b">take</span> <span class="w b mark">less<i class="under" id="rt-u1"></i></span> <span class="w b">than</span> <span class="w b">6</span> <span class="w b mark">tablets<i class="under" id="rt-u2"></i></span> <span class="w b">in</span> <span class="w b">24</span> <span class="w b">hours</span></span>
     </div>
 
-    <div id="rt-checks" class="clip" data-start="4.3" data-duration="4.6">
+    <div id="rt-checks" class="clip" data-start="2.8" data-duration="8.95">
       <div class="chk" id="rt-c1"><span class="stamp" id="rt-st1">Failed</span><span class="name" id="rt-n1">Under / over kept</span></div>
       <div class="chk" id="rt-c2"><span class="stamp" id="rt-st2">Failed</span><span class="name" id="rt-n2">Under / over survives the round trip</span></div>
       <div class="rest" id="rt-rest">The other 7 checks passed</div>
@@ -65,38 +65,27 @@
 
   <script>
     const tl = gsap.timeline({ paused: true });
-
-    // English arrives word by word (blur to sharp, no travel).
+    // The translation lands first, as in the live result; then the English and the trip back.
+    tl.fromTo("#rt-vi-text", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "expo.out" }, 0.3);
     tl.fromTo("#rt-english .e", { opacity: 0, filter: "blur(6px)" },
-      { opacity: 1, filter: "blur(0px)", duration: 0.13, stagger: 0.07, ease: "power2.out" }, 0.3);
-
-    // The translation lands as one line; the trip back arrives word by word.
-    tl.fromTo("#rt-vi-text", { opacity: 0, filter: "blur(8px)" },
-      { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "expo.out" }, 1.7);
+      { opacity: 1, filter: "blur(0px)", duration: 0.13, stagger: 0.04, ease: "power2.out" }, 0.8);
     tl.fromTo("#rt-back .b", { opacity: 0, filter: "blur(6px)" },
-      { opacity: 1, filter: "blur(0px)", duration: 0.13, stagger: 0.07, ease: "power2.out" }, 2.5);
-
+      { opacity: 1, filter: "blur(0px)", duration: 0.13, stagger: 0.04, ease: "power2.out" }, 1.4);
     // The words that didn't survive: struck in red on the English, underlined on the way back.
-    tl.fromTo("#rt-s1", { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power3.out" }, 3.7);
-    tl.fromTo("#rt-u1", { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power3.out" }, 3.85);
-    tl.fromTo("#rt-s2", { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power3.out" }, 4.0);
-    tl.fromTo("#rt-u2", { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power3.out" }, 4.15);
-
+    tl.fromTo("#rt-s1", { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power3.out" }, 2.1);
+    tl.fromTo("#rt-u1", { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power3.out" }, 2.25);
+    tl.fromTo("#rt-s2", { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power3.out" }, 2.4);
+    tl.fromTo("#rt-u2", { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power3.out" }, 2.55);
     // Two checks fail: each is stamped, and its name turns red.
-    tl.fromTo("#rt-c1, #rt-c2, #rt-rest", { opacity: 0 }, { opacity: 1, duration: 0.15, stagger: 0.06 }, 4.3);
-    tl.fromTo("#rt-st1", { opacity: 0, scale: 1.35 }, { opacity: 1, scale: 1, duration: 0.2, ease: "expo.out" }, 4.6);
-    tl.fromTo("#rt-n1", { color: "#111111" }, { color: "#c8102e", duration: 0.15 }, 4.62);
-    tl.fromTo("#rt-st2", { opacity: 0, scale: 1.35 }, { opacity: 1, scale: 1, duration: 0.2, ease: "expo.out" }, 4.85);
-    tl.fromTo("#rt-n2", { color: "#111111" }, { color: "#c8102e", duration: 0.15 }, 4.87);
-
-    // The verdict plate drops into its slot under the title.
+    tl.fromTo("#rt-c1, #rt-c2, #rt-rest", { opacity: 0 }, { opacity: 1, duration: 0.15, stagger: 0.06 }, 2.8);
+    tl.fromTo("#rt-st1", { opacity: 0, scale: 1.35 }, { opacity: 1, scale: 1, duration: 0.2, ease: "expo.out" }, 3.0);
+    tl.fromTo("#rt-n1", { color: "#111111" }, { color: "#c8102e", duration: 0.15 }, 3.02);
+    tl.fromTo("#rt-st2", { opacity: 0, scale: 1.35 }, { opacity: 1, scale: 1, duration: 0.2, ease: "expo.out" }, 3.25);
+    tl.fromTo("#rt-n2", { color: "#111111" }, { color: "#c8102e", duration: 0.15 }, 3.27);
+    // The verdict plate drops into its slot, then the finished panel holds for most of the loop.
     tl.fromTo("#rt-plate", { opacity: 0, y: -16, clipPath: "inset(0% 0% 100% 0%)" },
-      { opacity: 1, y: 0, clipPath: "inset(0% 0% 0% 0%)", duration: 0.35, ease: "expo.out" }, 5.3);
-
-    // Hold, then clear everything so the loop restarts on the empty panel.
-    tl.to("#rt-english, #rt-vi, #rt-back, #rt-checks, #rt-verdict",
-      { opacity: 0, duration: 0.28, ease: "power3.in" }, 8.35);
-
+      { opacity: 1, y: 0, clipPath: "inset(0% 0% 0% 0%)", duration: 0.35, ease: "expo.out" }, 3.8);
+    tl.to("#rt-vi, #rt-english, #rt-back, #rt-checks, #rt-verdict", { opacity: 0, duration: 0.28, ease: "power3.in" }, 11.4);
     window.__timelines["roundtrip"] = tl;
   </script>
 </template>

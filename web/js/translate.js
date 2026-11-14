@@ -73,12 +73,11 @@ form.addEventListener("submit", async (event) => {
   showChecking(true);
   const started = Date.now();
   const tries = safer.checked ? "5 translations" : "1 translation";
-  const tick = () => {
-    const text = `Translating into ${language.value} (${tries}), translating back into English and ` +
-      `running 9 checks… ${Math.round((Date.now() - started) / 1000)} s (usually 10–40 s)`;
-    setStatus(text, "waiting");
-    $("checking-text").textContent = text;
-  };
+  // Said once (and announced once); only the seconds count changes.
+  setStatus("");
+  $("checking-text").textContent = `Translating into ${language.value} (${tries}), translating back into ` +
+    "English and running 9 checks. Usually 10–40 seconds.";
+  const tick = () => { $("checking-seconds").textContent = `${Math.round((Date.now() - started) / 1000)} s`; };
   tick();
   const timer = setInterval(tick, 1000);
   try {

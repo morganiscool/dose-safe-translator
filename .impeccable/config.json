@@ -47,6 +47,15 @@
         ],
         "createdAt": "2026-11-14T14:24:50.608Z",
         "reason": "Claude: verdict plate is a 100px flex box with vertically centred text (~30px above and below in the rendered snapshot); detector reads it statically as flush"
+      },
+      {
+        "rule": "flat-type-hierarchy",
+        "value": "*",
+        "files": [
+          "web/index.html"
+        ],
+        "createdAt": "2026-11-14T15:35:07.913Z",
+        "reason": "Claude: detector cannot resolve the served stylesheet path /static/css/landing.css, so it reads browser defaults; rendered sizes measured by taste inspect are 16/18/33/72/137px"
       }
     ]
   }
