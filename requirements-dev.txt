@@ -1,0 +1,5 @@
+# For running the tests:  pip install -r requirements-dev.txt  then  python -m pytest
+fastapi==0.162.7
+sacrebleu==2.6.0
+pytest==9.2.0
+httpx2==2.16.0

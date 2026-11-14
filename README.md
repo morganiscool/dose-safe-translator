@@ -1,3 +1,15 @@
+---
+title: Dose-Safe Translator
+emoji: 💊
+colorFrom: blue
+colorTo: gray
+sdk: docker
+app_port: 7860
+license: cc-by-nc-4.0
+short_description: Translate OTC directions and flag risky translations
+pinned: false
+---
+
 # 💊 Dose-Safe Translator
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/morganiscool/dose-safe-translator/blob/main/dose_safe.ipynb)

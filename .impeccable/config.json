@@ -1,0 +1,44 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/model-pick.html"
+        ],
+        "createdAt": "2026-11-14T13:58:12.551Z",
+        "reason": "Claude: throwaway decision-round sketch (gitignored mock), not shipped UI"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/canon.html"
+        ],
+        "createdAt": "2026-11-14T13:58:12.842Z",
+        "reason": "Claude: throwaway decision-round sketch (gitignored mock), not shipped UI"
+      },
+      {
+        "rule": "overused-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/canon.html"
+        ],
+        "createdAt": "2026-11-14T13:58:13.146Z",
+        "reason": "Claude: canon card deliberately depicts the category default look, Inter included"
+      },
+      {
+        "rule": "flat-type-hierarchy",
+        "value": "*",
+        "files": [
+          "web/translate.html"
+        ],
+        "createdAt": "2026-11-14T14:19:36.397Z",
+        "reason": "Claude: detector could not resolve the served path /static/css/app.css, so it read default sizes; rendered sizes 24/32/16px measured by taste inspect"
+      }
+    ]
+  }
+}

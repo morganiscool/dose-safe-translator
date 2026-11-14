@@ -1,0 +1,14 @@
+.git
+.venv
+**/__pycache__
+.pytest_cache
+.impeccable
+.taste-skill
+tests
+blender
+video
+dose_safe.ipynb
+data/results.csv
+data/rate_me_*
+data/answer_key_*
+data/rated_*
