@@ -1,0 +1,10 @@
+# Only needed to run outside Google Colab (Colab already has these, and the notebook installs any missing ones)
+torch
+transformers
+sentencepiece
+sacrebleu
+gradio
+pandas
+requests
+ipython
+datasets  # optional, for the FLORES+ section
