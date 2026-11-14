@@ -198,10 +198,6 @@ textarea:focus-visible, select:focus-visible { outline-offset: 2px; }
 .check-groups li { padding: 8px 0; border-bottom: 1px solid var(--tint-strong); font-size: 16px; }
 
 .sample { margin: 40px 0 0; padding-top: 24px; border-top: 2px solid var(--ink); container-type: inline-size; }
-@container (max-width: 759px) {
-  .sample-video { display: none; }
-  .sample-static { display: block; }
-}
 .sample h3 { font-size: 18px; font-weight: 800; }
 .sample figcaption .hint { margin-bottom: 16px; }
 .sample .verdict-title { font-size: 18px; }
@@ -209,6 +205,11 @@ textarea:focus-visible, select:focus-visible { outline-offset: 2px; }
 /* The HyperFrames clips. People who ask for less motion get the still version instead. */
 .sample-video, .checking video { display: block; width: 100%; height: auto; background: var(--panel); }
 .sample-static { display: none; }
+/* Where the clip's type would show under 14px, the still takes its place. */
+@container (max-width: 759px) {
+  .sample-video { display: none; }
+  .sample-static { display: block; }
+}
 .checking { container-type: inline-size; }
 @container (max-width: 599px) { .checking video { display: none; } }  /* its labels would be under 14px */
 .checking-text { margin-top: 12px; font-size: 16px; line-height: 1.45; }
@@ -329,6 +330,7 @@ textarea:focus-visible, select:focus-visible { outline-offset: 2px; }
   :root { --pad: 18px; }
   .shell-bar { flex-wrap: wrap; gap: 4px 20px; padding: 12px 16px 8px; }
   .wordmark { font-size: 18px; width: 100%; }
+  .shell-bar nav { margin-left: 0; }
   .shell-bar nav a { padding: 8px 0 6px; }
   .prototype { margin-left: 0; width: 100%; font-size: 13px; }
   .work { padding: 4px 16px 24px; gap: 16px; }

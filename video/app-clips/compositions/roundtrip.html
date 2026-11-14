@@ -34,24 +34,24 @@
   <div id="root" data-composition-id="roundtrip" data-width="1600" data-height="760" data-hold="true">
     <div id="rt-bar2"></div>
 
-    <div id="rt-verdict" class="clip" data-start="3.8" data-duration="7.95">
+    <div id="rt-verdict" class="clip" data-start="0.2" data-duration="11.55">
       <div id="rt-plate">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 22.5 21h-21z" fill="none" stroke="#ffffff" stroke-width="2.2"/><rect x="11" y="9" width="2" height="6.5" fill="#ffffff"/><rect x="11" y="17" width="2" height="2" fill="#ffffff"/></svg>
         <span>Ask a pharmacist or interpreter to check this translation</span>
       </div>
     </div>
 
-    <div id="rt-vi" class="row clip" data-start="0.3" data-duration="11.45">
+    <div id="rt-vi" class="row clip" data-start="0.6" data-duration="11.15">
       <span class="k">Vietnamese</span>
       <span class="v" id="rt-vi-text">không uống ít hơn 6 viên trong 24 giờ</span>
     </div>
 
-    <div id="rt-english" class="row clip" data-start="0.8" data-duration="10.95">
+    <div id="rt-english" class="row clip" data-start="1.0" data-duration="10.75">
       <span class="k">English</span>
       <span class="v"><span class="w e">do</span> <span class="w e">not</span> <span class="w e">take</span> <span class="w e mark">more<i class="strike" id="rt-s1"></i></span> <span class="w e">than</span> <span class="w e">6</span> <span class="w e mark">caplets<i class="strike" id="rt-s2"></i></span> <span class="w e">in</span> <span class="w e">24</span> <span class="w e">hours</span></span>
     </div>
 
-    <div id="rt-back" class="row clip" data-start="1.4" data-duration="10.35">
+    <div id="rt-back" class="row clip" data-start="1.5" data-duration="10.25">
       <span class="k">Back to English</span>
       <span class="v"><span class="w b">do</span> <span class="w b">not</span> <span class="w b">take</span> <span class="w b mark">less<i class="under" id="rt-u1"></i></span> <span class="w b">than</span> <span class="w b">6</span> <span class="w b mark">tablets<i class="under" id="rt-u2"></i></span> <span class="w b">in</span> <span class="w b">24</span> <span class="w b">hours</span></span>
     </div>
@@ -65,12 +65,14 @@
 
   <script>
     const tl = gsap.timeline({ paused: true });
-    // The translation lands first, as in the live result; then the English and the trip back.
-    tl.fromTo("#rt-vi-text", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "expo.out" }, 0.3);
+    // As in the live result: the verdict plate is read first, then the translation, the English and the trip back.
+    tl.fromTo("#rt-plate", { opacity: 0, y: -16, clipPath: "inset(0% 0% 100% 0%)" },
+      { opacity: 1, y: 0, clipPath: "inset(0% 0% 0% 0%)", duration: 0.35, ease: "expo.out" }, 0.2);
+    tl.fromTo("#rt-vi-text", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "expo.out" }, 0.6);
     tl.fromTo("#rt-english .e", { opacity: 0, filter: "blur(6px)" },
-      { opacity: 1, filter: "blur(0px)", duration: 0.13, stagger: 0.04, ease: "power2.out" }, 0.8);
+      { opacity: 1, filter: "blur(0px)", duration: 0.13, stagger: 0.04, ease: "power2.out" }, 1.0);
     tl.fromTo("#rt-back .b", { opacity: 0, filter: "blur(6px)" },
-      { opacity: 1, filter: "blur(0px)", duration: 0.13, stagger: 0.04, ease: "power2.out" }, 1.4);
+      { opacity: 1, filter: "blur(0px)", duration: 0.13, stagger: 0.04, ease: "power2.out" }, 1.5);
     // The words that didn't survive: struck in red on the English, underlined on the way back.
     tl.fromTo("#rt-s1", { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power3.out" }, 2.1);
     tl.fromTo("#rt-u1", { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power3.out" }, 2.25);
@@ -82,9 +84,7 @@
     tl.fromTo("#rt-n1", { color: "#111111" }, { color: "#c8102e", duration: 0.15 }, 3.02);
     tl.fromTo("#rt-st2", { opacity: 0, scale: 1.35 }, { opacity: 1, scale: 1, duration: 0.2, ease: "expo.out" }, 3.25);
     tl.fromTo("#rt-n2", { color: "#111111" }, { color: "#c8102e", duration: 0.15 }, 3.27);
-    // The verdict plate drops into its slot, then the finished panel holds for most of the loop.
-    tl.fromTo("#rt-plate", { opacity: 0, y: -16, clipPath: "inset(0% 0% 100% 0%)" },
-      { opacity: 1, y: 0, clipPath: "inset(0% 0% 0% 0%)", duration: 0.35, ease: "expo.out" }, 3.8);
+    // The finished panel holds for most of the loop.
     tl.to("#rt-vi, #rt-english, #rt-back, #rt-checks, #rt-verdict", { opacity: 0, duration: 0.28, ease: "power3.in" }, 11.4);
     window.__timelines["roundtrip"] = tl;
   </script>
