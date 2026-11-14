@@ -160,7 +160,27 @@ Known limits:
 - Have pharmacists and more native speakers rate a larger set, especially of prescription labels.
 - Use the ratings to tune which checks matter most, and let the tool point to the exact risky words.
 
-## How to run
+## Run the web app
+
+The app (`server.py` and the pages in `web/`) is the same tool as the notebook's demo, with the
+safety checks in `dose_safe/` and a translator screen built for a pharmacy counter.
+
+**On a Windows PC, with a free public link:** double-click `run-public.bat`. The first run sets
+up the Python packages (about 1 GB) and downloads Cloudflare's free tunnel program; the
+translation model (about 2.5 GB) downloads the first time the app starts. The window then prints
+an `https://….trycloudflare.com` link anyone can open. The link works only while that window is
+open and the PC is awake, and it changes each time you start it. A check takes about 10–40
+seconds on a normal laptop.
+
+**Just on your own computer:** `pip install -r requirements-app.txt`, then
+`uvicorn server:app --port 7860` and open http://localhost:7860/translate.
+
+**Tests:** `pip install -r requirements-dev.txt`, then `python -m pytest`.
+
+**On Hugging Face:** the repo is set up as a Docker Space (`Dockerfile` and the settings at the
+top of this file), but new Docker Spaces now need a paid PRO account.
+
+## How to run the notebook
 
 Click **Open in Colab** at the top (or upload `dose_safe.ipynb` to Colab) → **Runtime → Change runtime
 type → T4 GPU** → **Run all**.
