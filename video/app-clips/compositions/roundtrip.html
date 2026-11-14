@@ -6,26 +6,27 @@
       font-weight: 100 900;
     }
     #root { position: absolute; inset: 0; background: #ffffff; color: #111111; font-family: "Public Sans", sans-serif; }
-    #rt-verdict { position: absolute; left: 24px; right: 24px; top: 24px; height: 104px; }
+    #rt-verdict { position: absolute; left: 24px; right: 24px; top: 24px; height: 148px; }
     #rt-plate {
       width: 100%; height: 100%; background: #c8102e; color: #ffffff;
       display: flex; align-items: center; gap: 24px; padding: 0 32px;
       font-size: 38px; font-weight: 800; letter-spacing: -0.01em;
     }
+    #rt-plate small { display: block; font-size: 30px; font-weight: 600; letter-spacing: 0; margin-top: 4px; }
     #rt-plate svg { width: 50px; height: 50px; flex: none; }
     .row { position: absolute; left: 24px; right: 24px; display: grid; grid-template-columns: 330px 1fr; align-items: baseline; }
     .k { font-size: 32px; font-weight: 800; }
     .v { font-size: 42px; font-weight: 500; white-space: nowrap; }
-    #rt-vi { top: 168px; }
+    #rt-vi { top: 212px; }
     #rt-vi .v { font-size: 56px; font-weight: 600; }
-    #rt-english { top: 268px; }
-    #rt-back { top: 348px; }
+    #rt-english { top: 310px; }
+    #rt-back { top: 388px; }
     .w { display: inline-block; }
     .mark { position: relative; display: inline-block; }
     .strike { position: absolute; left: -4px; right: -4px; top: 55%; height: 6px; background: #c8102e; transform-origin: left center; }
     .under { position: absolute; left: 0; right: 0; bottom: -6px; height: 6px; background: #111111; transform-origin: left center; }
-    #rt-bar2 { position: absolute; left: 0; right: 0; top: 436px; height: 14px; background: #111111; }
-    #rt-checks { position: absolute; left: 24px; right: 24px; top: 474px; }
+    #rt-bar2 { position: absolute; left: 0; right: 0; top: 474px; height: 14px; background: #111111; }
+    #rt-checks { position: absolute; left: 24px; right: 24px; top: 510px; }
     .chk { display: grid; grid-template-columns: 170px 1fr; align-items: center; height: 72px; font-size: 34px; font-weight: 600; border-bottom: 2px solid #dde5ef; }
     .stamp { justify-self: start; border: 4px solid #c8102e; color: #c8102e; font-size: 28px; font-weight: 800; line-height: 1.2; padding: 6px 14px; }
     .rest { font-size: 30px; color: #4a4a4a; padding-top: 18px; }
@@ -37,7 +38,7 @@
     <div id="rt-verdict" class="clip" data-start="0.2" data-duration="11.55">
       <div id="rt-plate">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 22.5 21h-21z" fill="none" stroke="#ffffff" stroke-width="2.2"/><rect x="11" y="9" width="2" height="6.5" fill="#ffffff"/><rect x="11" y="17" width="2" height="2" fill="#ffffff"/></svg>
-        <span>Ask a pharmacist or interpreter to check this translation</span>
+        <span>Ask a pharmacist or interpreter to check this translation<small>Example: 2 of 9 checks failed, Under / over kept and Under / over survives the round trip</small></span>
       </div>
     </div>
 
