@@ -1,0 +1,86 @@
+<template>
+  <style>
+    @font-face { font-family: "Public Sans"; src: url("assets/fonts/PublicSans-Variable.ttf") format("truetype"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #ffffff; color: #111111; font-family: "Public Sans", sans-serif; overflow: hidden; }
+    .rt-row { position: absolute; left: 120px; right: 120px; display: grid; grid-template-columns: 380px 1fr; align-items: baseline; }
+    .rt-k { font-size: 34px; font-weight: 800; }
+    .rt-v { font-size: 54px; font-weight: 500; white-space: nowrap; }
+    .rt-v span { display: inline-block; }
+    #rt-en { top: 150px; }
+    #rt-vi { top: 262px; }
+    #rt-vi .rt-v { font-size: 64px; font-weight: 600; }
+    #rt-back { top: 386px; }
+    .rt-mark { position: relative; }
+    #rt-strike { position: absolute; left: -4px; right: -4px; top: 55%; height: 7px; background: #c8102e; transform-origin: left center; }
+    #rt-under { position: absolute; left: 0; right: 0; bottom: -6px; height: 7px; background: #111111; transform-origin: left center; }
+    #rt-bar { position: absolute; left: 0; right: 0; top: 500px; height: 16px; background: #111111; transform-origin: left center; }
+    #rt-boxes { position: absolute; left: 500px; top: 560px; display: flex; gap: 22px; }
+    .rt-box { width: 52px; height: 52px; border: 6px solid #111111; background: #ffffff; }
+    .rt-chk { position: absolute; left: 500px; display: flex; align-items: center; gap: 28px; font-size: 40px; font-weight: 600; color: #c8102e; }
+    .rt-stamp { border: 5px solid #c8102e; padding: 4px 14px; font-size: 30px; font-weight: 800; line-height: 1.2; }
+    #rt-c1 { top: 660px; }
+    #rt-c2 { top: 740px; }
+    #rt-rest { position: absolute; left: 500px; top: 832px; font-size: 32px; font-weight: 500; color: #4a4a4a; }
+    .rt-step { position: absolute; left: 120px; top: 930px; font-size: 56px; font-weight: 800; letter-spacing: -0.015em; }
+    #rt-note { position: absolute; right: 120px; top: 60px; font-size: 30px; font-weight: 500; color: #4a4a4a; }
+  </style>
+
+  <div id="root" data-composition-id="roundtrip" data-width="1920" data-height="1080">
+    <div id="rt-note" class="clip" data-start="0.3" data-duration="15.7">Illustrated example: a flipped limit</div>
+
+    <div id="rt-en" class="rt-row clip" data-start="0.4" data-duration="15.6">
+      <span class="rt-k">English</span>
+      <span class="rt-v"><span>do</span> <span>not</span> <span>take</span> <span class="rt-mark">more<i id="rt-strike"></i></span> <span>than</span> <span>6</span> <span>caplets</span> <span>in</span> <span>24</span> <span>hours</span></span>
+    </div>
+    <div id="rt-vi" class="rt-row clip" data-start="2.5" data-duration="13.5">
+      <span class="rt-k">Vietnamese</span>
+      <span class="rt-v" id="rt-vi-text">không uống ít hơn 6 viên trong 24 giờ</span>
+    </div>
+    <div id="rt-back" class="rt-row clip" data-start="5.0" data-duration="11.0">
+      <span class="rt-k">Back to English</span>
+      <span class="rt-v"><span>do</span> <span>not</span> <span>take</span> <span class="rt-mark">less<i id="rt-under"></i></span> <span>than</span> <span>6</span> <span>tablets</span> <span>in</span> <span>24</span> <span>hours</span></span>
+    </div>
+
+    <div id="rt-checks" class="clip" data-start="9.4" data-duration="6.6">
+      <div id="rt-bar"></div>
+      <div id="rt-boxes">
+        <i class="rt-box"></i><i class="rt-box"></i><i class="rt-box" id="rt-b3"></i><i class="rt-box"></i><i class="rt-box"></i>
+        <i class="rt-box"></i><i class="rt-box"></i><i class="rt-box" id="rt-b8"></i><i class="rt-box"></i>
+      </div>
+      <div class="rt-chk" id="rt-c1"><span class="rt-stamp" id="rt-s1">Failed</span><span>Under / over kept</span></div>
+      <div class="rt-chk" id="rt-c2"><span class="rt-stamp" id="rt-s2">Failed</span><span>Under / over survives the round trip</span></div>
+      <div id="rt-rest">The other 7 checks passed</div>
+    </div>
+
+    <div class="rt-step clip" id="rt-step1" data-start="2.5" data-duration="2.5">Translate</div>
+    <div class="rt-step clip" id="rt-step2" data-start="5.0" data-duration="2.5">Translate it back</div>
+    <div class="rt-step clip" id="rt-step3" data-start="7.5" data-duration="1.9">Compare word by word</div>
+    <div class="rt-step clip" id="rt-step4" data-start="9.4" data-duration="4.6">Run nine checks</div>
+    <div class="rt-step clip" id="rt-step5" data-start="14.0" data-duration="2.0">2 of 9 checks failed</div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const blurIn = { opacity: 1, filter: "blur(0px)", duration: 0.13, stagger: 0.067, ease: "power2.out" };
+    tl.fromTo("#rt-en .rt-v > span", { opacity: 0, filter: "blur(6px)" }, blurIn, 0.4);
+    tl.fromTo("#rt-vi-text", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "expo.out" }, 2.6);
+    tl.fromTo("#rt-back .rt-v > span", { opacity: 0, filter: "blur(6px)" }, blurIn, 5.1);
+    // The comparison: "more" did not survive, "less" came back in its place.
+    tl.fromTo("#rt-strike", { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power3.out" }, 7.6);
+    tl.fromTo("#rt-under", { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power3.out" }, 7.9);
+    // Nine checks run one after another.
+    tl.fromTo("#rt-bar", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power2.inOut" }, 9.4);
+    tl.fromTo(".rt-box", { backgroundColor: "#ffffff" }, { backgroundColor: "#111111", duration: 0.06, stagger: 0.1 }, 10.2);
+    tl.to("#rt-b3, #rt-b8", { backgroundColor: "#ffffff", borderColor: "#c8102e", duration: 0.1 }, 11.4);
+    tl.fromTo("#rt-c1", { opacity: 0 }, { opacity: 1, duration: 0.1 }, 11.5);
+    tl.fromTo("#rt-s1", { scale: 1.35 }, { scale: 1, duration: 0.2, ease: "expo.out" }, 11.5);
+    tl.fromTo("#rt-c2", { opacity: 0 }, { opacity: 1, duration: 0.1 }, 12.0);
+    tl.fromTo("#rt-s2", { scale: 1.35 }, { scale: 1, duration: 0.2, ease: "expo.out" }, 12.0);
+    tl.fromTo("#rt-rest", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "expo.out" }, 12.6);
+    for (const id of ["#rt-step1", "#rt-step2", "#rt-step3", "#rt-step4", "#rt-step5"]) {
+      const start = { "#rt-step1": 2.5, "#rt-step2": 5.0, "#rt-step3": 7.5, "#rt-step4": 9.4, "#rt-step5": 14.0 }[id];
+      tl.fromTo(id, { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "expo.out" }, start);
+    }
+    window.__timelines["roundtrip"] = tl;
+  </script>
+</template>

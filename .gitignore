@@ -28,3 +28,6 @@ video/renders/
 video/*/.hyperframes/
 video/*/.thumbnails/
 blender/*.blend1
+
+# Full-size Blender renders (regenerate with blender/scene.py)
+web/media/src/

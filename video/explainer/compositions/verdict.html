@@ -1,0 +1,53 @@
+<template>
+  <style>
+    @font-face { font-family: "Public Sans"; src: url("assets/fonts/PublicSans-Variable.ttf") format("truetype"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #ffffff; color: #111111; font-family: "Public Sans", sans-serif; overflow: hidden; }
+    #vd-plate { position: absolute; left: 120px; right: 120px; top: 110px; height: 150px; background: #c8102e; color: #ffffff;
+      display: flex; align-items: center; gap: 30px; padding: 0 44px; font-size: 52px; font-weight: 800; letter-spacing: -0.015em; }
+    #vd-plate svg { width: 64px; height: 64px; flex: none; }
+    #vd-detail { position: absolute; left: 120px; top: 300px; font-size: 38px; font-weight: 500; width: 820px; line-height: 1.35; }
+    #vd-title { position: absolute; left: 120px; top: 820px; width: 820px; font-size: 56px; font-weight: 800; letter-spacing: -0.015em; line-height: 1.15; }
+    #vd-slip { position: absolute; left: 1060px; top: 330px; width: 740px; height: 760px; background: #ffffff; border: 4px solid #111111; padding: 44px 48px; }
+    .vd-k { font-size: 30px; font-weight: 800; }
+    #vd-tr { font-size: 58px; font-weight: 600; line-height: 1.25; margin-top: 10px; }
+    .vd-rule { height: 6px; background: #111111; margin: 30px 0 22px; }
+    .vd-en { font-size: 30px; line-height: 1.35; margin-top: 6px; }
+    .vd-checked { font-size: 32px; margin-top: 40px; }
+    .vd-line { display: inline-block; width: 300px; height: 3px; background: #111111; vertical-align: baseline; transform-origin: left center; }
+  </style>
+
+  <div id="root" data-composition-id="verdict" data-width="1920" data-height="1080">
+    <div id="vd-plate-clip" class="clip" data-start="0.3" data-duration="6.7">
+      <div id="vd-plate">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 22.5 21h-21z" fill="none" stroke="#ffffff" stroke-width="2.2"/><rect x="11" y="9" width="2" height="6.5" fill="#ffffff"/><rect x="11" y="17" width="2" height="2" fill="#ffffff"/></svg>
+        <span>Ask a pharmacist or interpreter to check this translation</span>
+      </div>
+    </div>
+    <div id="vd-detail" class="clip" data-start="1.2" data-duration="5.8">2 of 9 checks failed: the limit “more than” may have flipped.</div>
+
+    <div id="vd-slip-clip" class="clip" data-start="2.8" data-duration="4.2">
+      <div id="vd-slip">
+        <p class="vd-k">Vietnamese</p>
+        <p id="vd-tr">không dùng nhiều hơn 6 viên trong 24 giờ</p>
+        <div class="vd-rule"></div>
+        <p class="vd-k">English (for the pharmacist)</p>
+        <p class="vd-en">do not take more than 6 caplets in 24 hours</p>
+        <p class="vd-checked">Checked by: <span class="vd-line"></span></p>
+      </div>
+    </div>
+    <div id="vd-title" class="clip" data-start="3.6" data-duration="3.4">A pharmacist checks it, then prints it for the patient</div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // The verdict is stamped onto the page.
+    tl.fromTo("#vd-plate", { opacity: 0, scale: 1.06, y: -12 }, { opacity: 1, scale: 1, y: 0, duration: 0.22, ease: "expo.out" }, 0.3);
+    tl.fromTo("#vd-detail", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "expo.out" }, 1.2);
+    // The patient slip slides up out of the printer below the frame.
+    tl.fromTo("#vd-slip", { y: 760 }, { y: 0, duration: 0.8, ease: "power2.inOut" }, 2.8);
+    tl.fromTo("#vd-title", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "expo.out" }, 3.6);
+    // The pharmacist's signature line is drawn, ready to sign.
+    tl.fromTo(".vd-line", { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: "power3.out" }, 5.0);
+    window.__timelines["verdict"] = tl;
+  </script>
+</template>

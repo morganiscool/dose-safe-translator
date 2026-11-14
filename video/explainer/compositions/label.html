@@ -1,0 +1,60 @@
+<template>
+  <style>
+    @font-face { font-family: "Public Sans"; src: url("assets/fonts/PublicSans-Variable.ttf") format("truetype"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #ffffff; color: #111111; font-family: "Public Sans", sans-serif; overflow: hidden; }
+    #lb-carton { position: absolute; inset: 0; }
+    #lb-carton-img { position: absolute; left: 520px; top: 20px; width: 832px; height: 1040px; transform-origin: 71% 47%; }
+    #lb-panel { position: absolute; inset: 0; }
+    #lb-card { position: absolute; left: 120px; top: 90px; width: 1440px; border: 8px solid #111111; padding: 26px 40px 34px; background: #ffffff; }
+    #lb-card h2 { font-size: 92px; font-weight: 900; letter-spacing: -0.03em; line-height: 1; }
+    .lb-bar { height: 18px; background: #111111; margin: 18px -40px; }
+    .lb-head { font-size: 40px; font-weight: 800; }
+    #lb-card ul { list-style: none; margin-top: 8px; }
+    #lb-card li { font-size: 40px; line-height: 1.35; padding: 4px 0 4px 34px; position: relative; color: #4a4a4a; }
+    #lb-card li::before { content: ""; position: absolute; left: 4px; top: 24px; width: 10px; height: 10px; background: #4a4a4a; border-radius: 50%; }
+    #lb-card li.target { color: #111111; font-size: 48px; font-weight: 600; }
+    #lb-card li.target::before { background: #111111; top: 28px; }
+    .lb-mark { position: relative; display: inline-block; }
+    #lb-under { position: absolute; left: 0; right: 0; bottom: -2px; height: 6px; background: #c8102e; transform-origin: left center; }
+    #lb-title { position: absolute; left: 120px; top: 930px; font-size: 56px; font-weight: 800; letter-spacing: -0.015em; }
+    #lb-title span { display: inline-block; }
+  </style>
+
+  <div id="root" data-composition-id="label" data-width="1920" data-height="1080">
+    <div id="lb-carton" class="clip" data-start="0" data-duration="2">
+      <img id="lb-carton-img" src="assets/carton.png" alt="">
+    </div>
+
+    <div id="lb-panel" class="clip" data-start="2" data-duration="4">
+      <div id="lb-card">
+        <h2>Drug Facts</h2>
+        <div class="lb-bar"></div>
+        <p class="lb-head">Directions</p>
+        <ul>
+          <li>adults and children 12 years and over: take 2 caplets every 6 hours</li>
+          <li class="target"><span class="lb-mark" id="lb-line">do not take more than 6 caplets in 24 hours<i id="lb-under"></i></span></li>
+          <li>children under 12 years: ask a doctor</li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="lb-title" class="clip" data-start="3" data-duration="3">
+      <span>One</span> <span>line</span> <span>from</span> <span>a</span> <span>real</span> <span>medicine</span> <span>label</span>
+    </div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // The camera pushes from the whole carton into its Drug Facts panel.
+    tl.fromTo("#lb-carton-img", { scale: 1 }, { scale: 1.9, duration: 2.0, ease: "power2.inOut" }, 0);
+    // Cut to the flat panel; it settles in from slightly large.
+    tl.fromTo("#lb-card", { scale: 1.04, opacity: 0.6 }, { scale: 1, opacity: 1, duration: 0.4, ease: "expo.out" }, 2.0);
+    // The one line that matters is underlined in red.
+    tl.fromTo("#lb-under", { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power3.out" }, 2.4);
+    tl.fromTo("#lb-title span", { opacity: 0, filter: "blur(6px)" },
+      { opacity: 1, filter: "blur(0px)", duration: 0.13, stagger: 0.067, ease: "power2.out" }, 3.0);
+    // The line lifts out of the panel, handing off to the next scene.
+    tl.to("#lb-line", { y: -14, duration: 0.5, ease: "power2.inOut" }, 5.4);
+    window.__timelines["label"] = tl;
+  </script>
+</template>

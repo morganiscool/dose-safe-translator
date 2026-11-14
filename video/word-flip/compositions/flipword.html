@@ -1,0 +1,29 @@
+<template>
+  <style>
+    @font-face { font-family: "Public Sans"; src: url("assets/fonts/PublicSans-Variable.ttf") format("truetype"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #eef1f5; color: #111111; font-family: "Public Sans", sans-serif; }
+    .fw-word { position: absolute; left: 0; right: 0; top: 34px; text-align: center; font-size: 190px; font-weight: 900; letter-spacing: -0.045em; line-height: 1; }
+    .fw-word b { position: relative; font-weight: 900; }
+    #fw-strike { position: absolute; left: -10px; right: -10px; top: 52%; height: 16px; background: #c8102e; transform-origin: left center; }
+    #fw-under { position: absolute; left: 0; right: 0; bottom: -18px; height: 16px; background: #111111; transform-origin: left center; }
+  </style>
+  <div id="root" data-composition-id="flipword" data-width="720" data-height="288">
+    <div class="fw-word" id="fw-more"><b id="fw-more-text">more<i id="fw-strike"></i></b></div>
+    <div class="fw-word" id="fw-less"><b id="fw-less-text">less<i id="fw-under"></i></b></div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.set("#fw-less-text", { opacity: 0 }, 0);
+    // "more" sits, then is struck in red.
+    tl.fromTo("#fw-strike", { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power3.out" }, 0.7);
+    // It comes back from the round trip as "less".
+    tl.to("#fw-more-text", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power3.in" }, 1.5);
+    tl.fromTo("#fw-less-text", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "expo.out" }, 1.68);
+    tl.fromTo("#fw-under", { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power3.out" }, 1.95);
+    // Back to the label's word for the next loop.
+    tl.to("#fw-less-text", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power3.in" }, 3.45);
+    tl.fromTo("#fw-more-text", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "expo.out", immediateRender: false }, 3.63);
+    tl.set("#fw-strike", { scaleX: 0 }, 3.62);
+    window.__timelines["flipword"] = tl;
+  </script>
+</template>

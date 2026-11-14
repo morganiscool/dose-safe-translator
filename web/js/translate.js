@@ -259,4 +259,11 @@ for (const button of document.querySelectorAll("[data-example]")) {
   });
 }
 
+// A line sent from the landing page ("Paste a label line and check it") arrives as ?q=.
+const sent = new URLSearchParams(location.search).get("q");
+if (sent && sent.trim()) {
+  english.value = sent.trim().slice(0, 2000);
+  english.focus();
+}
+
 pollStatus();

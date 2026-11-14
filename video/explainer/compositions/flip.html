@@ -1,0 +1,41 @@
+<template>
+  <style>
+    @font-face { font-family: "Public Sans"; src: url("assets/fonts/PublicSans-Variable.ttf") format("truetype"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #ffffff; color: #111111; font-family: "Public Sans", sans-serif; overflow: hidden; }
+    .fl-label { position: absolute; left: 120px; font-size: 34px; font-weight: 600; color: #4a4a4a; }
+    .fl-big { position: absolute; left: 120px; font-size: 124px; font-weight: 900; letter-spacing: -0.035em; line-height: 1; white-space: nowrap; }
+    .fl-big span { display: inline-block; }
+    #fl-old-label { top: 250px; }
+    #fl-old { top: 300px; }
+    #fl-strike { position: absolute; left: -8px; right: -8px; top: 52%; height: 12px; background: #c8102e; transform-origin: left center; }
+    #fl-new-label { top: 520px; }
+    #fl-new { top: 570px; }
+    #fl-title { position: absolute; left: 120px; top: 110px; font-size: 56px; font-weight: 800; letter-spacing: -0.015em; }
+    #fl-source { position: absolute; left: 120px; top: 940px; font-size: 30px; font-weight: 500; color: #4a4a4a; }
+  </style>
+
+  <div id="root" data-composition-id="flip" data-width="1920" data-height="1080">
+    <div id="fl-title" class="clip" data-start="3.4" data-duration="2.6">A free translator can flip the meaning</div>
+    <div id="fl-old-label" class="fl-label clip" data-start="0.2" data-duration="5.8">The doctor wrote</div>
+    <div id="fl-old" class="fl-big clip" data-start="0.3" data-duration="5.7">
+      <span>hold</span> <span>the</span> <span>kidney</span> <span>medicine</span><i id="fl-strike"></i>
+    </div>
+    <div id="fl-new-label" class="fl-label clip" data-start="2.5" data-duration="3.5">Translated and read back, it said</div>
+    <div id="fl-new" class="fl-big clip" data-start="2.6" data-duration="3.4">
+      <span>keep</span> <span>taking</span> <span>the</span> <span>medication</span>
+    </div>
+    <div id="fl-source" class="clip" data-start="3.0" data-duration="3.0">UCSF study of Google Translate on emergency-room discharge instructions</div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#fl-old span", { opacity: 0, filter: "blur(6px)" },
+      { opacity: 1, filter: "blur(0px)", duration: 0.13, stagger: 0.07, ease: "power2.out" }, 0.3);
+    tl.fromTo("#fl-strike", { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power3.out" }, 2.0);
+    tl.fromTo("#fl-new span", { opacity: 0, filter: "blur(6px)" },
+      { opacity: 1, filter: "blur(0px)", duration: 0.13, stagger: 0.07, ease: "power2.out" }, 2.6);
+    tl.fromTo("#fl-title", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "expo.out" }, 3.4);
+    tl.fromTo("#fl-source", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "expo.out" }, 3.0);
+    window.__timelines["flip"] = tl;
+  </script>
+</template>
