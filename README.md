@@ -110,7 +110,9 @@ _Fill these in from the notebook output (sections 7 and 8). Report what you actu
 weak results._
 
 **Automatic checks** (share of translations flagged, section 7). From our test run on Nov 14, 2026
-(150 label instructions per language, Colab T4 GPU). Re-run and update these numbers:
+(150 label instructions per language, Colab T4 GPU). These numbers come from before the fixes to the
+checks (the bugs and their tests are in `tests/test_checks.py` and `tests/test_labels.py`), so re-run
+the notebook and update them:
 
 | Language | NLLB as-is | Safer mode | Safer mode changed |
 |---|---|---|---|
@@ -163,7 +165,10 @@ Known limits:
 ## Run the web app
 
 The app (`server.py` and the pages in `web/`) is the same tool as the notebook's demo, with the
-safety checks in `dose_safe/` and a translator screen built for a pharmacy counter.
+safety checks in `dose_safe/` and a translator screen built for a pharmacy counter. Its front page
+(`/`) explains the project, with a 45-second explainer film (`web/media/explainer.mp4`); the
+translator is at `/translate`. The film and the small looping clips are HyperFrames projects in
+`video/`, and the 3D carton and caplets are rendered by `blender/scene.py`.
 
 **On a Windows PC, with a free public link:** double-click `run-public.bat`. The first run sets
 up the Python packages (about 1 GB) and downloads Cloudflare's free tunnel program; the
