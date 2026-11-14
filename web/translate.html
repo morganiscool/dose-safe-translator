@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Translator · Dose-Safe Translator</title>
+<meta name="description" content="Translate one over-the-counter medicine instruction, see it translated back into English, and see whether a person should check it.">
+<link rel="icon" href="/static/media/icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" href="/static/fonts/PublicSans-Variable.ttf" as="font" type="font/ttf" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/app.css">
+<script src="/static/js/translate.js" defer></script>
+</head>
+<body>
+<header class="shell-bar">
+  <a class="wordmark" href="/">
+    <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" fill="#fff"/><rect x="2" y="7" width="20" height="3" fill="#111"/><rect x="5" y="13" width="14" height="1.6" fill="#111"/><rect x="5" y="16.5" width="10" height="1.6" fill="#111"/></svg>
+    Dose-Safe Translator
+  </a>
+  <nav aria-label="Main">
+    <a href="/translate" aria-current="page">Translator</a>
+    <a href="/#how">How it works</a>
+  </nav>
+  <p class="prototype">Prototype – not medical advice</p>
+</header>
+
+<main class="work">
+  <section class="panel instruction" aria-labelledby="page-title">
+    <h1 id="page-title">Check a medicine translation</h1>
+    <form id="check-form" novalidate>
+      <label for="english">English instruction from the label</label>
+      <textarea id="english" rows="4" maxlength="2000" aria-describedby="english-hint">do not take more than 6 caplets in 24 hours</textarea>
+      <p id="english-hint" class="hint">One bullet from the label at a time. Ctrl + Enter also checks it.</p>
+
+      <label for="language">Patient reads</label>
+      <select id="language"></select>
+
+      <label class="switch">
+        <input type="checkbox" id="safer" checked>
+        <span class="track" aria-hidden="true"></span>
+        <span class="switch-text">Safer mode
+          <span class="hint">Tries 5 translations and keeps the one with the fewest problems. Takes a little longer.</span>
+        </span>
+      </label>
+
+      <button id="submit" class="primary" type="submit" disabled>Translate and check</button>
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <section class="panel facts-panel" aria-labelledby="facts-title">
+    <h2 id="facts-title" class="facts-title">Translation Facts</h2>
+    <div class="bar" aria-hidden="true"></div>
+
+    <div id="empty" class="empty">
+      <p class="empty-lead">The translation, its trip back into English and these nine checks appear here.</p>
+      <div class="check-groups">
+        <div>
+          <h3>Checks on the translation</h3>
+          <ul>
+            <li>Numbers kept</li><li>“Not” kept</li><li>Under / over kept</li><li>Actually translated</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Checks on the back-translation</h3>
+          <ul>
+            <li>Numbers survive the round trip</li><li>“Not” survives the round trip</li><li>Units survive the round trip</li>
+            <li>Under / over survives the round trip</li><li>Back-translation matches</li>
+          </ul>
+        </div>
+      </div>
+
+      <figure class="sample">
+        <figcaption>
+          <h3>What a flagged translation looks like</h3>
+          <p class="hint">An illustration of the format, not real model output. The label says “more than”, the translation says “less than”, and two checks catch it.</p>
+        </figcaption>
+        <video class="sample-video" src="/static/media/roundtrip.mp4" poster="/static/media/roundtrip-poster.webp"
+               width="1600" height="700" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+        <div class="sample-static">
+        <div class="verdict sample-verdict">
+          <svg class="verdict-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 22.5 21h-21z" fill="none" stroke="currentColor" stroke-width="2.2"/><rect x="11" y="9" width="2" height="6.5" fill="currentColor"/><rect x="11" y="17" width="2" height="2" fill="currentColor"/></svg>
+          <div>
+            <p class="verdict-title">Ask a pharmacist or interpreter to check this translation</p>
+            <p class="verdict-detail">2 of 9 checks failed: Under / over kept, Under / over survives the round trip.</p>
+          </div>
+        </div>
+        <div class="row">
+          <p class="k">Vietnamese</p>
+          <p class="trip" lang="vi">không uống ít hơn 6 viên trong 24 giờ</p>
+        </div>
+        <div class="row">
+          <p class="k">English</p>
+          <p class="trip">do not take <span class="lost">more</span> than 6 <span class="lost">caplets</span> in 24 hours</p>
+        </div>
+        <div class="row">
+          <p class="k">Back to English</p>
+          <p class="trip">do not take <span class="changed">less</span> than 6 <span class="changed">tablets</span> in 24 hours</p>
+        </div>
+        </div>
+      </figure>
+    </div>
+
+    <div id="checking" class="checking" hidden>
+      <video id="checking-video" src="/static/media/checking.mp4" poster="/static/media/checking-poster.webp"
+             width="1600" height="400" muted loop playsinline preload="auto" aria-hidden="true"></video>
+      <p id="checking-text" class="checking-text"></p>
+    </div>
+
+    <div id="result" hidden>
+      <div id="verdict" class="verdict" tabindex="-1">
+        <svg class="verdict-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 22.5 21h-21z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="miter"/><rect x="11" y="9" width="2" height="6.5" fill="currentColor"/><rect x="11" y="17" width="2" height="2" fill="currentColor"/></svg>
+        <div>
+          <p id="verdict-title" class="verdict-title"></p>
+          <p id="verdict-detail" class="verdict-detail"></p>
+        </div>
+      </div>
+
+      <p id="untested" class="untested" hidden><span id="untested-language"></span> hasn't been tested on real label instructions yet, and no native speaker has checked its word lists. Treat every result as needing a check.</p>
+
+      <div id="facts">
+        <div class="row translation-row">
+          <h3 id="translation-label" class="k">Translation</h3>
+          <p id="translation" class="translation"></p>
+        </div>
+        <div class="rule" aria-hidden="true"></div>
+        <div class="row">
+          <h3 class="k">English</h3>
+          <p id="english-line" class="trip"></p>
+        </div>
+        <div class="row">
+          <h3 class="k">Back to English</h3>
+          <p id="back-line" class="trip"></p>
+        </div>
+        <p class="trip-key"><span class="lost">Struck</span> words didn't make the round trip; <span class="changed">underlined</span> words came back different.</p>
+        <div class="bar" aria-hidden="true"></div>
+        <h3 class="checks-title">Checks</h3>
+        <ul id="checks" class="checks"></ul>
+        <p id="meta" class="meta"></p>
+        <div class="actions">
+          <button id="print" class="secondary" type="button">Print for patient</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel examples" aria-labelledby="examples-title">
+    <h2 id="examples-title">Try a real label line</h2>
+    <ul>
+      <li><button type="button" data-example="adults and children 12 years and over: do not take more than 6 gelcaps in 24 hours, unless directed by a doctor">adults and children 12 years and over: do not take more than 6 gelcaps in 24 hours, unless directed by a doctor</button></li>
+      <li><button type="button" data-example="children under 12 years: ask a doctor">children under 12 years: ask a doctor</button></li>
+      <li><button type="button" data-example="laxative products should not be used for a period longer than 1 week unless directed by a doctor.">laxative products should not be used for a period longer than 1 week unless directed by a doctor.</button></li>
+    </ul>
+    <p class="hint">From the Directions and Do not use sections of real US drug labels (openFDA and DailyMed).</p>
+  </section>
+</main>
+
+<aside id="slip" class="slip" aria-hidden="true">
+  <p id="slip-language" class="slip-language"></p>
+  <p id="slip-translation" class="slip-translation"></p>
+  <div class="slip-rule"></div>
+  <p class="slip-label">English (for the pharmacist)</p>
+  <p id="slip-english" class="slip-english"></p>
+  <p id="slip-verdict" class="slip-verdict"></p>
+  <p class="slip-checked">Checked by: <span class="slip-line"></span></p>
+  <p class="slip-foot">Dose-Safe Translator · <span id="slip-date"></span> · Prototype – not medical advice</p>
+</aside>
+</body>
+</html>

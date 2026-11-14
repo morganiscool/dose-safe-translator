@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# Files the notebook makes while running (results and rating sheets)
+data/results.csv
+data/rate_me_*
+data/answer_key_*
+data/rated_*
+
+# Local launch settings for the Claude desktop app
+.claude/
+
+# Design tool working files
+.impeccable/mocks/
+.impeccable/review/
+.impeccable/build/
+.taste-skill/
+
+.impeccable/hook.cache.json
+video/*/.impeccable/
+
+# Video and 3D working files (the finished renders in web/media are kept)
+video/**/node_modules/
+video/renders/
+video/*/.hyperframes/
+video/*/.thumbnails/
+blender/*.blend1

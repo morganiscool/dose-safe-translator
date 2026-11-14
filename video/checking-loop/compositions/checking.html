@@ -1,0 +1,65 @@
+<template>
+  <style>
+    @font-face {
+      font-family: "Public Sans";
+      src: url("assets/fonts/PublicSans-Variable.ttf") format("truetype");
+      font-weight: 100 900;
+    }
+    #root { position: absolute; inset: 0; background: #ffffff; color: #111111; font-family: "Public Sans", "Noto Sans JP", sans-serif; }
+    .station {
+      position: absolute; top: 96px; width: 360px; height: 108px;
+      border: 6px solid #111111; display: flex; align-items: center; justify-content: center;
+      font-size: 40px; font-weight: 800; letter-spacing: -0.01em;
+    }
+    #ck-en { left: 84px; }
+    #ck-lang { left: 1156px; }
+    .lang { position: absolute; left: 1156px; top: 96px; width: 360px; height: 108px; display: flex; align-items: center; justify-content: center; font-size: 40px; font-weight: 800; }
+    .lang span { display: inline-block; }
+    #ck-track { position: absolute; left: 444px; width: 712px; top: 147px; height: 6px; background: #111111; }
+    #ck-dose { position: absolute; left: 472px; top: 130px; width: 40px; height: 40px; background: #111111; }
+    #ck-boxes { position: absolute; left: 0; right: 0; top: 262px; display: flex; justify-content: center; gap: 18px; }
+    .box { width: 46px; height: 46px; border: 5px solid #111111; background: #ffffff; }
+  </style>
+
+  <div id="root" data-composition-id="checking" data-width="1600" data-height="400">
+    <div class="station" id="ck-en">English</div>
+    <div class="station" id="ck-lang"></div>
+    <div id="ck-track"></div>
+    <div id="ck-dose"></div>
+
+    <div class="lang clip" id="ck-l1" data-start="0" data-duration="2"><span>Español</span></div>
+    <div class="lang clip" id="ck-l2" data-start="2" data-duration="2"><span>Tiếng Việt</span></div>
+    <div class="lang clip" id="ck-l3" data-start="4" data-duration="2"><span>Tagalog</span></div>
+    <div class="lang clip" id="ck-l4" data-start="6" data-duration="2"><span>Kreyòl</span></div>
+    <div class="lang clip" id="ck-l5" data-start="8" data-duration="2"><span>中文</span></div>
+
+    <div id="ck-boxes">
+      <div class="box"></div><div class="box"></div><div class="box"></div>
+      <div class="box"></div><div class="box"></div><div class="box"></div>
+      <div class="box"></div><div class="box"></div><div class="box"></div>
+    </div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const travel = 1156 - 20 - 40 - 472; // from beside English to beside the patient's language
+
+    for (let i = 0; i < 5; i++) {
+      const s = i * 2;
+      // The language arrives sharp from a blur; the English station never moves.
+      tl.fromTo(`#ck-l${i + 1} span`, { opacity: 0, filter: "blur(8px)" },
+        { opacity: 1, filter: "blur(0px)", duration: 0.15, ease: "expo.out" }, s);
+      // Out to the patient's language and back again.
+      tl.fromTo("#ck-dose", { x: 0 }, { x: travel, duration: 0.45, ease: "power2.inOut", immediateRender: false }, s + 0.15);
+      tl.fromTo("#ck-dose", { x: travel }, { x: 0, duration: 0.45, ease: "power2.inOut", immediateRender: false }, s + 0.7);
+      // Then the nine checks run, one after another.
+      tl.fromTo("#ck-boxes .box", { backgroundColor: "#ffffff" },
+        { backgroundColor: "#111111", duration: 0.06, stagger: 0.05, immediateRender: false }, s + 1.2);
+      tl.to("#ck-boxes .box", { backgroundColor: "#ffffff", duration: 0.1 }, s + 1.85);
+      // The language label clears just before its slot ends.
+      tl.to(`#ck-l${i + 1} span`, { opacity: 0, duration: 0.08 }, s + 1.9);
+    }
+
+    window.__timelines["checking"] = tl;
+  </script>
+</template>

@@ -1,0 +1,8 @@
+# The web app (server.py), pinned to the versions tested on Nov 14, 2026.
+# The Dockerfile installs these; the notebook installs its own packages in Colab (see requirements.txt).
+fastapi==0.162.7
+uvicorn==0.54.0
+torch==2.15.0
+transformers==5.23.0
+sentencepiece==0.2.3
+sacrebleu==2.6.0

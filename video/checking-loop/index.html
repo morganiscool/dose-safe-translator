@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1600, height=400" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1600px; height: 400px; overflow: hidden; background: #ffffff; }
+    </style>
+  </head>
+  <body>
+    <!-- Dose-Safe Translator: shown while a check runs. One round trip per language, 10 s loop. -->
+    <div id="root" data-composition-id="main" data-start="0" data-duration="10" data-width="1600" data-height="400">
+      <div
+        id="checking"
+        data-composition-id="checking"
+        data-composition-src="compositions/checking.html"
+        data-start="0"
+        data-duration="10"
+        data-track-index="1"
+        data-track-kind="graphics"
+        data-width="1600"
+        data-height="400"
+      ></div>
+    </div>
+    <script>
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>
