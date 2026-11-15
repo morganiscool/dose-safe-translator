@@ -74,6 +74,15 @@
         ],
         "createdAt": "2026-11-15T04:11:54.452Z",
         "reason": "Claude: gitignored decision-round sketch of an alternate direction; its own font (Archivo / Inter) is the point of the sketch, not part of the shipped system"
+      },
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "web/translate.html"
+        ],
+        "createdAt": "2026-11-15T15:05:25.740Z",
+        "reason": "#ocr-preview gets its src from the read photo (translate.js sets it before #ocr-result is shown); never visible without one"
       }
     ]
   }

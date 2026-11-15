@@ -1,0 +1,57 @@
+<template>
+  <style>
+    @font-face { font-family: "Public Sans"; src: url("assets/fonts/PublicSans-Variable.ttf") format("truetype"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0e4c92; font-family: "Public Sans", sans-serif; overflow: hidden; }
+    /* The app's workspace as it is laid out on screen: the form panel, then the Translation Facts panel.
+       Captures are 2x, shown at 0.625 (1.25x the app's CSS size); the camera moves over them. */
+    #ln-cam { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+    .ln-shot { position: absolute; display: block; }
+    #ln-form { left: 80px; top: 150px; width: 550px; }
+    .ln-facts { left: 660px; top: 150px; width: 1120px; }
+    #ln-cursor { position: absolute; left: 0; top: 0; width: 64px; height: 64px; }
+    #ln-band { position: absolute; left: 0; top: 0; width: 1920px; height: 136px; background: #0e4c92; }
+    .ln-title { position: absolute; left: 80px; top: 38px; font-size: 56px; font-weight: 800; letter-spacing: -0.015em; color: #ffffff; white-space: nowrap; }
+    .ln-title span { display: inline-block; }
+  </style>
+
+  <div id="root" data-composition-id="line" data-width="1920" data-height="1080">
+    <div id="ln-cam">
+      <!-- Real captures of the running app, Nov 15, 2026 (Vietnamese, safer mode). -->
+      <img id="ln-form" class="ln-shot" src="assets/screens/line-form.png" alt="">
+      <img id="ln-empty" class="ln-shot ln-facts clip" src="assets/screens/line-empty.png" data-start="0" data-duration="2" alt="">
+      <img id="ln-working" class="ln-shot ln-facts clip" src="assets/screens/line-working.png" data-start="2" data-duration="1.4" alt="">
+      <img id="ln-result" class="ln-shot ln-facts clip" src="assets/screens/line-result.png" data-start="3.4" data-duration="4.1" alt="">
+      <svg id="ln-cursor" viewBox="0 0 64 64" aria-hidden="true"><path d="M4 2 L4 50 L17 38 L26 60 L35 56 L26 34 L44 34 Z" fill="#111111" stroke="#ffffff" stroke-width="3" stroke-linejoin="round"/></svg>
+    </div>
+    <div id="ln-band"></div>
+    <div id="ln-t1" class="ln-title clip" data-start="0.1" data-duration="1.95">
+      <span>Type</span> <span>one</span> <span>line</span> <span>from</span> <span>the</span> <span>label</span>
+    </div>
+    <div id="ln-t2" class="ln-title clip" data-start="2.1" data-duration="3.0">
+      <span>Translated,</span> <span>then</span> <span>back</span> <span>to</span> <span>English</span>
+    </div>
+    <div id="ln-t3" class="ln-title clip" data-start="5.2" data-duration="2.3">
+      <span>Nine</span> <span>checks</span> <span>on</span> <span>every</span> <span>line</span>
+    </div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const words = { opacity: 1, filter: "blur(0px)", duration: 0.13, stagger: 0.067, ease: "power2.out" };
+    const move = { duration: 0.5, ease: "power2.inOut" };
+    // Camera: x = 960 - cx * k, y = 608 - cy * k centres region (cx, cy) under the title band at scale k.
+    // The English line and the button, the form alone: the empty panel's example verdict stays off-screen.
+    tl.set("#ln-cam", { x: 1062, y: -234, scale: 1.3 }, 0);
+    tl.set("#ln-cursor", { x: 1140, y: 1064, opacity: 1 }, 0);              // off-screen, bottom right
+    tl.to("#ln-cursor", { x: 351, y: 890, duration: 0.8, ease: "power2.out" }, 0.9);  // onto Translate and check
+    tl.to("#ln-cursor", { scale: 0.86, duration: 0.08, yoyo: true, repeat: 1, transformOrigin: "4px 2px" }, 1.85);
+    tl.to("#ln-cam", { x: 0, y: 0, scale: 1, ...move }, 2.0);              // the workspace: the panel works
+    tl.to("#ln-cursor", { opacity: 0, duration: 0.2 }, 2.3);
+    tl.to("#ln-cam", { x: -809, y: -67, scale: 1.45, ...move }, 3.45);      // verdict, Vietnamese, round trip
+    tl.to("#ln-cam", { x: -565, y: -576, scale: 1.25, ...move }, 5.2);      // the nine checks
+    tl.fromTo("#ln-t1 span", { opacity: 0, filter: "blur(6px)" }, words, 0.1);
+    tl.fromTo("#ln-t2 span", { opacity: 0, filter: "blur(6px)" }, words, 2.1);
+    tl.fromTo("#ln-t3 span", { opacity: 0, filter: "blur(6px)" }, words, 5.2);
+    window.__timelines["line"] = tl;
+  </script>
+</template>

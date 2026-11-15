@@ -1,0 +1,29 @@
+<template>
+  <style>
+    @font-face { font-family: "Public Sans"; src: url("assets/fonts/PublicSans-Variable.ttf") format("truetype"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0e4c92; font-family: "Public Sans", sans-serif; overflow: hidden; }
+    #sl-video { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; }
+    #sl-band { position: absolute; left: 0; top: 0; width: 1920px; height: 136px; background: #0e4c92; }
+    .sl-title { position: absolute; left: 80px; top: 38px; font-size: 56px; font-weight: 800; letter-spacing: -0.015em; color: #ffffff; white-space: nowrap; }
+    .sl-title span { display: inline-block; }
+  </style>
+
+  <div id="root" data-composition-id="slip" data-width="1920" data-height="1080">
+    <!-- Blender (blender/scene.py --shot slip): the app's real printed slip for a label run, on the counter. -->
+    <video id="sl-video" class="clip" src="assets/renders/slip.mp4" data-start="0" data-duration="5" muted playsinline></video>
+    <div id="sl-band" class="clip" data-start="0" data-duration="5"></div>
+    <div id="sl-1" class="sl-title clip" data-start="0.3" data-duration="2.3">
+      <span>A</span> <span>slip</span> <span>the</span> <span>patient</span> <span>can</span> <span>read</span>
+    </div>
+    <div id="sl-2" class="sl-title clip" data-start="2.6" data-duration="2.4">
+      <span>Checked</span> <span>by</span> <span>the</span> <span>pharmacist</span> <span>first</span>
+    </div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#sl-1 span", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.13, stagger: 0.067, ease: "power2.out" }, 0.3);
+    tl.fromTo("#sl-2 span", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.13, stagger: 0.067, ease: "power2.out" }, 2.6);
+    window.__timelines["slip"] = tl;
+  </script>
+</template>

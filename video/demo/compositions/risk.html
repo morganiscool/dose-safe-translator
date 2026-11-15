@@ -1,0 +1,45 @@
+<template>
+  <style>
+    @font-face { font-family: "Public Sans"; src: url("assets/fonts/PublicSans-Variable.ttf") format("truetype"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #ffffff; color: #111111; font-family: "Public Sans", sans-serif; overflow: hidden; }
+    .rk-small { position: absolute; left: 124px; font-size: 56px; font-weight: 600; color: #4a4a4a; white-space: nowrap; }
+    .rk-big { position: absolute; left: 120px; font-size: 96px; font-weight: 900; letter-spacing: -0.035em; line-height: 1.05; white-space: nowrap; }
+    .rk-big span, .rk-small span { display: inline-block; }
+    #rk-1 { top: 228px; }
+    #rk-2 { top: 316px; }
+    #rk-3 { top: 470px; }
+    #rk-4 { top: 556px; }
+    #rk-src { position: absolute; left: 124px; top: 900px; font-size: 30px; font-weight: 500; color: #4a4a4a; white-space: nowrap; }
+    /* The app's own marks: a word lost on the way is struck in red, a word that came back different is underlined. */
+    .rk-mark { position: relative; }
+    #rk-strike { position: absolute; left: -4px; right: -4px; top: 52%; height: 9px; background: #c8102e; transform-origin: left center; }
+    #rk-under { position: absolute; left: 0; right: 0; bottom: -10px; height: 8px; background: #111111; transform-origin: left center; }
+  </style>
+
+  <div id="root" data-composition-id="risk" data-width="1920" data-height="1080">
+    <div id="rk-1" class="rk-small clip" data-start="0.2" data-duration="5.3">
+      <span>A</span> <span>free</span> <span>translator</span> <span>turned</span>
+    </div>
+    <div id="rk-2" class="rk-big clip" data-start="0.7" data-duration="4.8">
+      <span>“<span class="rk-mark">hold<i id="rk-strike"></i></span></span> <span>the</span> <span>kidney</span> <span>medicine”</span>
+    </div>
+    <div id="rk-3" class="rk-small clip" data-start="1.6" data-duration="3.9"><span>into</span></div>
+    <div id="rk-4" class="rk-big clip" data-start="1.95" data-duration="3.55">
+      <span>“<span class="rk-mark">keep taking<i id="rk-under"></i></span></span> <span>the</span> <span>medication”</span>
+    </div>
+    <div id="rk-src" class="clip" data-start="2.45" data-duration="3.05">From a UCSF study of Google Translate</div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const words = { opacity: 1, filter: "blur(0px)", duration: 0.13, stagger: 0.067, ease: "power2.out" };
+    tl.fromTo("#rk-1 > span", { opacity: 0, filter: "blur(6px)" }, words, 0.2);
+    tl.fromTo("#rk-2 > span", { opacity: 0, filter: "blur(6px)" }, words, 0.7);
+    tl.fromTo("#rk-3 > span", { opacity: 0, filter: "blur(6px)" }, words, 1.6);
+    tl.fromTo("#rk-4 > span", { opacity: 0, filter: "blur(6px)" }, words, 1.95);
+    tl.fromTo("#rk-strike", { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power2.inOut" }, 2.85);
+    tl.fromTo("#rk-under", { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power2.inOut" }, 3.05);
+    tl.fromTo("#rk-src", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" }, 2.45);
+    window.__timelines["risk"] = tl;
+  </script>
+</template>

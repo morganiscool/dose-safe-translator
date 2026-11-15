@@ -28,6 +28,8 @@ video/renders/
 video/*/.hyperframes/
 video/*/.thumbnails/
 blender/*.blend1
+# Blender frame folders for the demo film (the encoded clips beside them are kept)
+video/*/assets/renders/*/
 
 # Full-size Blender renders (regenerate with blender/scene.py)
 web/media/src/

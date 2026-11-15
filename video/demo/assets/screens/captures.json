@@ -1,0 +1,102 @@
+{
+ "line-form": {
+  "selector": ".work > section:first-child",
+  "x": 40,
+  "y": 72,
+  "width": 440,
+  "height": 1269.515625
+ },
+ "line-empty": {
+  "selector": ".facts-panel",
+  "x": 504,
+  "y": 72,
+  "width": 896,
+  "height": 1269.515625
+ },
+ "line-working": {
+  "selector": ".facts-panel",
+  "x": 504,
+  "y": 72,
+  "width": 896,
+  "height": 1269.515625
+ },
+ "line-result": {
+  "selector": ".facts-panel",
+  "x": 504,
+  "y": 72,
+  "width": 896,
+  "height": 1269.515625
+ },
+ "line": {
+  "verdict": "No problems found by the automatic checks",
+  "translation": "không dùng nhiều hơn 6 viên trong 24 giờ"
+ },
+ "photo-form": {
+  "selector": ".work > section:first-child",
+  "x": 40,
+  "y": 72,
+  "width": 440,
+  "height": 1181.390625
+ },
+ "label-found": {
+  "selector": ".facts-panel",
+  "x": 504,
+  "y": 72,
+  "width": 896,
+  "height": 1422.359375
+ },
+ "label-working": {
+  "selector": ".facts-panel",
+  "x": 504,
+  "y": 72,
+  "width": 896,
+  "height": 1394.546875
+ },
+ "label-done": {
+  "selector": ".facts-panel",
+  "x": 504,
+  "y": 72,
+  "width": 896,
+  "height": 2833.40625
+ },
+ "label": {
+  "verdict": "Ask a pharmacist or interpreter to check this translation",
+  "meta": "Safer mode tried 5 translations of each line and kept the one with the fewest problems. 10 lines took 171 s."
+ },
+ "abroad-read": {
+  "selector": ".work > section:first-child",
+  "x": 40,
+  "y": 72,
+  "width": 440,
+  "height": 2096.453125
+ },
+ "abroad": {
+  "status": "The barcode 5290665007802 isn't from a US box: US and Canadian barcodes start with 0 or 1, and this one starts with 529, so the box was made for another country. The FDA's database only has medicines sold in the US. So the printed directions in your photo were read below: compare each line with the box, then pick it to check its translation.",
+  "lines": [
+   "take every 4 to 6 hours, or as directed by a doctor",
+   "do not take more than 6 times in 24 hoursCheck: “24” (59% sure)",
+   "adults and children 12 years and over: 1 to 2 tablets",
+   "children 6 to under 12 years: 1 tablet",
+   "children under 6 years: do not use 5 \"290665 007802"
+  ]
+ },
+ "abroad-form": {
+  "selector": ".work > section:first-child",
+  "x": 40,
+  "y": 72,
+  "width": 440,
+  "height": 1989.203125
+ },
+ "abroad-result": {
+  "selector": ".facts-panel",
+  "x": 504,
+  "y": 72,
+  "width": 896,
+  "height": 1989.203125
+ },
+ "abroadResult": {
+  "verdict": "No problems found by the automatic checks",
+  "english": "do not take more than 6 times in 24 hours",
+  "translation": "không dùng nhiều hơn 6 lần trong 24 giờ"
+ }
+}

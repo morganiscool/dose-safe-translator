@@ -355,5 +355,10 @@ running.
   Blender render (`blender/scene.py`); music from HeyGen's music library (`video/explainer/assets/bgm/CREDITS.md`);
   CC0 sound effects from Freesound via Openverse (`video/explainer/assets/sfx/CREDITS.md`); archival pharmacy
   photographs on the landing page are public domain or CC0 (credited in its footer)
+- Demo film (`web/media/demo.mp4`, 45 s): built with HyperFrames (`video/demo`, plan in `SPEC.md`) from
+  captures of the running app on Nov 15, 2026 (real model output, Vietnamese) and two Blender shots
+  (`blender/scene.py --shot counter` and `--shot slip`, the slip being the app's own print of a real
+  label run). The box from another country in it is a made-up example photo, captioned as one: a real
+  label's Directions printed beside a real non-US barcode. Same music and sound effects as the explainer.
 - AI tools: Claude (Anthropic) was used as a coding assistant. _Everyone on the team should be able to
   explain every section before submitting._
