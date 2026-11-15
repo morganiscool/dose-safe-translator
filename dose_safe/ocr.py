@@ -113,9 +113,11 @@ def instructions_from_lines(lines):
     [{"text", "words": [{"text", "check"}]}], where "check" says why a word must be compared with the box."""
     chunks = []
     for line in lines:
-        digits = "".join(word for word, _ in line)
-        if digits.isdigit() and len(digits) >= 8:  # the number printed under a barcode
-            chunks.append(None)  # also ends the instruction before it
+        joined = "".join(word for word, _ in line)
+        # The number printed under a barcode: 8+ digits and no letters, whatever marks the reader
+        # adds (a real read came back as '5 "290665 007802'). It ends the instruction before it.
+        if sum(char.isdigit() for char in joined) >= 8 and not re.search(r"[^\W\d_]", joined):
+            chunks.append(None)
             continue
         previous = chunks[-1] if chunks else None
         last = previous["words"][-1][0] if previous and previous["words"] else ""
