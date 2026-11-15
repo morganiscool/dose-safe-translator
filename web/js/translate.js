@@ -44,9 +44,13 @@ function updateButtons() {
   }
   // Once a label is on screen, "Translate the label" is the one black slab; finding another steps back.
   submit.classList.toggle("quiet", mode === "photo" && label !== null);
-  labelGo.disabled = busy || !ready;
-  labelGo.textContent = ready ? `Translate the label into ${language.value}`
-                              : "Translating turns on when the model is ready";
+  const fromPhoto = label !== null && label.source === "photo_text";
+  const checking = fromPhoto && !$("read-check").hidden;
+  labelGo.disabled = busy || !ready || (checking && !$("read-confirm").checked);
+  $("read-edit").disabled = busy;
+  labelGo.textContent = !ready ? "Translating turns on when the model is ready"
+    : fromPhoto ? `Translate these lines into ${language.value}`
+    : `Translate the label into ${language.value}`;
 }
 
 // ---- Status: is the model loaded yet? ------------------------------------------------------
@@ -350,12 +354,9 @@ async function photoToDataUrl(file) {
   }
 }
 
-$("photo").addEventListener("change", async (event) => {
-  const input = event.target;
-  const file = input.files && input.files[0];
+async function usePhoto(file) {
   if (!file || busy) return;
   const dataUrl = await photoToDataUrl(file);
-  input.value = "";  // so choosing the same photo again still counts as a change
   if (!dataUrl) {
     setStatus("This photo can't be opened here. Take it with the camera, or use a JPEG or PNG picture.", "error");
     return;
@@ -367,14 +368,33 @@ $("photo").addEventListener("change", async (event) => {
   preview.querySelector("img")?.remove();
   preview.prepend(thumbnail);
   preview.hidden = false;
-  $("photo-preview-text").textContent = "Reading the barcode…";
+  $("photo-preview-text").textContent = "Reading the photo…";
   findLabel({ image: dataUrl });
+}
+
+$("photo").addEventListener("change", (event) => {
+  const input = event.target;
+  const file = input.files && input.files[0];
+  usePhoto(file);
+  input.value = "";  // so choosing the same photo again still counts as a change
 });
 
 for (const button of document.querySelectorAll("[data-barcode]")) {
   button.addEventListener("click", () => {
     barcodeInput.value = button.dataset.barcode;
     findLabel({ code: button.dataset.barcode });
+  });
+}
+
+// The sample "printed directions" photo goes through exactly the path a camera photo takes.
+for (const button of document.querySelectorAll("[data-sample-photo]")) {
+  button.addEventListener("click", async () => {
+    try {
+      const response = await fetch(button.dataset.samplePhoto);
+      usePhoto(await response.blob());
+    } catch {
+      setStatus("Couldn't load the sample photo. Check the connection and try again.", "error");
+    }
   });
 }
 
@@ -386,7 +406,8 @@ async function findLabel(request) {
     return;
   }
   setBusy(true, "find");
-  setStatus(request.image ? "Reading the barcode and finding the label…" : "Finding the label…", "working");
+  setStatus(request.image ? "Reading the photo: the barcode first, then the printed text if the barcode " +
+                            "has no US label. Printed text takes a few seconds." : "Finding the label…", "working");
   try {
     const response = await fetch("/api/label", {
       method: "POST",
@@ -396,10 +417,19 @@ async function findLabel(request) {
     const body = await response.json().catch(() => ({}));
     if (!response.ok) {
       setStatus(typeof body.detail === "string" ? body.detail : "That didn't work. Try again.", "error");
-      if (request.image) $("photo-preview-text").textContent = "No label found from this photo.";
+      if (request.image) $("photo-preview-text").textContent = "Nothing usable was found in this photo.";
       return;
     }
     setStatus("");
+    if (body.source === "photo_text") {
+      if (request.image) {
+        $("photo-preview-text").textContent = body.barcode
+          ? `Read the barcode ${body.barcode}; it has no US label, so the printed text was read.`
+          : "Read the printed text.";
+      }
+      showReadText(body);
+      return;
+    }
     if (request.image) $("photo-preview-text").textContent = `Read the barcode ${body.barcode}.`;
     barcodeInput.value = body.barcode;
     showLabel(body);
@@ -410,14 +440,28 @@ async function findLabel(request) {
   }
 }
 
-function showLabel(body) {
-  label = body;
+// Clears what the last label or photo left on screen, before showing a new one.
+function resetLabelPanel() {
   labelRun = null;
   const box = $("label");
   $("photo-empty").hidden = true;
   box.hidden = false;
   delete box.dataset.verdict;
   box.classList.remove("animate");
+  $("label-verdict").hidden = true;
+  $("label-untested").hidden = true;
+  $("label-meta").textContent = "";
+  $("label-print").hidden = true;
+  $("read-check").hidden = true;
+  $("read-edit").hidden = true;
+  $("product-confirm").hidden = false;
+  setLabelProgress("");
+}
+
+function showLabel(body) {
+  label = body;
+  resetLabelPanel();
+  const box = $("label");
 
   const product = body.product;
   const brand = $("product-brand");
@@ -438,11 +482,6 @@ function showLabel(body) {
   }
   if (product.matches > 1) meta.append(` · ${product.matches} versions of this label list the barcode; this is the newest.`);
 
-  $("label-verdict").hidden = true;
-  $("label-untested").hidden = true;
-  $("label-meta").textContent = "";
-  $("label-print").hidden = true;
-  setLabelProgress("");
   renderSections(body.sections);
   if (!body.sections.length) {
     labelGo.hidden = true;
@@ -461,6 +500,164 @@ function showLabel(body) {
 function titleCase(text) {
   return (text || "").toLowerCase().replace(/\b\p{L}/gu, (c) => c.toUpperCase());
 }
+
+// ---- Photo mode: a box with no US label, read from its printed text --------------------------
+// A misread number passes every translation check, so the pharmacist corrects the text against the
+// box, and ticks that they did, before anything is translated.
+let readItems = [];  // [{ text, words: [{ text, check }] }]: the lines as read, then as corrected
+
+function showReadText(body) {
+  label = { source: "photo_text", barcode: body.barcode, sections: [] };
+  resetLabelPanel();
+  renderSections([]);
+  const brand = $("product-brand");
+  brand.textContent = "Directions read from your photo";
+  brand.tabIndex = -1;
+  const count = body.instructions.length;
+  $("product-active").textContent = `${count} ${count === 1 ? "line" : "lines"} of printed text`;
+  $("product-meta").textContent = body.barcode_note
+    ? `${body.barcode_note} So the printed text in the photo was read instead.`
+    : "There was no barcode in the photo, so its printed text was read.";
+  $("product-confirm").hidden = true;
+  $("read-not-english").hidden = body.looks_english !== false;
+  readItems = body.instructions.map((item) => ({ text: item.text, words: item.words }));
+  renderReadLines();
+  $("read-confirm").checked = false;
+  $("read-check").hidden = false;
+  labelGo.hidden = false;
+  updateButtons();
+  if (window.matchMedia("(max-width: 860px)").matches) {
+    $("label").scrollIntoView({ block: "start", behavior: reducedMotion.matches ? "auto" : "smooth" });
+  }
+  $("read-summary").focus({ preventScroll: true });
+}
+
+function syncReadItems() {
+  document.querySelectorAll("#read-lines textarea").forEach((box, i) => { readItems[i].text = box.value; });
+}
+
+function renderReadLines() {
+  const list = $("read-lines");
+  list.replaceChildren();
+  const flagged = [];
+  readItems.forEach((item, i) => {
+    const n = i + 1;
+    const row = document.createElement("li");
+    const head = document.createElement("div");
+    head.className = "read-line-head";
+    const name = document.createElement("label");
+    name.htmlFor = `read-line-${n}`;
+    name.textContent = `Line ${n}`;
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "text-button";
+    remove.textContent = "Remove";
+    remove.setAttribute("aria-label", `Remove line ${n}`);
+    remove.addEventListener("click", () => {
+      syncReadItems();
+      readItems.splice(i, 1);
+      renderReadLines();
+      const next = $(`read-line-${Math.min(n, readItems.length)}`) || $("read-add");
+      next.focus();
+    });
+    head.append(name, remove);
+    const box = document.createElement("textarea");
+    box.id = `read-line-${n}`;
+    box.rows = 2;
+    box.maxLength = 2000;
+    box.value = item.text;
+    box.spellcheck = false;
+    row.append(head, box);
+    const unsure = item.words.filter((w) => w.check);
+    if (unsure.length) {
+      row.dataset.unsure = "true";
+      const note = document.createElement("p");
+      note.className = "read-note";
+      note.id = `read-line-${n}-note`;
+      box.setAttribute("aria-describedby", note.id);
+      note.append("Hard to read in the photo: ");
+      unsure.forEach((w, k) => {
+        const word = document.createElement("span");
+        word.className = "unsure";
+        word.textContent = w.text;
+        note.append(word, ` ${w.check}${k < unsure.length - 1 ? ", " : "."}`);
+      });
+      note.append(" Compare with the box.");
+      row.append(note);
+      flagged.push({ n, unsure });
+    }
+    list.append(row);
+  });
+  const total = flagged.reduce((sum, f) => sum + f.unsure.length, 0);
+  $("read-summary").dataset.unsure = total ? "true" : "false";
+  $("read-summary-title").textContent = !readItems.length ? "No lines left"
+    : total ? `${total} ${total === 1 ? "word was" : "words were"} hard to read`
+    : "Every word was read clearly";
+  $("read-summary-detail").textContent = total
+    ? `Compare ${total === 1 ? "it" : "them"}, and every other line, with the box and fix any mistake. A misread ` +
+      "number would pass every translation check."
+    : "Still compare every line with the box: a word the reader skipped entirely can't be marked.";
+  const links = $("read-summary-list");
+  links.replaceChildren();
+  for (const f of flagged) {
+    const entry = document.createElement("li");
+    const link = document.createElement("a");
+    link.href = `#read-line-${f.n}`;
+    link.textContent = `Line ${f.n}: ${f.unsure.map((w) => `“${w.text}”`).join(", ")}`;
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      $(`read-line-${f.n}`).focus();
+    });
+    entry.append(link);
+    links.append(entry);
+  }
+}
+
+$("read-add").addEventListener("click", () => {
+  syncReadItems();
+  readItems.push({ text: "", words: [] });
+  renderReadLines();
+  $(`read-line-${readItems.length}`).focus();
+});
+
+$("read-confirm").addEventListener("change", updateButtons);
+
+// "Translate these lines": the corrected text becomes the label's one section.
+function applyReadText() {
+  syncReadItems();
+  const texts = readItems.map((item) => item.text.replace(/\s+/g, " ").trim()).filter(Boolean);
+  if (!texts.length) {
+    setLabelProgress("There's no text to translate. Add a line, or take another photo.", "error");
+    return false;
+  }
+  if (!$("read-confirm").checked) return false;
+  label.sections = [{ name: "Directions (read from the photo)", lines: texts }];
+  renderSections(label.sections);
+  $("read-check").hidden = true;
+  $("read-edit").hidden = false;
+  return true;
+}
+
+$("read-edit").addEventListener("click", () => {
+  if (busy) return;
+  const box = $("label");
+  labelRun = null;
+  delete box.dataset.verdict;
+  box.classList.remove("animate");
+  $("label-verdict").hidden = true;
+  $("label-untested").hidden = true;
+  $("label-meta").textContent = "";
+  $("label-print").hidden = true;
+  setLabelProgress("");
+  label.sections = [];
+  renderSections([]);
+  $("read-edit").hidden = true;
+  $("read-check").hidden = false;
+  $("read-confirm").checked = false;
+  labelGo.hidden = false;
+  updateButtons();
+  $("read-line-1")?.focus();
+});
 
 function renderSections(sections) {
   const host = $("label-sections");
@@ -528,7 +725,9 @@ function setLabelProgress(text, kind = "", seconds = "") {
 labelGo.addEventListener("click", translateLabel);
 
 async function translateLabel() {
-  if (busy || !ready || !label || !lines.length) return;
+  if (busy || !ready || !label) return;
+  if (label.source === "photo_text" && !$("read-check").hidden && !applyReadText()) return;
+  if (!lines.length) return;
   const targetLanguage = language.value;
   const saferOn = safer.checked;
   const box = $("label");
@@ -702,7 +901,8 @@ function showLabelVerdict() {
   box.classList.add("animate");
   $("label-untested").hidden = labelRun.tested;
   $("label-untested-language").textContent = labelRun.language;
-  $("label-meta").textContent = (labelRun.safer
+  $("label-meta").textContent = (label.source === "photo_text"
+    ? "The English was read from your photo and corrected by you. " : "") + (labelRun.safer
     ? "Safer mode tried 5 translations of each line and kept the one with the fewest problems."
     : "The model's first choice for each line.") + ` ${total} lines took ${labelRun.seconds} s.`;
   $("label-print").hidden = false;
@@ -725,8 +925,11 @@ for (const control of [language, safer]) {
 function fillLabelSlip() {
   const lang = LANG_CODES[labelRun.language] || "";
   $("lslip-language").textContent = labelRun.language;
-  $("lslip-product").textContent = [$("product-brand").textContent, $("product-active").textContent]
-    .filter(Boolean).join(" · ");
+  const fromPhoto = label.source === "photo_text";
+  $("lslip-product").textContent = fromPhoto ? "Directions printed on the box"
+    : [$("product-brand").textContent, $("product-active").textContent].filter(Boolean).join(" · ");
+  $("lslip-source").textContent = fromPhoto ? "Read from a photo of the box and checked by the pharmacist"
+    : "Label from DailyMed";
   const host = $("lslip-sections");
   host.replaceChildren();
   label.sections.forEach((section, s) => {

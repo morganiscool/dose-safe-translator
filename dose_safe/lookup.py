@@ -76,6 +76,20 @@ def search_terms(code):
     return "openfda.upc", forms
 
 
+def not_found_message(field, code):
+    """Why a barcode or NDC number found nothing, naming it, so a box from another country doesn't look
+    like a bug: the FDA's database only has medicines sold in the US."""
+    if field == "openfda.product_ndc":
+        return "No medicine label with this NDC number is in the FDA's database."
+    digits = re.sub(r"\D", "", code)
+    if len(digits) == 13 and digits[0] not in "01":
+        return (f"The barcode {digits} isn't from a US box: US and Canadian barcodes start with 0 or 1, and "
+                f"this one starts with {digits[:3]}, so the box was made for another country. The FDA's "
+                "database only has medicines sold in the US.")
+    return (f"No medicine label with the barcode {digits} is in the FDA's database. Not every US label "
+            "lists its barcode there; try the NDC number printed on the box (it looks like 12345-678-90).")
+
+
 def find_label(code, http):
     """The newest openFDA label for a barcode or NDC number:
     {"set_id", "brand", "generic", "manufacturer", "upc", "ndc", "matches"}.
@@ -89,17 +103,13 @@ def find_label(code, http):
         raise LabelSourceDown("Couldn't reach the FDA's label database. Check the internet "
                               "connection and try again.") from error
     if response.status_code == 404:
-        what = "NDC number" if field == "openfda.product_ndc" else "barcode"
-        hint = ("" if field == "openfda.product_ndc" else
-                " Not every label lists its barcode there; try the NDC number printed on the box "
-                "(it looks like 12345-678-90).")
-        raise LabelNotFound(f"No medicine label with this {what} is in the FDA's database.{hint}")
+        raise LabelNotFound(not_found_message(field, code))
     if response.status_code != 200:
         raise LabelSourceDown("The FDA's label database didn't answer properly. Try again in a minute.")
     body = response.json()
     results = [r for r in body.get("results", []) if r.get("set_id")]
     if not results:
-        raise LabelNotFound("No medicine label with this barcode is in the FDA's database.")
+        raise LabelNotFound(not_found_message(field, code))
     total = body.get("meta", {}).get("results", {}).get("total", len(results))
 
     def first(label, key):

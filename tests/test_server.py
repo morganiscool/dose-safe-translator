@@ -168,3 +168,82 @@ def test_label_errors_say_what_to_do_next():
         assert response.status_code == 422 and "barcode" in response.json()["detail"]
     with label_client(down) as client:
         assert client.post("/api/label", json={"code": "070038610953"}).status_code == 502
+
+
+# ---- Photo mode: reading the printed text when there's no usable barcode --------------------------
+
+DIRECTIONS = [[("Directions", 0.99)],
+              [("■", 1.0), ("take", 0.99), ("2", 0.41), ("tablets", 0.99), ("every", 0.99), ("6", 0.99),
+               ("hours", 0.99)],
+              [("■", 1.0), ("do", 0.99), ("not", 0.99), ("take", 0.99), ("more", 0.99), ("than", 0.99),
+               ("8", 0.99), ("tablets", 0.99), ("in", 0.99), ("24", 0.99), ("hours", 0.99)]]
+
+
+def jpeg(image):
+    data = io.BytesIO()
+    image.save(data, "JPEG")
+    return "data:image/jpeg;base64," + base64.b64encode(data.getvalue()).decode()
+
+
+def blank_photo():
+    return jpeg(pytest.importorskip("PIL.Image").new("RGB", (300, 200), "white"))
+
+
+def text_client(find_label=lambda code: LABEL, lines=DIRECTIONS, photo_reader=True):
+    reader = (lambda: (lambda image_bytes: lines)) if photo_reader else None
+    return TestClient(create_app(lambda: FakeTranslator(TABLE), load_in_background=False,
+                                 find_label=find_label, load_photo_reader=reader))
+
+
+def not_in_the_fda_database(code):
+    from dose_safe.lookup import LabelNotFound
+    raise LabelNotFound(f"The barcode {code} isn't from a US box.")
+
+
+def test_a_photo_without_a_barcode_has_its_printed_text_read():
+    with text_client() as client:
+        assert client.get("/api/status").json()["photo_reader"] == "ready"
+        body = client.post("/api/label", json={"image": blank_photo()}).json()
+    assert body["source"] == "photo_text" and body["barcode"] is None
+    assert [item["text"] for item in body["instructions"]] == ["take 2 tablets every 6 hours",
+                                                               "do not take more than 8 tablets in 24 hours"]
+    assert [w for w in body["instructions"][0]["words"] if w["check"]] == [{"text": "2", "check": "41% sure"}]
+
+
+def test_a_barcode_from_another_country_falls_back_to_the_printed_text():
+    zxingcpp = pytest.importorskip("zxingcpp")
+    from test_barcode import photo_of
+
+    photo = "data:image/jpeg;base64," + base64.b64encode(photo_of(zxingcpp.BarcodeFormat.EAN13, "5290665007802")).decode()
+    with text_client(find_label=not_in_the_fda_database) as client:
+        body = client.post("/api/label", json={"image": photo}).json()
+        assert body["source"] == "photo_text" and body["barcode"] == "5290665007802"
+        assert "isn't from a US box" in body["barcode_note"]
+    with text_client(find_label=not_in_the_fda_database, lines=[]) as client:  # only the barcode side
+        response = client.post("/api/label", json={"image": photo})
+        assert response.status_code == 404 and "photograph its Directions panel" in response.json()["detail"]
+
+
+def test_a_photo_with_neither_a_barcode_nor_text_says_what_to_photograph():
+    with text_client(lines=[]) as client:
+        response = client.post("/api/label", json={"image": blank_photo()})
+    assert response.status_code == 422 and "Directions panel" in response.json()["detail"]
+
+
+def test_while_the_text_reader_starts_a_photo_without_barcode_waits_politely():
+    release = threading.Event()
+
+    def slow_reader():
+        release.wait(5)
+        return lambda image_bytes: DIRECTIONS
+
+    app = create_app(lambda: FakeTranslator(TABLE), load_in_background=True, load_photo_reader=slow_reader)
+    with TestClient(app) as client:
+        response = client.post("/api/label", json={"image": blank_photo()})
+        assert response.status_code == 503 and "try this photo again" in response.json()["detail"]
+        release.set()
+
+
+def test_typed_numbers_never_trigger_text_reading():
+    with text_client(find_label=not_in_the_fda_database) as client:
+        assert client.post("/api/label", json={"code": "5290665007802"}).status_code == 404

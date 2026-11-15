@@ -7,3 +7,5 @@ httpx2==2.16.0
 requests==2.34.2
 zxing-cpp==3.1.1
 pillow==13.0.0
+# Reading printed directions (tests/test_ocr.py; the EasyOCR test runs once its models are downloaded)
+numpy==2.5.4

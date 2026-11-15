@@ -54,9 +54,14 @@ Chinese or Spanish.
   **Do not use** sections, and prints the whole label as one slip. It shows only the label's own words.
   Because the words come from the official label, not from reading the photo, there are no misread words
   to check; the pharmacist checks the product instead.
+- **Boxes from other countries** (web app): the FDA's database only has medicines sold in the US. When a
+  photo has no barcode, or one the database doesn't know, the app reads the box's printed directions with
+  the notebook's photo reader (EasyOCR, the same rules), marks the words it wasn't sure about, and has
+  the pharmacist correct every line and tick that they compared it with the box before it's translated.
 
 The demo is a Gradio app at the end of the notebook. It prints a public `….gradio.live` link that also
-works on a phone. The notebook demo reads the label's text from a photo; the web app reads its barcode.
+works on a phone. The notebook demo reads the label's text from a photo; the web app reads the barcode
+first, and the printed text when the barcode has no US label.
 
 ## What we added
 
@@ -256,8 +261,23 @@ processor. Two limits of the data:
 - Some makers fill in a placeholder barcode (012345678905 is on 134 different labels). When a barcode
   matches more than one product, the app refuses to guess and asks for the NDC number.
 
+**Boxes from other countries.** openFDA only has medicines sold in the US, so a box made for another
+country is never found: its barcode starts with something other than 0 or 1 (a real one we were sent
+starts with 529), and the app says so. Photograph the box's Directions panel instead. The app reads the
+printed text with EasyOCR (`dose_safe/ocr.py`, ported from the notebook's section 10 with the same
+cut-offs: numbers read with less than 70% confidence, other words below 30%, letters mixed into a
+number), joins it into one instruction per bullet or table row, and marks the words to check. The
+pharmacist corrects the lines against the box and ticks *"I compared every line with the box"*; only
+then can they be translated. Reading a photo takes about 2 seconds on a laptop processor; the reader
+starts after the translation model, and its first start downloads about 100 MB. It reads English: text
+that doesn't look like English gets a warning, because the safety checks compare against English.
+The same limits as the notebook apply: a word the reader skips entirely can't be marked, which is why
+every line is checked, not only the marked ones.
+
 No box at hand? The tab shows a real barcode (from an acetaminophen 500 mg label) to photograph from
-the screen, or to use with one click.
+the screen, or to use with one click, and a made-up photo of printed directions (the real Directions
+of an "Allergy Relief" diphenhydramine label, printed and roughened like a phone photo by
+`scripts/make_sample_directions.py`).
 
 **Tests:** `pip install -r requirements-dev.txt`, then `python -m pytest`.
 

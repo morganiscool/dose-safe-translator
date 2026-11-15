@@ -44,8 +44,8 @@
         <label class="photo-pick" for="photo">
           <input type="file" id="photo" accept="image/*" aria-describedby="photo-hint">
           <svg class="photo-glyph" viewBox="0 0 32 24" aria-hidden="true"><path d="M1 1h6M1 1v6M31 1h-6M31 1v6M1 23h6M1 23v-6M31 23h-6M31 23v-6" fill="none" stroke="currentColor" stroke-width="2"/><rect x="6" y="5" width="2" height="14"/><rect x="10" y="5" width="1" height="14"/><rect x="13" y="5" width="3" height="14"/><rect x="18" y="5" width="1" height="14"/><rect x="21" y="5" width="2" height="14"/><rect x="25" y="5" width="1" height="14"/></svg>
-          <span class="photo-pick-text">Take or choose a photo of the barcode
-            <span id="photo-hint" class="hint">Fill about half the picture with the barcode, with no glare on it. The photo is only used to read the barcode and isn't kept.</span>
+          <span class="photo-pick-text">Take or choose a photo of the barcode or the directions
+            <span id="photo-hint" class="hint">A barcode finds the official US label. For a box from anywhere else, photograph its Directions panel up close: its printed text is read, and you check it before it's translated. The photo isn't kept.</span>
           </span>
         </label>
         <figure id="photo-preview" class="photo-preview" hidden>
@@ -91,7 +91,9 @@
       <p class="hint">Photograph this barcode from the screen with a phone, or use the button.</p>
       <ul>
         <li><button type="button" data-barcode="070038610953">Use the barcode 0 70038 61095 3</button></li>
+        <li><button type="button" data-sample-photo="/static/media/sample-directions.jpg">Use a photo of printed directions</button></li>
       </ul>
+      <p class="hint">The directions photo is made up: a real label's Directions, printed and photographed the way a box from another country would be.</p>
     </section>
   </section>
 
@@ -193,6 +195,7 @@
     <!-- Photo mode -->
     <div id="photo-empty" class="empty">
       <p class="empty-lead">Photograph the barcode on a medicine box. Its official label is found, and these four parts of it are translated line by line and checked.</p>
+      <p class="empty-lead empty-second">A box made for another country isn't in the US database. Photograph its Directions panel instead: the printed text is read, words that were hard to read are marked, and you correct the text against the box before it's translated.</p>
       <dl class="label-parts">
         <div><dt>Purpose</dt><dd>What the medicine does, like “pain reliever / fever reducer”.</dd></div>
         <div><dt>Uses</dt><dd>What the label says it treats.</dd></div>
@@ -231,8 +234,28 @@
         <p id="product-meta" class="hint"></p>
         <p id="product-confirm" class="product-confirm">Check this is the box in your hand before translating it.</p>
       </div>
+      <div id="read-check" class="read-check" hidden>
+        <ol class="steps">
+          <li data-step="done"><span class="step-n">1</span> Photo read</li>
+          <li data-step="current" aria-current="step"><span class="step-n">2</span> Check the text</li>
+          <li><span class="step-n">3</span> Translate</li>
+        </ol>
+        <div id="read-summary" class="read-summary" tabindex="-1" aria-labelledby="read-summary-title">
+          <p id="read-summary-title" class="read-summary-title"></p>
+          <p id="read-summary-detail" class="hint"></p>
+          <ul id="read-summary-list" class="read-summary-list"></ul>
+        </div>
+        <p id="read-not-english" class="read-warning" hidden>This text doesn't look like English. The safety checks compare the translation with English directions, so they can't check this one. If the box also has English directions, photograph those instead.</p>
+        <ol id="read-lines" class="read-lines"></ol>
+        <button id="read-add" class="secondary read-add" type="button">Add a line</button>
+        <label class="confirm" for="read-confirm">
+          <input type="checkbox" id="read-confirm">
+          <span>I compared every line with the box and fixed any mistakes</span>
+        </label>
+      </div>
       <div class="label-go">
         <button id="label-translate" class="primary" type="button">Translate the label</button>
+        <button id="read-edit" class="secondary" type="button" hidden>Change the text read from the photo</button>
         <div id="label-checking" class="checking" hidden>
           <video id="label-checking-video" src="/static/media/checking.mp4" poster="/static/media/checking-poster.webp"
                  width="1600" height="400" muted loop playsinline preload="none" aria-hidden="true"></video>
@@ -275,7 +298,7 @@
   <div id="lslip-sections"></div>
   <p id="lslip-verdict" class="slip-verdict"></p>
   <p class="slip-checked">Checked by: <span class="slip-line"></span></p>
-  <p class="slip-foot">Dose-Safe Translator · <span id="lslip-date"></span> · Label from DailyMed · Prototype – not medical advice</p>
+  <p class="slip-foot">Dose-Safe Translator · <span id="lslip-date"></span> · <span id="lslip-source">Label from DailyMed</span> · Prototype – not medical advice</p>
 </aside>
 </body>
 </html>

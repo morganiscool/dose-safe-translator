@@ -10,3 +10,7 @@ sacrebleu==2.6.0
 requests==2.34.2
 zxing-cpp==3.1.1
 pillow==13.0.0
+# Photo mode, boxes with no barcode in the FDA's database: reading the printed directions with EasyOCR
+# (Apache 2.0). Its models (about 100 MB) download the first time the app starts.
+easyocr==1.7.2
+torchvision==0.29.2
