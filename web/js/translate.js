@@ -212,10 +212,9 @@ function show(body) {
 
   const list = $("checks");
   list.replaceChildren();
-  for (const [index, check] of body.checks.entries()) {
+  for (const check of body.checks) {
     const item = document.createElement("li");
     item.dataset.ok = check.ok;
-    item.style.setProperty("--i", index);
     const state = document.createElement("span");
     state.className = "state";
     state.textContent = check.ok ? "Passed" : "Failed";

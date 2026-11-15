@@ -209,5 +209,9 @@ running.
   [Gradio](https://www.gradio.app), [pandas](https://pandas.pydata.org)
 - Background: [UCSF on Google Translate for discharge instructions](https://universityofcalifornia.edu/news/google-translates-doctors-orders-spanish-and-chinese-few-important-caveats);
   [*Pediatrics* study on Spanish prescription labels](https://www.fiercehealthcare.com/healthcare/up-to-half-spanish-translated-prescriptions-include-dangerous-mistakes)
+- Explainer film: built with [HyperFrames](https://hyperframes.heygen.com) (`video/explainer`), opening on a
+  Blender render (`blender/scene.py`); music from HeyGen's music library (`video/explainer/assets/bgm/CREDITS.md`);
+  CC0 sound effects from Freesound via Openverse (`video/explainer/assets/sfx/CREDITS.md`); archival pharmacy
+  photographs on the landing page are public domain or CC0 (credited in its footer)
 - AI tools: Claude (Anthropic) was used as a coding assistant. _Everyone on the team should be able to
   explain every section before submitting._
