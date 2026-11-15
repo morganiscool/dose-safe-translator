@@ -7,4 +7,5 @@ httpx2==2.16.0
 requests==2.34.2
 zxing-cpp==3.1.1
 pillow==13.0.0
-numpy==2.5.4  # reading a label's text (dose_safe/photo.py), which the server loads
+# Reading printed text (dose_safe/ocr.py; tests/test_ocr.py also runs EasyOCR itself once its models are downloaded)
+numpy==2.5.4

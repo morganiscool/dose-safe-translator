@@ -1,10 +1,11 @@
-"""Tests for reading the text of a label in a photo, using a fake reader instead of EasyOCR's models."""
+"""Tests for One label line's "read the lines from a photo" (/api/read-text) and the check it adds.
+The reading itself (dose_safe/ocr.py) is tested in test_ocr.py; here a fake EasyOCR answers."""
 import io
 
 from fastapi.testclient import TestClient
 from PIL import Image, ImageDraw
 
-from dose_safe.photo import photo_to_instructions, photo_warning, still_in
+from dose_safe.ocr import read_lines, still_in
 from dose_safe.translator import FakeTranslator
 from server import PHOTO_CHECK, create_app
 
@@ -13,7 +14,7 @@ def box(left, top, width, height=20):
     return [[left, top], [left + width, top], [left + width, top + height], [left, top + height]]
 
 
-class FakeReader:
+class FakeEasyOCR:
     """Answers readtext() with fixed (box, word, confidence) results, like EasyOCR does."""
 
     def __init__(self, results):
@@ -23,8 +24,8 @@ class FakeReader:
         return self.results
 
 
-# A Directions panel: a heading, two bulleted instructions (the second runs onto a second line)
-# and a table row. The reader was only 55% sure of the "24".
+# A Directions panel: a heading, a bulleted instruction that runs onto a second line, and a table
+# row. The reader was only 55% sure of the "24".
 LABEL = [
     (box(10, 10, 120), "Directions", 0.99),
     (box(10, 50, 20), "■", 0.40),
@@ -39,46 +40,12 @@ LABEL = [
 
 
 def label_photo():
-    """A white photo with a black ■ where the reader found the bullet."""
+    """A PNG of a white label with a black ■ where the reader found the bullet."""
     image = Image.new("RGB", (400, 160), "white")
     ImageDraw.Draw(image).rectangle([12, 52, 28, 68], fill="black")
-    return image
-
-
-def png(image):
     buffer = io.BytesIO()
     image.save(buffer, "PNG")
     return buffer.getvalue()
-
-
-def test_photo_is_read_into_whole_instructions_with_the_unsure_number_flagged():
-    found = photo_to_instructions(FakeReader(LABEL), label_photo())
-    assert [item["text"] for item in found] == [
-        "do not take more than 6 tablets in 24 hours",
-        "children under 12 years: ask a doctor",
-    ]
-    assert found[0]["unsure"] == [("24", "“24” (55% sure)")]
-    assert found[1]["unsure"] == []
-
-
-def test_the_bullet_square_is_not_read_as_a_number():
-    # The reader called the bullet "2", which would have added a number to the instruction.
-    misread = [(box(10, 50, 20), "2", 0.80)] + LABEL[2:8]
-    found = photo_to_instructions(FakeReader(misread), label_photo())
-    assert found[0]["text"] == "do not take more than 6"
-
-
-def test_photo_warnings():
-    assert photo_warning("24", 0.69) == "“24” (69% sure)"      # numbers need 70%
-    assert photo_warning("tablets", 0.35) is None                 # other words need 30%
-    assert photo_warning("l2", 0.99) == "“l2” (letters mixed into a number)"
-    assert photo_warning("200mg", 0.99) is None                   # a unit, not a misread
-
-
-def test_a_corrected_word_no_longer_counts():
-    assert still_in("24", "do not take more than 6 tablets in 24 hours")
-    assert not still_in("24", "do not take more than 6 tablets in 12 hours")
-    assert not still_in("2", "take 12 tablets")  # a whole word, not part of another number
 
 
 SPANISH = {
@@ -87,20 +54,26 @@ SPANISH = {
 }
 
 
-def make_client(reader=FakeReader(LABEL)):
+def make_client(reader=True):
+    # The same kind of reader the real app loads: photo bytes in, lines of (word, confidence) out.
+    load = (lambda: (lambda image_bytes: read_lines(FakeEasyOCR(LABEL), image_bytes))) if reader else None
     return TestClient(create_app(lambda: FakeTranslator(SPANISH), load_in_background=False,
-                                 load_text_reader=(lambda: reader) if reader else None))
+                                 find_label=lambda code: None, load_photo_reader=load))
 
 
-def test_read_text_endpoint():
+def test_read_text_marks_the_words_to_compare_with_the_label():
     with make_client() as client:
-        assert client.get("/api/status").json()["text_reader"] == "ready"
-        body = client.post("/api/read-text", content=png(label_photo()),
+        assert client.get("/api/status").json()["photo_reader"] == "ready"
+        body = client.post("/api/read-text", content=label_photo(),
                            headers={"Content-Type": "image/png"}).json()
+    assert [item["text"] for item in body["instructions"]] == [
+        "do not take more than 6 tablets in 24 hours",
+        "children under 12 years: ask a doctor",
+    ]
     first = body["instructions"][0]
-    assert first["text"] == "do not take more than 6 tablets in 24 hours"
     assert first["unsure"] == [{"word": "24", "warning": "“24” (55% sure)"}]
     assert [w["text"] for w in first["words"] if w["warning"]] == ["24"]
+    assert body["instructions"][1]["unsure"] == []
 
 
 def test_a_line_from_the_photo_is_flagged_until_the_unsure_word_is_checked():
@@ -122,21 +95,16 @@ def test_a_line_from_the_photo_is_flagged_until_the_unsure_word_is_checked():
         assert {"name": PHOTO_CHECK, "ok": True, "detail": "", "looks_at": "photo"} in confirmed["checks"]
 
 
-def test_text_reader_off_without_a_reader():
-    with make_client(reader=None) as client:
-        assert client.get("/api/status").json()["text_reader"] == "off"
-        response = client.post("/api/read-text", content=png(label_photo()))
-        assert response.status_code == 503
+def test_a_corrected_word_no_longer_counts():
+    assert still_in("24", "do not take more than 6 tablets in 24 hours")
+    assert not still_in("24", "do not take more than 6 tablets in 12 hours")
+    assert not still_in("2", "take 12 tablets")  # a whole word, not part of another number
 
 
-def test_a_text_reader_that_is_not_installed_turns_it_off():
-    def missing():
-        raise ImportError("No module named 'easyocr'")
-
-    app = create_app(lambda: FakeTranslator(SPANISH), load_in_background=False, load_text_reader=missing)
-    with TestClient(app) as client:
-        body = client.get("/api/status").json()
-    assert body["status"] == "ready" and body["text_reader"] == "off"
+def test_read_text_is_off_without_a_reader():
+    with make_client(reader=False) as client:
+        assert client.get("/api/status").json()["photo_reader"] == "off"
+        assert client.post("/api/read-text", content=label_photo()).status_code == 503
 
 
 def test_bad_photos():

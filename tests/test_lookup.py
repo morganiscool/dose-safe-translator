@@ -85,8 +85,15 @@ def test_a_barcode_shared_by_different_products_is_refused_not_guessed():
 
 
 def test_a_barcode_openfda_doesnt_know_suggests_the_ndc_number():
-    with pytest.raises(LabelNotFound, match="NDC"):
+    with pytest.raises(LabelNotFound, match="barcode 070038610953 .*NDC"):
         find_label("070038610953", FakeHttp(Response(404, {"error": {"code": "NOT_FOUND"}})))
+
+
+def test_a_barcode_from_another_country_says_the_database_is_us_only():
+    # A real user's box: 529 is a barcode prefix from outside the US (Cyprus), so openFDA can't know it.
+    with pytest.raises(LabelNotFound, match="5290665007802 isn't from a US box.*starts with 529.*only has "
+                                            "medicines sold in the US"):
+        find_label("5290665007802", FakeHttp(Response(404, {"error": {"code": "NOT_FOUND"}})))
 
 
 def test_openfda_being_down_is_its_own_error():

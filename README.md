@@ -58,11 +58,16 @@ the same way but are marked "not tested yet".
   **Do not use** sections, and prints the whole label as one slip. It shows only the label's own words.
   Because the words come from the official label, not from reading the photo, there are no misread words
   to check; the pharmacist checks the product instead.
+- **Boxes from other countries** (web app): the FDA's database only has medicines sold in the US. When a
+  photo has no barcode, or one the database doesn't know, the app reads the box's printed directions with
+  the notebook's photo reader (EasyOCR, the same rules), marks the words it wasn't sure about, and has
+  the pharmacist correct every line and tick that they compared it with the box before it's translated.
 
 There are two ways to try it: a Gradio app at the end of the notebook, which prints a public
 `….gradio.live` link that also works on a phone, and a web app built for the pharmacy counter (see
-**Run the web app**). Both offer every language and read the label's text from a photo; the web app
-can also find the whole label from the box's barcode.
+**Run the web app**). Both offer every language and read a label's printed text from a photo. The web
+app's *Photo of the box* reads the barcode first and finds the whole official label, and reads the
+printed text instead when the barcode has no US label.
 
 ## What we added
 
@@ -262,17 +267,17 @@ notebook's demo, kept in `dose_safe/`, with a translator screen built for a phar
 (`/`) explains the project, with a 45-second explainer film (`web/media/explainer.mp4`); the
 translator is at `/translate`. The film and the small looping clips are HyperFrames projects in
 `video/`, and the 3D carton and caplets are rendered by `blender/scene.py`. Under *One label line*,
-the translator can also read the label's text from a photo (the same reader as notebook section 10,
-in `dose_safe/photo.py`), for when there is no barcode or the barcode isn't in openFDA: pick a line it
-read, compare the marked words with the label, then check it. A line from a photo gets a tenth check,
-*Photo read clearly*, which fails while a word the reader wasn't sure about is still in it (until the
-pharmacist corrects it or ticks that it matches the label).
+the translator can also read lines from a photo of a label's text, with the same reader photo mode
+uses (`dose_safe/ocr.py`, see **Boxes from other countries** below): pick a line it read, compare the
+marked words with the label, then check it. A line from a photo gets a tenth check, *Photo read
+clearly*, which fails while a word the reader wasn't sure about is still in it (until the pharmacist
+corrects it or ticks that it matches the label).
 
 **On a Windows PC, with a free public link:** double-click `run-public.bat`. The first run sets
 up the Python packages (about 1.2 GB) and downloads Cloudflare's free tunnel program; the
 translation model (about 2.5 GB) and the photo text reader (about 100 MB) download the first time the
-app starts. After a `git pull` that changes `requirements-app.txt` (as photo mode and the text reader did on Nov 15),
-the next run installs the new packages first. The window then prints
+app starts. After a `git pull` that changes `requirements-app.txt` (as photo mode and the text reader
+did on Nov 15), the next run installs the new packages first. The window then prints
 an `https://….trycloudflare.com` link anyone can open. The link works only while that window is
 open and the PC is awake, and it changes each time you start it. A check takes about 10–40
 seconds on a normal laptop.
@@ -290,8 +295,23 @@ processor. Two limits of the data:
 - Some makers fill in a placeholder barcode (012345678905 is on 134 different labels). When a barcode
   matches more than one product, the app refuses to guess and asks for the NDC number.
 
+**Boxes from other countries.** openFDA only has medicines sold in the US, so a box made for another
+country is never found: its barcode starts with something other than 0 or 1 (a real one we were sent
+starts with 529), and the app says so. Photograph the box's Directions panel instead. The app reads the
+printed text with EasyOCR (`dose_safe/ocr.py`, ported from the notebook's section 10 with the same
+cut-offs: numbers read with less than 70% confidence, other words below 30%, letters mixed into a
+number), joins it into one instruction per bullet or table row, and marks the words to check. The
+pharmacist corrects the lines against the box and ticks *"I compared every line with the box"*; only
+then can they be translated. Reading a photo takes about 2 seconds on a laptop processor; the reader
+starts after the translation model, and its first start downloads about 100 MB. It reads English: text
+that doesn't look like English gets a warning, because the safety checks compare against English.
+The same limits as the notebook apply: a word the reader skips entirely can't be marked, which is why
+every line is checked, not only the marked ones.
+
 No box at hand? The tab shows a real barcode (from an acetaminophen 500 mg label) to photograph from
-the screen, or to use with one click.
+the screen, or to use with one click, and a made-up photo of printed directions (the real Directions
+of an "Allergy Relief" diphenhydramine label, printed and roughened like a phone photo by
+`scripts/make_sample_directions.py`).
 
 **Tests:** `pip install -r requirements-dev.txt`, then `python -m pytest`.
 

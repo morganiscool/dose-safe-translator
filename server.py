@@ -5,7 +5,6 @@ The first start downloads the translation model (about 2.5 GB) and the photo tex
 """
 import base64
 import binascii
-import io
 import logging
 import threading
 import time
@@ -22,7 +21,7 @@ from starlette.concurrency import run_in_threadpool
 from dose_safe.checks import FORWARD_CHECKS
 from dose_safe.languages import LANGUAGES, TESTED_LANGUAGES
 from dose_safe.lookup import LabelNotFound, LabelSourceDown, search_terms
-from dose_safe.photo import photo_to_instructions, photo_warning, prepare, still_in
+from dose_safe.ocr import instructions_from_lines, looks_english, still_in
 from dose_safe.translator import MAX_TOKENS, translate_and_check
 
 WEB_DIR = Path(__file__).parent / "web"
@@ -97,27 +96,25 @@ def label_from_the_internet(code):
             "sections": label_sections(root)}
 
 
-def barcode_in_photo(data_url):
-    from dose_safe.barcode import read_barcode
-
+def photo_bytes(data_url):
     try:
-        image_bytes = base64.b64decode(data_url.split(",", 1)[-1], validate=True)
+        return base64.b64decode(data_url.split(",", 1)[-1], validate=True)
     except (binascii.Error, ValueError):
         raise HTTPException(422, detail="That photo didn't upload properly. Try taking it again.")
-    return read_barcode(image_bytes)
 
 
 def create_app(load_translator, load_in_background=True, find_label=label_from_the_internet,
-               load_text_reader=None):
+               load_photo_reader=None):
     """`load_translator` makes the translator. It runs once at startup, in the background by default,
     because the real model takes a minute or more to load and the page should answer meanwhile.
     `find_label(code)` looks a barcode up (tests pass a stand-in that doesn't use the internet).
-    `load_text_reader` makes the reader for photos of a label's text (None: that input is off); it
-    loads after the translator."""
-    state = {"translator": None, "status": "warming_up",
-             "text_reader": None, "text_reader_status": "warming_up" if load_text_reader else "off"}
-    text_lock = threading.Lock()  # one photo at a time: the reader isn't made for parallel calls
+    `load_photo_reader()` makes `read(image_bytes) -> lines of (word, confidence)`, which reads the
+    printed text of a box without a usable barcode; it loads after the translator. Without it, photo
+    mode only reads barcodes."""
+    state = {"translator": None, "status": "warming_up", "photo_reader": None,
+             "photo_status": "off" if load_photo_reader is None else "warming_up"}
     labels_seen = {}  # barcode -> label, so showing the same box again doesn't download it again
+    photo_lock = threading.Lock()  # one photo is read at a time
 
     def load():
         try:
@@ -126,17 +123,13 @@ def create_app(load_translator, load_in_background=True, find_label=label_from_t
         except Exception:
             log.exception("Could not load the translation model")
             state["status"] = "error"
-        if load_text_reader:
+        if load_photo_reader is not None:
             try:
-                state["text_reader"] = load_text_reader()
-                state["text_reader_status"] = "ready"
-            except ImportError:
-                log.warning("Reading a label's text from a photo is off: EasyOCR isn't installed. "
-                            "Run: pip install -r requirements-app.txt")
-                state["text_reader_status"] = "off"
+                state["photo_reader"] = load_photo_reader()
+                state["photo_status"] = "ready"
             except Exception:
-                log.exception("Could not load the photo text reader")
-                state["text_reader_status"] = "error"
+                log.exception("Could not start the reader for printed text")
+                state["photo_status"] = "off"
 
     @asynccontextmanager
     async def lifespan(_app):
@@ -150,7 +143,7 @@ def create_app(load_translator, load_in_background=True, find_label=label_from_t
 
     @app.get("/api/status")
     def status():
-        return {"status": state["status"], "text_reader": state["text_reader_status"],
+        return {"status": state["status"], "photo_reader": state["photo_status"],
                 "languages": [{"name": name, "tested": name in TESTED_LANGUAGES,
                                "lang": spec.get("lang", ""), "rtl": bool(spec.get("rtl"))}
                               for name, spec in LANGUAGES.items()]}
@@ -199,41 +192,83 @@ def create_app(load_translator, load_in_background=True, find_label=label_from_t
         return {"language": request.language, "language_tested": request.language in TESTED_LANGUAGES,
                 "results": results, "seconds": round(time.perf_counter() - started, 1)}
 
-    @app.post("/api/label")
-    def label(request: LabelRequest):
-        """Photo mode: read the barcode in a photo (or take a typed number) and fetch the label."""
-        if request.image:
-            code = barcode_in_photo(request.image)
-            if not code:
-                raise HTTPException(422, detail="No barcode found in the photo. Hold the box closer so "
-                                                "the barcode fills about half the picture, with no glare "
-                                                "on it, or type the number under the barcode.")
-        elif request.code and request.code.strip():
-            code = request.code.strip()
-        else:
-            raise HTTPException(422, detail="Take a photo of the barcode, or type its number.")
-        try:
-            search_terms(code)  # is it a barcode or NDC number at all?
-        except ValueError as error:
-            raise HTTPException(422, detail=str(error))
+    def official_label(code):
+        """The label for a barcode or NDC number. Raises ValueError (not a barcode), LabelNotFound or
+        LabelSourceDown."""
+        search_terms(code)  # is it a barcode or NDC number at all?
         if code not in labels_seen:
-            try:
-                found = find_label(code)
-            except LabelNotFound as error:
-                raise HTTPException(404, detail=str(error))
-            except LabelSourceDown as error:
-                raise HTTPException(502, detail=str(error))
+            found = find_label(code)
             if len(labels_seen) >= 200:
                 labels_seen.clear()
             labels_seen[code] = found
-        return {"barcode": code, **labels_seen[code]}
+        return {"source": "label", "barcode": code, **labels_seen[code]}
+
+    def printed_text(image_bytes, code, note):
+        """The photo's printed text, joined into instructions, for the pharmacist to check before it's
+        translated. `code` is a barcode the photo also had, and `note` why it found no label."""
+        read = state["photo_reader"]
+        if read is None:
+            if state["photo_status"] == "warming_up":
+                raise HTTPException(503, detail=(note or "No barcode found in the photo.") + " The reader "
+                                    "for printed text is still starting; try this photo again in a minute.")
+            if note:
+                raise HTTPException(404, detail=note)
+            raise HTTPException(422, detail="No barcode found in the photo. Hold the box closer so the "
+                                            "barcode fills about half the picture, with no glare on it, "
+                                            "or type the number under the barcode.")
+        with photo_lock:
+            lines = read(image_bytes)
+        if lines is None:
+            raise HTTPException(422, detail="That photo couldn't be opened. Take it again, or use a JPEG "
+                                            "or PNG picture.")
+        instructions = instructions_from_lines(lines)
+        if not instructions:
+            if note:
+                raise HTTPException(404, detail=f"{note} To use this box anyway, photograph its Directions "
+                                                "panel: the printed text is read, and you check it before "
+                                                "it's translated.")
+            raise HTTPException(422, detail="No barcode or printed directions could be read in this photo. "
+                                            "Photograph the barcode, or the Directions panel up close, "
+                                            "flat and in focus, with no glare.")
+        return {"source": "photo_text", "barcode": code, "barcode_note": note,
+                "instructions": instructions, "looks_english": looks_english(instructions)}
+
+    @app.post("/api/label")
+    def label(request: LabelRequest):
+        """Photo mode: the official label for the barcode in a photo, or for a typed number. When a photo
+        has no barcode, or one the FDA's database doesn't have, its printed text is read instead."""
+        if request.image:
+            from dose_safe.barcode import read_barcode
+
+            image_bytes = photo_bytes(request.image)
+            code = read_barcode(image_bytes)
+            note = None
+            if code:
+                try:
+                    return official_label(code)
+                except (ValueError, LabelNotFound) as error:
+                    note = str(error)
+                except LabelSourceDown as error:
+                    raise HTTPException(502, detail=str(error))
+            return printed_text(image_bytes, code, note)
+        if not (request.code and request.code.strip()):
+            raise HTTPException(422, detail="Take a photo of the barcode, or type its number.")
+        try:
+            return official_label(request.code.strip())
+        except ValueError as error:
+            raise HTTPException(422, detail=str(error))
+        except LabelNotFound as error:
+            raise HTTPException(404, detail=str(error))
+        except LabelSourceDown as error:
+            raise HTTPException(502, detail=str(error))
 
     @app.post("/api/read-text")
     async def read_text(request: Request):
-        """Read the text of a label in a photo (the request body is the image) into instructions."""
-        reader = state["text_reader"]
-        if reader is None:
-            raise HTTPException(503, detail=state["text_reader_status"])
+        """One label line: read the printed text of a label in a photo (the request body is the image)
+        into instructions, with the same reader photo mode uses for a box with no barcode."""
+        read = state["photo_reader"]
+        if read is None:
+            raise HTTPException(503, detail=state["photo_status"])
         data = bytearray()
         async for chunk in request.stream():
             data += chunk
@@ -241,26 +276,23 @@ def create_app(load_translator, load_in_background=True, find_label=label_from_t
                 raise HTTPException(413, detail="That photo is too big. Try one under 15 MB.")
         if not data:
             raise HTTPException(422, detail="Choose a photo first")
-        try:
-            from PIL import Image
-            image = Image.open(io.BytesIO(bytes(data)))
-            image.load()
-        except Exception:
-            raise HTTPException(415, detail="That file isn't a photo the app can open. Use a JPEG or PNG.")
 
-        def read():
-            with text_lock:
-                return photo_to_instructions(reader, prepare(image))
+        def run():
+            with photo_lock:
+                return read(bytes(data))
 
         started = time.perf_counter()
-        found = await run_in_threadpool(read)
-        return {"instructions": [
-                    {"text": item["text"],
-                     "words": [{"text": word, "warning": photo_warning(word, confidence)}
-                               for word, confidence in item["words"]],
-                     "unsure": [{"word": word, "warning": warning} for word, warning in item["unsure"]]}
-                    for item in found],
-                "seconds": round(time.perf_counter() - started, 1)}
+        lines = await run_in_threadpool(run)
+        if lines is None:
+            raise HTTPException(415, detail="That file isn't a photo the app can open. Use a JPEG or PNG.")
+        instructions = []
+        for item in instructions_from_lines(lines):
+            words = [{"text": w["text"], "warning": f"“{w['text']}” ({w['check']})" if w["check"] else None}
+                     for w in item["words"]]
+            instructions.append({"text": item["text"], "words": words,
+                                 "unsure": [{"word": w["text"], "warning": w["warning"]}
+                                            for w in words if w["warning"]]})
+        return {"instructions": instructions, "seconds": round(time.perf_counter() - started, 1)}
 
     @app.get("/", include_in_schema=False)
     def landing_page():
@@ -280,9 +312,10 @@ def _load_nllb():
     return NllbTranslator()
 
 
-def _load_text_reader():
-    from dose_safe.photo import load_reader
-    return load_reader()
+def _load_easyocr():
+    from dose_safe.ocr import load_reader, read_lines
+    reader = load_reader()
+    return lambda image_bytes: read_lines(reader, image_bytes)
 
 
-app = create_app(_load_nllb, load_text_reader=_load_text_reader)
+app = create_app(_load_nllb, load_photo_reader=_load_easyocr)

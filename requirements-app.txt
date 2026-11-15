@@ -9,7 +9,9 @@ sacrebleu==2.6.0
 # Photo mode: looking labels up, and reading barcodes in photos
 requests==2.34.2
 zxing-cpp==3.1.1
-# Reading the text of a label in a photo. Downloads about 100 MB of models the first time the app starts.
+pillow==13.0.0
+# Reading a label's printed text in a photo (in One label line, and in photo mode for a box with no
+# barcode in the FDA's database), with EasyOCR (Apache 2.0). Its models (about 100 MB) download the
+# first time the app starts.
 easyocr==1.7.2
 torchvision==0.29.2
-pillow==13.0.0
