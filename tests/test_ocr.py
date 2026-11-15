@@ -42,6 +42,16 @@ def test_lines_are_joined_into_instructions_one_per_bullet_or_row():
                      "children under 12 years: ask a doctor"]      # a colon carries on too
 
 
+def test_barcode_digits_with_a_stray_mark_are_still_left_out():
+    # A real read of a box with its barcode beside the Directions: the digits came back as
+    # '5 "290665 007802', and the quote mark let them join the last instruction ("... do not use 5
+    # "290665 007802"), adding numbers that aren't on the label.
+    lines = [[("■", 1.0), ("children", 0.99), ("under", 0.99), ("6", 0.99), ("years:", 0.99), ("do", 0.99),
+              ("not", 0.99), ("use", 0.99)],
+             [("5", 0.91), ('"290665', 0.62), ("007802", 0.88)]]
+    assert [item["text"] for item in instructions_from_lines(lines)] == ["children under 6 years: do not use"]
+
+
 def test_unsure_words_are_marked_with_the_reason():
     lines = [[("take", 0.99), ("2", 0.45), ("tablets", 0.99), ("every", 0.2), ("l2", 0.99), ("hours", 0.99),
               ("500mg", 0.99)]]

@@ -400,6 +400,7 @@ ENGLISH = {
                              "maximum", "most", "longer"]},
 }
 
-# Languages we have run on real label instructions (notebook sections 6-7). The others work,
-# but nobody has looked at their results yet, so the app says so.
-TESTED_LANGUAGES = ["Spanish", "Vietnamese"]
+# Languages we have run on real label instructions (notebook sections 6-7: 150 instructions each) and
+# whose results we have read; Chinese (Simplified) was added on Nov 15, 2026 (README, "Results"). The
+# others work, but nobody has looked at their results yet, so the app says so.
+TESTED_LANGUAGES = ["Spanish", "Vietnamese", "Chinese (Simplified)"]

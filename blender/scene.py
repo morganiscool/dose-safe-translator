@@ -8,6 +8,10 @@ Shots:
            (its faces are blender/textures/front.png and drugfacts.png; the Drug Facts lines are real
            label text from data/otc_directions.csv)
   caplets  six caplets in a row on carton-blue board: "do not take more than 6 caplets"
+  counter  (demo film, 4.5 s) the carton on a pharmacy counter, the camera pushing in on its Drug Facts
+           panel; frames into <out>/counter/
+  slip     (demo film, 5 s) the same counter with the patient's printed slip in front of the carton,
+           the camera settling over it; --slip is the app's real printed slip as a picture
 """
 import argparse
 import math
@@ -20,8 +24,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
 parser = argparse.ArgumentParser()
 parser.add_argument("--out", default=os.path.join(HERE, "..", "web", "media", "src"))
-parser.add_argument("--shot", default="all", choices=["all", "carton", "caplets", "turntable"])
+parser.add_argument("--shot", default="all", choices=["all", "carton", "caplets", "turntable", "counter", "slip"])
 parser.add_argument("--samples", type=int, default=160)
+parser.add_argument("--slip", default="", help="the printed slip picture for the slip shot")
+parser.add_argument("--only", type=int, default=0, help="render only this frame (to check the framing)")
 args = parser.parse_args(argv)
 args.out = os.path.abspath(args.out)  # Blender would otherwise resolve it against the drive root
 os.makedirs(args.out, exist_ok=True)
@@ -254,9 +260,96 @@ def shot_turntable():
     print(f"Rendered {scene.frame_end} frames to {frames} on {scene.cycles.device}")
 
 
+def counter_set():
+    """The demo film's pharmacy counter: a pale laminate top, a carton-blue wall far behind (out of
+    focus), the carton turned to show its Drug Facts panel, and three caplets."""
+    scene = reset()
+    use_gpu(scene)
+    scene.cycles.samples = min(args.samples, 64)
+    scene.render.fps = 30
+    scene.render.resolution_x, scene.render.resolution_y = 1920, 1080
+    scene.render.film_transparent = False
+    scene.world.node_tree.nodes["Background"].inputs[0].default_value = (0.82, 0.86, 0.92, 1)
+    scene.world.node_tree.nodes["Background"].inputs[1].default_value = 0.18
+    plane("Counter", (12, 8), (0, 1.0, 0), (0, 0, 0),
+          material("Counter laminate", (0.40, 0.39, 0.37, 1), roughness=0.42))
+    plane("Wall", (14, 6), (0, 4.2, 3.0), (math.radians(90), 0, 0),
+          material("Carton-blue wall", linear("#0a3a70"), roughness=0.85))
+    body = carton_box()
+    body.location = (0.35, 0.25, 0)
+    body.rotation_euler = (0, 0, math.radians(-38))
+    white = material("Caplet", (0.94, 0.94, 0.92, 1), roughness=0.38, subsurface=0.08, coat=0.3)
+    for loc, ang in [((-0.30, -0.22, 0.028), 0.5), ((-0.06, -0.34, 0.028), -0.35), ((0.22, -0.30, 0.028), 1.2)]:
+        caplet(loc, ang, white)
+    area_light("Key", (-1.6, -1.8, 3.2), (0.2, 0.2, 0.4), 3.0, 260)
+    for light in (area_light("Fill", (2.8, -1.4, 1.2), (0.3, 0.2, 0.45), 2.6, 70),
+                  area_light("Rim", (0.6, 2.6, 2.4), (0.3, 0.2, 0.6), 1.4, 140)):
+        light.data.use_shadow = False
+    return scene, body
+
+
+def animate_camera(scene, start, end, look_start, look_end, lens_start, lens_end, frames, f_stop):
+    target = bpy.data.objects.new("Target", None)
+    bpy.context.collection.objects.link(target)
+    cam = camera(start, look_start, lens=lens_start, f_stop=f_stop, focus=1.0)
+    track = cam.constraints.new("TRACK_TO")
+    track.target, track.track_axis, track.up_axis = target, "TRACK_NEGATIVE_Z", "UP_Y"
+    cam.data.dof.focus_object = target
+    for frame, loc, look, lens in ((1, start, look_start, lens_start), (frames, end, look_end, lens_end)):
+        cam.location, target.location, cam.data.lens = loc, look, lens
+        cam.keyframe_insert("location", frame=frame)
+        target.keyframe_insert("location", frame=frame)
+        cam.data.keyframe_insert("lens", frame=frame)
+    for obj in (cam, target, cam.data):  # ease in and out, like a dolly
+        for curve in (obj.animation_data.action.fcurves if hasattr(obj.animation_data.action, "fcurves") else []):
+            for key in curve.keyframe_points:
+                key.interpolation = "BEZIER"
+    scene.frame_start, scene.frame_end = (args.only, args.only) if args.only else (1, frames)
+
+
+def render_frames(scene, name):
+    frames = os.path.join(args.out, name)
+    os.makedirs(frames, exist_ok=True)
+    scene.render.image_settings.color_mode = "RGB"
+    scene.render.filepath = os.path.join(frames, "####")
+    scene.render.use_overwrite = False  # a re-run renders only the frames that are missing
+    bpy.ops.render.render(animation=True)
+    print(f"Rendered frames {scene.frame_start}-{scene.frame_end} to {frames} on {scene.cycles.device}")
+
+
+def shot_counter():
+    """4.5 s: from the counter at three-quarters to the carton's Drug Facts panel."""
+    scene, _ = counter_set()
+    # The Drug Facts panel faces (0.79, -0.62) after the carton's -38° turn; its Directions sit low on it.
+    animate_camera(scene, start=(1.6, -2.1, 1.0), end=(1.36, -0.74, 0.34),
+                   look_start=(0.40, 0.15, 0.42), look_end=(0.567, 0.081, 0.24),
+                   lens_start=38, lens_end=55, frames=135, f_stop=2.8)
+    render_frames(scene, "counter")
+
+
+def shot_slip():
+    """5 s: the patient's printed slip lies in front of the carton; the camera settles over it until
+    the translation reads. The slip picture is the app's own print of a real label run."""
+    scene, _ = counter_set()
+    scene.view_settings.exposure = -0.5  # the white paper under the key light, without washing out
+    image = bpy.data.images.load(os.path.abspath(args.slip))
+    width = 1.15
+    height = width * image.size[1] / image.size[0]
+    paper = material("Printed slip", roughness=0.6, image=os.path.abspath(args.slip))
+    plane("Slip", (width, height), (-0.88, -0.78, 0.002), (0, 0, math.radians(8)), paper)  # clear of the caplets
+    animate_camera(scene, start=(0.15, -2.35, 1.25), end=(-0.84, -1.24, 1.58),
+                   look_start=(-0.62, -0.62, 0.05), look_end=(-0.87, -0.67, 0.0),
+                   lens_start=40, lens_end=50, frames=150, f_stop=4.0)
+    render_frames(scene, "slip")
+
+
 if args.shot in ("all", "carton"):
     shot_carton()
 if args.shot in ("all", "caplets"):
     shot_caplets()
 if args.shot == "turntable":
     shot_turntable()
+if args.shot == "counter":
+    shot_counter()
+if args.shot == "slip":
+    shot_slip()

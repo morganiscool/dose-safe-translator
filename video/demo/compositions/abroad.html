@@ -1,0 +1,55 @@
+<template>
+  <style>
+    @font-face { font-family: "Public Sans"; src: url("assets/fonts/PublicSans-Variable.ttf") format("truetype"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0e4c92; font-family: "Public Sans", sans-serif; overflow: hidden; }
+    #ab-cam { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+    .ab-shot { position: absolute; display: block; }
+    .ab-form { left: 80px; top: 150px; width: 550px; }
+    .ab-facts { left: 660px; top: 150px; width: 1120px; }
+    #ab-tag { position: absolute; left: 432px; top: 1514px; padding: 2px 10px; background: #111111; color: #ffffff; font-size: 24px; font-weight: 700; }
+    #ab-cursor { position: absolute; left: 0; top: 0; width: 64px; height: 64px; }
+    #ab-band { position: absolute; left: 0; top: 0; width: 1920px; height: 136px; background: #0e4c92; }
+    .ab-title { position: absolute; left: 80px; top: 38px; font-size: 56px; font-weight: 800; letter-spacing: -0.015em; color: #ffffff; white-space: nowrap; }
+    .ab-title span { display: inline-block; }
+  </style>
+
+  <div id="root" data-composition-id="abroad" data-width="1920" data-height="1080">
+    <div id="ab-cam">
+      <!-- Real captures: a photo of a box whose barcode (529…) has no US label goes to the photo reader. -->
+      <img id="ab-read" class="ab-shot ab-form clip" src="assets/screens/abroad-read.png" data-start="0" data-duration="4.3" alt="">
+      <img id="ab-picked" class="ab-shot ab-form clip" src="assets/screens/abroad-form.png" data-start="4.3" data-duration="2.7" alt="">
+      <img id="ab-empty" class="ab-shot ab-facts clip" src="assets/screens/line-empty.png" data-start="0" data-duration="4.3" alt="">
+      <img id="ab-result" class="ab-shot ab-facts clip" src="assets/screens/abroad-result.png" data-start="4.3" data-duration="2.7" alt="">
+      <div id="ab-tag" class="clip" data-start="0" data-duration="4.3">Example photo</div>
+      <svg id="ab-cursor" viewBox="0 0 64 64" aria-hidden="true"><path d="M4 2 L4 50 L17 38 L26 60 L35 56 L26 34 L44 34 Z" fill="#111111" stroke="#ffffff" stroke-width="3" stroke-linejoin="round"/></svg>
+    </div>
+    <div id="ab-band"></div>
+    <div id="ab-t1" class="ab-title clip" data-start="0.1" data-duration="1.85">
+      <span>A</span> <span>box</span> <span>from</span> <span>another</span> <span>country?</span>
+    </div>
+    <div id="ab-t2" class="ab-title clip" data-start="2.0" data-duration="2.35">
+      <span>Its</span> <span>printed</span> <span>directions</span> <span>are</span> <span>read</span>
+    </div>
+    <div id="ab-t3" class="ab-title clip" data-start="4.4" data-duration="2.6">
+      <span>You</span> <span>compare,</span> <span>then</span> <span>it's</span> <span>checked</span>
+    </div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const words = { opacity: 1, filter: "blur(0px)", duration: 0.13, stagger: 0.067, ease: "power2.out" };
+    const move = { duration: 0.5, ease: "power2.inOut" };
+    // Why there's no US label: the form alone, so the empty panel's example verdict stays off-screen.
+    tl.set("#ab-cam", { x: 860, y: -1062, scale: 1.6 }, 0);
+    tl.to("#ab-cam", { x: 499, y: -1688, scale: 1.3, duration: 0.6, ease: "power2.inOut" }, 1.9);  // the photo and its lines
+    tl.set("#ab-cursor", { x: 1139, y: 2183, opacity: 1 }, 0);
+    tl.to("#ab-cursor", { x: 345, y: 1987, duration: 0.7, ease: "power2.out" }, 3.3);  // onto line 2, with its "24" marked
+    tl.to("#ab-cursor", { scale: 0.86, duration: 0.08, yoyo: true, repeat: 1, transformOrigin: "4px 2px" }, 4.15);
+    tl.to("#ab-cursor", { opacity: 0, duration: 0.2 }, 4.4);
+    tl.to("#ab-cam", { x: -809, y: -4, scale: 1.45, ...move }, 4.3);        // its translation and checks
+    tl.fromTo("#ab-t1 span", { opacity: 0, filter: "blur(6px)" }, words, 0.1);
+    tl.fromTo("#ab-t2 span", { opacity: 0, filter: "blur(6px)" }, words, 2.0);
+    tl.fromTo("#ab-t3 span", { opacity: 0, filter: "blur(6px)" }, words, 4.4);
+    window.__timelines["abroad"] = tl;
+  </script>
+</template>

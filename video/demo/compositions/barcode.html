@@ -1,0 +1,52 @@
+<template>
+  <style>
+    @font-face { font-family: "Public Sans"; src: url("assets/fonts/PublicSans-Variable.ttf") format("truetype"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #0e4c92; font-family: "Public Sans", sans-serif; overflow: hidden; }
+    #bc-cam { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+    .bc-shot { position: absolute; display: block; }
+    #bc-form { left: 80px; top: 150px; width: 550px; }
+    .bc-facts { left: 660px; top: 150px; width: 1120px; }
+    #bc-cursor { position: absolute; left: 0; top: 0; width: 64px; height: 64px; }
+    #bc-band { position: absolute; left: 0; top: 0; width: 1920px; height: 136px; background: #0e4c92; }
+    .bc-title { position: absolute; left: 80px; top: 38px; font-size: 56px; font-weight: 800; letter-spacing: -0.015em; color: #ffffff; white-space: nowrap; }
+    .bc-title span { display: inline-block; }
+  </style>
+
+  <div id="root" data-composition-id="barcode" data-width="1920" data-height="1080">
+    <div id="bc-cam">
+      <!-- Real captures: the sample barcode's official label (DailyMed), then all 10 lines in Vietnamese. -->
+      <img id="bc-form" class="bc-shot" src="assets/screens/photo-form.png" alt="">
+      <img id="bc-found" class="bc-shot bc-facts clip" src="assets/screens/label-found.png" data-start="0" data-duration="2.1" alt="">
+      <img id="bc-done" class="bc-shot bc-facts clip" src="assets/screens/label-done.png" data-start="2.1" data-duration="4.9" alt="">
+      <svg id="bc-cursor" viewBox="0 0 64 64" aria-hidden="true"><path d="M4 2 L4 50 L17 38 L26 60 L35 56 L26 34 L44 34 Z" fill="#111111" stroke="#ffffff" stroke-width="3" stroke-linejoin="round"/></svg>
+    </div>
+    <div id="bc-band"></div>
+    <div id="bc-t1" class="bc-title clip" data-start="0.1" data-duration="2.05">
+      <span>Or</span> <span>photograph</span> <span>the</span> <span>box's</span> <span>barcode</span>
+    </div>
+    <div id="bc-t2" class="bc-title clip" data-start="2.2" data-duration="2.2">
+      <span>The</span> <span>official</span> <span>label,</span> <span>line</span> <span>by</span> <span>line</span>
+    </div>
+    <div id="bc-t3" class="bc-title clip" data-start="4.45" data-duration="2.55">
+      <span>A</span> <span>flagged</span> <span>line</span> <span>shows</span> <span>what</span> <span>changed</span>
+    </div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const words = { opacity: 1, filter: "blur(0px)", duration: 0.13, stagger: 0.067, ease: "power2.out" };
+    const move = { duration: 0.5, ease: "power2.inOut" };
+    tl.set("#bc-cam", { x: 0, y: 0, scale: 1 }, 0);                         // the workspace, label found
+    tl.to("#bc-cam", { x: -510, y: 17, scale: 1.5, ...move }, 0.55);        // the product line and the button
+    tl.set("#bc-cursor", { x: 1660, y: 755, opacity: 1 }, 0);
+    tl.to("#bc-cursor", { x: 912, y: 478, duration: 0.75, ease: "power2.out" }, 1.1);  // onto Translate the label
+    tl.to("#bc-cursor", { scale: 0.86, duration: 0.08, yoyo: true, repeat: 1, transformOrigin: "4px 2px" }, 1.95);
+    tl.to("#bc-cursor", { opacity: 0, duration: 0.2 }, 2.25);
+    tl.to("#bc-cam", { x: -626, y: -181, scale: 1.3, ...move }, 2.1);       // the red verdict, the first lines
+    tl.to("#bc-cam", { x: -626, y: -1423, scale: 1.3, duration: 0.7, ease: "power2.inOut" }, 4.4);  // the flagged Directions line
+    tl.fromTo("#bc-t1 span", { opacity: 0, filter: "blur(6px)" }, words, 0.1);
+    tl.fromTo("#bc-t2 span", { opacity: 0, filter: "blur(6px)" }, words, 2.2);
+    tl.fromTo("#bc-t3 span", { opacity: 0, filter: "blur(6px)" }, words, 4.45);
+    window.__timelines["barcode"] = tl;
+  </script>
+</template>

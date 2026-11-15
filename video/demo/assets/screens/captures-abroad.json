@@ -1,0 +1,38 @@
+{
+ "abroad-read": {
+  "selector": ".work > section:first-child",
+  "x": 40,
+  "y": 72,
+  "width": 440,
+  "height": 2073.953125
+ },
+ "abroad": {
+  "status": "The barcode 5290665007802 isn't from a US box: US and Canadian barcodes start with 0 or 1, and this one starts with 529, so the box was made for another country. The FDA's database only has medicines sold in the US. So the printed directions in your photo were read below: compare each line with the box, then pick it to check its translation.",
+  "lines": [
+   "take every 4 to 6 hours, or as directed by a doctor",
+   "do not take more than 6 times in 24 hoursCheck: “24” (59% sure)",
+   "adults and children 12 years and over: 1 to 2 tablets",
+   "children 6 to under 12 years: 1 tablet",
+   "children under 6 years: do not use"
+  ]
+ },
+ "abroad-form": {
+  "selector": ".work > section:first-child",
+  "x": 40,
+  "y": 72,
+  "width": 440,
+  "height": 1966.703125
+ },
+ "abroad-result": {
+  "selector": ".facts-panel",
+  "x": 504,
+  "y": 72,
+  "width": 896,
+  "height": 1966.703125
+ },
+ "abroadResult": {
+  "verdict": "No problems found by the automatic checks",
+  "english": "do not take more than 6 times in 24 hours",
+  "translation": "không dùng nhiều hơn 6 lần trong 24 giờ"
+ }
+}

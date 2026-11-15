@@ -1,0 +1,24 @@
+<template>
+  <style>
+    @font-face { font-family: "Public Sans"; src: url("assets/fonts/PublicSans-Variable.ttf") format("truetype"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #ffffff; font-family: "Public Sans", sans-serif; overflow: hidden; }
+    #rv-field { position: absolute; inset: 0; background: #0e4c92; }
+    #rv-name { position: absolute; left: 120px; top: 380px; font-size: 140px; font-weight: 900; letter-spacing: -0.04em; color: #ffffff; line-height: 1; white-space: nowrap; }
+    #rv-line { position: absolute; left: 124px; top: 560px; font-size: 52px; font-weight: 600; color: #ffffff; white-space: nowrap; }
+  </style>
+
+  <div id="root" data-composition-id="reveal" data-width="1920" data-height="1080">
+    <div id="rv-field" class="clip" data-start="0" data-duration="3"></div>
+    <div id="rv-name" class="clip" data-start="0.45" data-duration="2.55">Dose-Safe Translator</div>
+    <div id="rv-line" class="clip" data-start="1.0" data-duration="2.0">It translates, then checks the translation</div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // The carton colour wipes up from the bottom edge, as in the explainer.
+    tl.fromTo("#rv-field", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.6, ease: "power2.inOut" }, 0);
+    tl.fromTo("#rv-name", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "expo.out" }, 0.45);
+    tl.fromTo("#rv-line", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "expo.out" }, 1.0);
+    window.__timelines["reveal"] = tl;
+  </script>
+</template>
