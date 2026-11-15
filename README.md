@@ -38,9 +38,9 @@ targeted safety checks catch more.**
 A tool that **double-checks a translated medicine label the way a careful pharmacist would**, for a
 patient who doesn't read English. It translates each instruction on the label, translates it back, and
 checks that every number, "not" and age or dose limit made it through, then tells the pharmacist which
-translations still need a person to check them. It covers 28 languages: Spanish and Vietnamese are
-tested on real label instructions; the other 26, from Arabic and Hindi to Korean and Indonesian, work
-the same way but are marked "not tested yet".
+translations still need a person to check them. It covers 28 languages: Spanish, Vietnamese and
+Chinese (Simplified) are tested on real label instructions; the other 25, from Arabic and Hindi to Korean
+and Indonesian, work the same way but are marked "not tested yet".
 
 - **In:** an English instruction from a medicine label, e.g. *"do not take more than 6 caplets in 24 hours"*.
 - **Out:** the translation, the translation turned back into English, nine safety checks, and a verdict:
@@ -182,9 +182,21 @@ stayed the same.
 |---|---|---|---|
 | Spanish | 11 % | 10 % | 3 % of translations |
 | Vietnamese | 16 % | 10 % | 7 % of translations |
+| Chinese (Simplified) | 31 % | 21 % | 13 % of translations |
 
 Safer mode is chosen *by* these checks, so it will always look better here. The ratings below are the
 fair test.
+
+**Chinese (Simplified)** was run the same way on Nov 15, 2026 (the same 150 instructions, the current
+checks): 46 translations flagged as NLLB wrote them, 31 in safer mode, which picked a different
+translation for 20. Of the first 14 lines safer mode still flagged, we read 8 as real problems the
+checks caught: the model left out a whole "Do not use…" sentence three times (chest pain, MAOI, "any
+other drug containing acetaminophen"), turned *diphenhydramine* into "amines", dropped "ulcer" from "if
+you have an ulcer", dropped "1 lozenge" from a dosing line, and garbled a tablet line. The other 6 were
+false alarms: a correct 以下 ("under") whose back-translation lost "under" (the same false alarm as
+Spanish *menos de*), "once daily" coming back as "daily", a correct line reworded on the way back, and a
+label's own double negative (*"do not use no more than 7 days"*). So the checks behave sensibly in
+Chinese; NLLB simply makes more real mistakes there. Nobody who reads Chinese has checked these yet.
 
 **Reading label photos** (section 10). From our test run on Nov 15, 2026: 100 label instructions, each
 printed as a made-up label photo at four levels of blur (run on a laptop CPU; Colab's numbers may differ
@@ -227,7 +239,8 @@ Two real examples from our test run, to check with your fluent speaker:
 - **Missed by the checks:** *"laxative products should not be used for a period longer than 1 week
   unless directed by a doctor"*. The Vietnamese translation back-translates as *"**slimming** products
   should not be used…"*. Every number, "not" and limit survived, so no check fired, yet the medicine type
-  may be wrong.
+  may be wrong. In Chinese the same line came back as *"The use of **emulsifiers** should not exceed one
+  week…"* (乳化剂), and passed every check too.
 - **False alarm:** *"children 4 to under 12 yrs: ask a doctor"*. The Spanish (*"menos de 12 años"*) was
   right, but the back-translation dropped "under", so the round-trip checks flagged it.
 - **Photo misreads the highlight missed:** in a slightly blurry photo, *"30 mL every 4 hrs"* was read as
