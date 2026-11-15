@@ -4,9 +4,9 @@
 # address anyone can open. The link works only while this window is open and the PC is awake,
 # and it changes every time you start it.
 #
-# First run: sets up Python packages (about 1 GB) and downloads cloudflared from Cloudflare's
+# First run: sets up Python packages (about 1.2 GB) and downloads cloudflared from Cloudflare's
 # GitHub releases, into %LOCALAPPDATA%\dose-safe-translator (outside OneDrive). The translation
-# model (about 2.5 GB) downloads the first time the app starts.
+# model (about 2.5 GB) and the photo text reader (about 100 MB) download the first time the app starts.
 
 $ErrorActionPreference = "Stop"
 $repo = Split-Path -Parent $PSScriptRoot
@@ -20,7 +20,7 @@ $requirements = Join-Path $repo "requirements-app.txt"
 $installed = Join-Path $appHome "installed-requirements.txt"  # what the last successful install used
 $firstRun = -not (Test-Path $python)
 if ($firstRun) {
-    Write-Host "First run: installing the app's Python packages (about 1 GB, a few minutes)..."
+    Write-Host "First run: installing the app's Python packages (about 1.2 GB, a few minutes)..."
     $base = if (Get-Command py -ErrorAction SilentlyContinue) { "py" } else { "python" }
     & $base -m venv (Join-Path $appHome "venv")
 }

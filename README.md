@@ -35,8 +35,9 @@ targeted safety checks catch more.**
 
 ## What we built
 
-A tool for a **pharmacist at the counter** whose patient reads only Vietnamese, Tagalog, Haitian Creole,
-Chinese or Spanish.
+A tool for a **pharmacist at the counter** whose patient doesn't read English. It covers 28 languages:
+Spanish and Vietnamese are tested on real label instructions; the other 26, from Arabic and Hindi to
+Korean and Indonesian, work the same way but are marked "not tested yet".
 
 - **In:** an English instruction from a medicine label, e.g. *"do not take more than 6 caplets in 24 hours"*.
 - **Out:** the translation, the translation turned back into English, nine safety checks, and a verdict:
@@ -44,8 +45,8 @@ Chinese or Spanish.
   translation*. The tool never says a translation is "safe".
 - **Safer mode:** instead of taking the model's first answer, it looks at its top 5 translations and keeps
   the one with the fewest problems in the translation itself (then the fewest problems overall).
-- **Photo input** (notebook demo): the pharmacist can photograph the label's Directions section instead
-  of typing. EasyOCR reads it and **highlights the words it wasn't sure about** (with a stricter bar for
+- **Photo input** (notebook demo, and the web app's *One label line* tab): the pharmacist can photograph
+  the label's Directions section instead of typing. EasyOCR reads it and **highlights the words it wasn't sure about** (with a stricter bar for
   numbers). The pharmacist checks the text against the label before anything is translated.
 - **Photo mode** (web app): photograph the barcode on a medicine box, or type its barcode or NDC number.
   The app finds the box's official label (openFDA → DailyMed), shows the product so the pharmacist can
@@ -55,8 +56,10 @@ Chinese or Spanish.
   Because the words come from the official label, not from reading the photo, there are no misread words
   to check; the pharmacist checks the product instead.
 
-The demo is a Gradio app at the end of the notebook. It prints a public `….gradio.live` link that also
-works on a phone. The notebook demo reads the label's text from a photo; the web app reads its barcode.
+There are two ways to try it: a Gradio app at the end of the notebook, which prints a public
+`….gradio.live` link that also works on a phone, and a web app built for the pharmacy counter (see
+**Run the web app**). Both offer every language and read the label's text from a photo; the web app
+can also find the whole label from the box's barcode.
 
 ## What we added
 
@@ -126,6 +129,25 @@ found two dangerous problems and fixed them:
 To test it, we print each test instruction like a label and make it look like a phone photo (tilted,
 blurred, unevenly lit, noisy and JPEG-compressed) at four levels of blur. A **dangerous misread** changes
 a number, a "not" or an under/over limit.
+
+**More languages.** NLLB-200 translates every language here; the checks also need each language's
+words for "not", for numbers and for limits. Besides the five we started with, we wrote word lists for
+23 more, picked from the languages US pharmacies most often need, plus Indonesian and Malay: Arabic,
+Bengali, Chinese (Traditional), French, German, Greek, Gujarati, Hebrew, Hindi, Indonesian, Italian,
+Japanese, Korean, Malay, Persian, Polish, Portuguese, Punjabi, Russian, Thai, Turkish, Ukrainian and
+Urdu. Then we translated 40 label instructions into every language and back, and added the words the
+checks missed in correct translations (German *ab 12 Jahren* = 12 and over, Russian *до 12 лет* = under
+12, Japanese *1日* = per day). Three changes made the checks work in other scripts:
+- Words keep their vowel signs. Python's word pattern cut Hindi *नहीं* ("not") into pieces at each sign.
+- A word can carry "not" inside it, like French *n'utilisez* or Turkish *kullanmayın* (don't use).
+- Thai, Japanese and Korean are matched by their characters, because "not" is part of a longer word.
+
+In that quick test, the checks flagged 5–20% of the translations in most languages and 28–35% in Arabic,
+Persian, German, Thai, Korean, Japanese and Chinese (Traditional). The failures we read were mostly real
+problems: a dropped "Do not use", Korean and Persian turning "not more than 3 to 4 times daily" into
+"more than", a Japanese "every 1/2 hour" that became "every minute". Nobody who speaks these languages
+has checked the lists yet, so the app marks them "not tested yet". When unsure, a list leaves a word
+out: a missing word causes a false alarm, a wrong word could let a dangerous translation through.
 
 **Evaluation.** A teammate who reads _TEAM_LANGUAGE_ fluently rates each translation blind (they don't know
 which version made it or whether it was flagged): 2 = correct, 1 = small mistake but same meaning,
@@ -213,7 +235,7 @@ Known limits:
   (like "slimming" for "laxative") passes everything.
 - The word lists for each language were written without a native speaker. In testing, Tagalog *"sa
   ilalim ng 12"* ("under 12") was flagged until we added *ilalim*. Have your speaker check the lists in
-  section 2.
+  section 2. The 23 languages added on Nov 15 were only tuned on 40 machine translations each.
 - Number words can be ambiguous: Vietnamese *năm* means both "five" and "year", and Spanish *una* is
   also "a".
 - We only tested US over-the-counter labels, a handful of languages, and one free model.
@@ -227,6 +249,8 @@ Known limits:
 - Have pharmacists and more native speakers rate a larger set, especially of prescription labels.
 - Use the ratings to tune which checks matter most, and let the tool point to the exact risky words.
 - Test photo input on real photos of medicine boxes, with the correct text typed in by hand.
+- Ask native speakers to check the word lists of the 23 new languages, starting with the ones our
+  community needs most.
 
 ## Run the web app
 
@@ -234,11 +258,18 @@ The app (`server.py` and the pages in `web/`) uses the same translator and safet
 notebook's demo, kept in `dose_safe/`, with a translator screen built for a pharmacy counter. Its front page
 (`/`) explains the project, with a 45-second explainer film (`web/media/explainer.mp4`); the
 translator is at `/translate`. The film and the small looping clips are HyperFrames projects in
-`video/`, and the 3D carton and caplets are rendered by `blender/scene.py`.
+`video/`, and the 3D carton and caplets are rendered by `blender/scene.py`. Under *One label line*,
+the translator can also read the label's text from a photo (the same reader as notebook section 10,
+in `dose_safe/photo.py`), for when there is no barcode or the barcode isn't in openFDA: pick a line it
+read, compare the marked words with the label, then check it. A line from a photo gets a tenth check,
+*Photo read clearly*, which fails while a word the reader wasn't sure about is still in it (until the
+pharmacist corrects it or ticks that it matches the label).
 
 **On a Windows PC, with a free public link:** double-click `run-public.bat`. The first run sets
-up the Python packages (about 1 GB) and downloads Cloudflare's free tunnel program; the
-translation model (about 2.5 GB) downloads the first time the app starts. The window then prints
+up the Python packages (about 1.2 GB) and downloads Cloudflare's free tunnel program; the
+translation model (about 2.5 GB) and the photo text reader (about 100 MB) download the first time the
+app starts. After a `git pull` that changes `requirements-app.txt` (as photo mode and the text reader did on Nov 15),
+the next run installs the new packages first. The window then prints
 an `https://….trycloudflare.com` link anyone can open. The link works only while that window is
 open and the PC is awake, and it changes each time you start it. A check takes about 10–40
 seconds on a normal laptop.

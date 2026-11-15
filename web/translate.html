@@ -38,6 +38,10 @@
         <label for="english">English instruction from the label</label>
         <textarea id="english" rows="4" maxlength="2000" aria-describedby="english-hint">do not take more than 6 caplets in 24 hours</textarea>
         <p id="english-hint" class="hint">One bullet from the label at a time. Ctrl + Enter also checks it.</p>
+        <label id="ocr-confirm-row" class="confirm" hidden>
+          <input type="checkbox" id="ocr-confirm">
+          <span>I compared the marked words with the label and they're right</span>
+        </label>
       </div>
 
       <div id="photo-input" role="tabpanel" aria-labelledby="tab-photo" hidden>
@@ -71,6 +75,24 @@
       <button id="submit" class="primary" type="submit" disabled>Translate and check</button>
       <p id="status" class="status" role="status" aria-live="polite"></p>
     </form>
+
+    <section id="ocr" class="ocr" aria-labelledby="ocr-title">
+      <h2 id="ocr-title">Or read the lines from a photo</h2>
+      <p class="hint">A flat, close photo of the Directions on the box or bottle; no barcode needed. The app
+        reads each line and marks the words it wasn't sure about. Compare those with the label before you
+        check a line.</p>
+      <div class="ocr-actions">
+        <button id="ocr-button" class="secondary" type="button" disabled>Take or choose a photo</button>
+        <button id="ocr-example" class="secondary" type="button" disabled>Try an example photo</button>
+      </div>
+      <input id="ocr-file" type="file" accept="image/*" hidden>
+      <p id="ocr-status" class="status" role="status" aria-live="polite"></p>
+      <div id="ocr-result" class="ocr-result" hidden>
+        <img id="ocr-preview" class="ocr-preview" alt="The photo the app read">
+        <p id="ocr-summary" class="ocr-summary"></p>
+        <ol id="ocr-lines" class="ocr-lines"></ol>
+      </div>
+    </section>
 
     <section class="examples" id="line-examples" aria-labelledby="examples-title">
       <h2 id="examples-title">Try a real label line</h2>
@@ -116,6 +138,7 @@
           </ul>
         </div>
       </div>
+      <p class="hint ocr-check-hint">A line read from a photo of the label's text gets one more check, Photo read clearly: it fails while a word the photo reader wasn't sure about is still in the text.</p>
 
       <figure class="sample">
         <figcaption>

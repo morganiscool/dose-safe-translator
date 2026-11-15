@@ -3,15 +3,22 @@
 For each language: the model's language code, words that mean "not / don't", number words
 (so the checks know "dos" means 2), and words for "under / less" and "over / more" limits.
 "ambiguous" lists number words that are also everyday words ("una" = a, "năm" = year), so a
-new one is not reported as a new number. "not_negations" (Chinese) lists words that contain a
-negation character without meaning "not" (不适 = discomfort).
+new one is not reported as a new number; "ambiguous_digits" does the same for digits in set
+phrases (Japanese 1日 = per day). "not_negations" lists words that contain a negation
+without meaning "not" (Chinese 不适 = discomfort, Thai อย่าง = like). "negation_starts" and
+"negation_ends" cover languages that put "not" inside a longer word (French n'utilisez, Turkish
+kullanmayın = don't use). "cjk" means the language is written without spaces between words, so
+words are found by their characters. "lang" is the web page's language tag and "rtl" marks
+languages written right to left.
+When in doubt, a list leaves a word out: a missing word makes the app ask for a check (a false
+alarm), while a wrong word could let a dangerous translation through.
 To add a language, copy an entry and fill it in (ask a fluent speaker to check the words).
 "flores" is the code used by the FLORES+ test set in the notebook's section 9 (optional).
 """
 
 LANGUAGES = {
     "Spanish": {
-        "code": "spa_Latn", "flores": ["spa_Latn"],
+        "code": "spa_Latn", "flores": ["spa_Latn"], "lang": "es",
         "negations": ["no", "nunca", "jamás", "ni", "tampoco"],
         "numbers": {"cero": 0, "uno": 1, "una": 1, "un": 1, "dos": 2, "tres": 3, "cuatro": 4,
                     "cinco": 5, "seis": 6, "siete": 7, "ocho": 8, "nueve": 9, "diez": 10,
@@ -23,7 +30,7 @@ LANGUAGES = {
                                  "superior", "superiores", "máximo", "máxima"]},
     },
     "Vietnamese": {
-        "code": "vie_Latn", "flores": ["vie_Latn"],
+        "code": "vie_Latn", "flores": ["vie_Latn"], "lang": "vi",
         "negations": ["không", "đừng", "chớ", "cấm"],
         "numbers": {"một": 1, "hai": 2, "ba": 3, "bốn": 4, "tư": 4, "năm": 5, "sáu": 6, "bảy": 7,
                     "tám": 8, "chín": 9, "mười": 10, "mười một": 11, "mười hai": 12,
@@ -34,7 +41,7 @@ LANGUAGES = {
                    "over/more": ["trên", "quá", "hơn", "tối đa", "vượt", "trở lên"]},
     },
     "Tagalog": {
-        "code": "tgl_Latn", "flores": ["fil_Latn", "tgl_Latn"],
+        "code": "tgl_Latn", "flores": ["fil_Latn", "tgl_Latn"], "lang": "tl",
         "negations": ["huwag", "hindi", "wag", "di"],
         "numbers": {"isa": 1, "isang": 1, "dalawa": 2, "dalawang": 2, "tatlo": 3, "tatlong": 3,
                     "apat": 4, "lima": 5, "limang": 5, "anim": 6, "pito": 7, "pitong": 7,
@@ -48,7 +55,7 @@ LANGUAGES = {
                                  "mas matanda", "pinakamarami", "hanggang"]},
     },
     "Haitian Creole": {
-        "code": "hat_Latn", "flores": ["hat_Latn"],
+        "code": "hat_Latn", "flores": ["hat_Latn"], "lang": "ht",
         "negations": ["pa", "pinga", "jamè", "okenn"],
         # "yon" (a / one) was missing, so "pran yon grenn" (take one tablet) was flagged.
         # A native speaker should confirm "yon", "en" and "de" here.
@@ -60,7 +67,7 @@ LANGUAGES = {
                    "over/more": ["plis", "depase", "pi gran", "anwo", "maksimòm", "pase"]},
     },
     "Chinese (Simplified)": {
-        "code": "zho_Hans", "flores": ["cmn_Hans", "zho_Hans"], "cjk": True,
+        "code": "zho_Hans", "flores": ["cmn_Hans", "zho_Hans"], "cjk": True, "lang": "zh-Hans",
         "negations": ["不", "勿", "别", "没", "禁"],
         "not_negations": ["不适", "不良", "不舒服", "不同"],  # discomfort, adverse, unwell, different
         "numbers": {"一": 1, "二": 2, "两": 2, "三": 3, "四": 4, "五": 5, "六": 6, "七": 7, "八": 8,
@@ -69,6 +76,314 @@ LANGUAGES = {
         "ambiguous": ["一"],  # also in 一些 (some), 一起 (together), 一般 (usually)
         "limits": {"under/less": ["以下", "不满", "未满", "少于", "低于", "小于", "不到"],
                    "over/more": ["以上", "超过", "多于", "高于", "大于", "最多", "超出"]},
+    },
+    # ---- Added Nov 15, 2026. Not yet tested on real label instructions or checked by native
+    # speakers: the app marks them "not tested yet".
+    "Chinese (Traditional)": {
+        "code": "zho_Hant", "flores": ["cmn_Hant", "zho_Hant"], "cjk": True, "lang": "zh-Hant",
+        "negations": ["不", "勿", "別", "沒", "禁"],
+        "not_negations": ["不適", "不良", "不舒服", "不同"],
+        "numbers": {"一": 1, "二": 2, "兩": 2, "三": 3, "四": 4, "五": 5, "六": 6, "七": 7, "八": 8,
+                    "九": 9, "十": 10, "十一": 11, "十二": 12, "十五": 15, "二十": 20,
+                    "二十四": 24, "三十": 30, "半": 0.5},
+        "ambiguous": ["一"],
+        "limits": {"under/less": ["以下", "不滿", "未滿", "少於", "低於", "小於", "不到"],
+                   "over/more": ["以上", "超過", "多於", "高於", "大於", "最多", "超出"]},
+    },
+    "Korean": {
+        # Korean is matched by characters: "not" is part of the verb ending (복용하지 마십시오,
+        # 초과하지 않도록). One-syllable number words are left out because they hide in other
+        # words (세 = 3 and also "years old" in 12세).
+        "code": "kor_Hang", "flores": ["kor_Hang"], "cjk": True, "lang": "ko",
+        "negations": ["않", "마십시오", "마세요", "말아", "말고", "말 것", "못하", "금지", "없이",
+                      "안 됩", "안됩", "안 돼", "안돼"],
+        "numbers": {"하나": 1, "한 번": 1, "둘": 2, "두 번": 2, "셋": 3, "세 번": 3, "넷": 4,
+                    "네 번": 4, "다섯": 5, "여섯": 6, "일곱": 7, "여덟": 8, "아홉": 9, "열두": 12,
+                    "스물": 20, "스물네": 24, "서른": 30, "절반": 0.5},
+        "ambiguous": ["하나", "한 번"],
+        "ambiguous_digits": ["1일"],  # per day: 1일 3회 = 3 times a day
+        "limits": {"under/less": ["미만", "이하", "적게", "보다 적", "아래"],
+                   "over/more": ["초과", "이상", "넘", "많이", "보다 많", "최대"]},
+    },
+    "Japanese": {
+        "code": "jpn_Jpan", "flores": ["jpn_Jpan"], "cjk": True, "lang": "ja",
+        "negations": ["ない", "ません", "禁止", "不可", "せず"],
+        "not_negations": ["危ない"],  # dangerous
+        "numbers": {"一": 1, "二": 2, "三": 3, "四": 4, "五": 5, "六": 6, "七": 7, "八": 8, "九": 9,
+                    "十": 10, "十一": 11, "十二": 12, "十五": 15, "二十": 20, "二十四": 24,
+                    "三十": 30, "半": 0.5},
+        "ambiguous": ["一"],  # also in 一般 (usually), 一緒 (together)
+        "ambiguous_digits": ["1日"],  # per day: 1日3回 = 3 times a day
+        "limits": {"under/less": ["未満", "以下", "少なく", "少ない", "下回", "より少"],
+                   "over/more": ["以上", "超え", "超過", "より多", "多く", "最大", "上回"]},
+    },
+    "Thai": {
+        # ห้า (5) and สาม (3) are left out of the numbers: they hide in ห้าม (do not) and
+        # สามารถ (can).
+        "code": "tha_Thai", "flores": ["tha_Thai"], "cjk": True, "lang": "th",
+        "negations": ["ไม่", "ห้าม", "อย่า", "ปราศจาก"],
+        "not_negations": ["อย่าง", "ไม่สบาย", "ห้ามิลลิลิตร", "ห้ามล."],  # like, unwell, 5 mL
+        "numbers": {"หนึ่ง": 1, "สอง": 2, "สี่": 4, "หก": 6, "เจ็ด": 7, "แปด": 8, "เก้า": 9,
+                    "สิบ": 10, "สิบสอง": 12, "สิบห้า": 15, "ยี่สิบ": 20, "ยี่สิบสี่": 24,
+                    "สามสิบ": 30, "ครึ่ง": 0.5},
+        "ambiguous": ["หนึ่ง", "หก"],
+        "limits": {"under/less": ["ต่ำกว่า", "น้อยกว่า", "ไม่ถึง"],
+                   "over/more": ["เกิน", "มากกว่า", "ขึ้นไป", "สูงสุด", "นานกว่า", "ยาวกว่า"]},
+    },
+    "Russian": {
+        "code": "rus_Cyrl", "flores": ["rus_Cyrl"], "lang": "ru",
+        "negations": ["не", "нельзя", "без", "ни", "никогда", "запрещено", "нет"],
+        "numbers": {"один": 1, "одна": 1, "одну": 1, "одного": 1, "одной": 1, "два": 2, "две": 2,
+                    "двух": 2, "три": 3, "трех": 3, "трёх": 3, "четыре": 4, "четырех": 4,
+                    "четырёх": 4, "пять": 5, "пяти": 5, "шесть": 6, "шести": 6, "семь": 7,
+                    "семи": 7, "восемь": 8, "восьми": 8, "девять": 9, "девяти": 9, "десять": 10,
+                    "десяти": 10, "одиннадцать": 11, "двенадцать": 12, "двенадцати": 12,
+                    "пятнадцать": 15, "пятнадцати": 15, "двадцать": 20, "двадцати": 20,
+                    "двадцать четыре": 24, "двадцати четырех": 24, "двадцати четырёх": 24,
+                    "тридцать": 30, "тридцати": 30, "половина": 0.5, "половину": 0.5},
+        "ambiguous": ["один", "одна", "одну", "одного", "одной"],
+        "limits": {"under/less": ["младше", "моложе", "меньше", "менее", "ниже", "до лет", "до года"],
+                   "over/more": ["больше", "более", "старше", "выше", "превышать", "превышайте",
+                                 "превышает", "свыше", "максимум", "максимальная", "максимальной"]},
+    },
+    "Ukrainian": {
+        "code": "ukr_Cyrl", "flores": ["ukr_Cyrl"], "lang": "uk",
+        "negations": ["не", "ні", "ніколи", "без", "заборонено", "немає"],
+        "numbers": {"один": 1, "одна": 1, "одну": 1, "одного": 1, "два": 2, "дві": 2, "двох": 2,
+                    "три": 3, "трьох": 3, "чотири": 4, "чотирьох": 4, "п'ять": 5, "п’ять": 5,
+                    "п'яти": 5, "п’яти": 5, "шість": 6, "шести": 6, "сім": 7, "семи": 7,
+                    "вісім": 8, "восьми": 8, "дев'ять": 9, "дев’ять": 9, "десять": 10,
+                    "десяти": 10, "одинадцять": 11, "дванадцять": 12, "дванадцяти": 12,
+                    "п'ятнадцять": 15, "п’ятнадцять": 15, "двадцять": 20, "двадцяти": 20,
+                    "двадцять чотири": 24, "двадцяти чотирьох": 24, "тридцять": 30,
+                    "тридцяти": 30, "половина": 0.5, "половину": 0.5},
+        "ambiguous": ["один", "одна", "одну", "одного"],
+        "limits": {"under/less": ["молодше", "молодших", "менше", "менш", "нижче", "до років", "до року"],
+                   "over/more": ["більше", "більш", "старше", "старших", "вище", "перевищувати",
+                                 "перевищуйте", "перевищує", "понад", "максимум", "максимальна"]},
+    },
+    "Polish": {
+        "code": "pol_Latn", "flores": ["pol_Latn"], "lang": "pl",
+        "negations": ["nie", "nigdy", "bez", "zakaz", "nic"],
+        "numbers": {"jeden": 1, "jedna": 1, "jedną": 1, "jedno": 1, "jednej": 1, "jednego": 1,
+                    "dwa": 2, "dwie": 2, "dwóch": 2, "trzy": 3, "trzech": 3, "cztery": 4,
+                    "czterech": 4, "pięć": 5, "pięciu": 5, "sześć": 6, "sześciu": 6, "siedem": 7,
+                    "siedmiu": 7, "osiem": 8, "ośmiu": 8, "dziewięć": 9, "dziewięciu": 9,
+                    "dziesięć": 10, "dziesięciu": 10, "jedenaście": 11, "dwanaście": 12,
+                    "dwunastu": 12, "piętnaście": 15, "piętnastu": 15, "dwadzieścia": 20,
+                    "dwudziestu": 20, "dwadzieścia cztery": 24, "dwudziestu czterech": 24,
+                    "trzydzieści": 30, "trzydziestu": 30, "pół": 0.5, "połowa": 0.5, "połowę": 0.5},
+        "ambiguous": ["jeden", "jedna", "jedną", "jedno", "jednej", "jednego"],
+        "limits": {"under/less": ["poniżej", "mniej", "młodsze", "młodsi", "młodszych", "niżej"],
+                   "over/more": ["powyżej", "więcej", "dłużej", "starsze", "starsi", "starszych",
+                                 "przekraczać", "przekraczaj", "przekracza", "maksymalnie",
+                                 "maksymalna", "ponad"]},
+    },
+    "French": {
+        "code": "fra_Latn", "flores": ["fra_Latn"], "lang": "fr",
+        "negations": ["ne", "pas", "jamais", "aucun", "aucune", "sans", "ni", "non", "interdit"],
+        "negation_starts": ["n'", "n’"],  # n'utilisez pas
+        "numbers": {"un": 1, "une": 1, "deux": 2, "trois": 3, "quatre": 4, "cinq": 5, "six": 6,
+                    "sept": 7, "huit": 8, "neuf": 9, "dix": 10, "onze": 11, "douze": 12,
+                    "quinze": 15, "vingt": 20, "vingt-quatre": 24, "vingt quatre": 24,
+                    "trente": 30, "demi": 0.5, "demie": 0.5, "moitié": 0.5},
+        "ambiguous": ["un", "une", "neuf"],  # neuf = nine or new
+        "limits": {"under/less": ["moins", "inférieur", "inférieure", "inférieurs", "inférieures",
+                                  "sous", "en dessous"],
+                   "over/more": ["plus", "supérieur", "supérieure", "supérieurs", "supérieures",
+                                 "dépasser", "dépassez", "dépasse", "au-delà", "maximum", "maximale"]},
+    },
+    "Portuguese": {
+        "code": "por_Latn", "flores": ["por_Latn"], "lang": "pt",
+        "negations": ["não", "nunca", "sem", "nem", "nenhum", "nenhuma", "proibido"],
+        "numbers": {"um": 1, "uma": 1, "dois": 2, "duas": 2, "três": 3, "quatro": 4, "cinco": 5,
+                    "seis": 6, "sete": 7, "oito": 8, "nove": 9, "dez": 10, "onze": 11, "doze": 12,
+                    "quinze": 15, "vinte": 20, "vinte e quatro": 24, "trinta": 30, "meio": 0.5,
+                    "meia": 0.5, "metade": 0.5},
+        "ambiguous": ["um", "uma", "meio", "meia"],
+        "limits": {"under/less": ["menos", "menor", "menores", "abaixo", "inferior", "inferiores"],
+                   "over/more": ["mais", "maior", "maiores", "acima", "exceder", "exceda", "excede",
+                                 "ultrapassar", "ultrapasse", "superior", "superiores", "máximo",
+                                 "máxima"]},
+    },
+    "Italian": {
+        "code": "ita_Latn", "flores": ["ita_Latn"], "lang": "it",
+        "negations": ["non", "mai", "senza", "né", "nessun", "nessuna", "nessuno", "vietato"],
+        "numbers": {"uno": 1, "una": 1, "un": 1, "due": 2, "tre": 3, "quattro": 4, "cinque": 5,
+                    "sei": 6, "sette": 7, "otto": 8, "nove": 9, "dieci": 10, "undici": 11,
+                    "dodici": 12, "quindici": 15, "venti": 20, "ventiquattro": 24, "trenta": 30,
+                    "mezzo": 0.5, "mezza": 0.5, "metà": 0.5},
+        "ambiguous": ["uno", "una", "un", "sei"],  # sei = six or "you are"
+        "limits": {"under/less": ["meno", "inferiore", "inferiori", "sotto", "minore", "minori"],
+                   "over/more": ["più", "superiore", "superiori", "oltre", "superare", "superi",
+                                 "supera", "massimo", "massima", "sopra", "maggiore", "maggiori"]},
+    },
+    "German": {
+        "code": "deu_Latn", "flores": ["deu_Latn"], "lang": "de",
+        "negations": ["nicht", "kein", "keine", "keinen", "keinem", "keiner", "keines", "nie",
+                      "niemals", "ohne", "verboten"],
+        "numbers": {"ein": 1, "eine": 1, "einen": 1, "einem": 1, "einer": 1, "eins": 1, "zwei": 2,
+                    "drei": 3, "vier": 4, "fünf": 5, "sechs": 6, "sieben": 7, "acht": 8, "neun": 9,
+                    "zehn": 10, "elf": 11, "zwölf": 12, "fünfzehn": 15, "zwanzig": 20,
+                    "vierundzwanzig": 24, "dreißig": 30, "halb": 0.5, "halbe": 0.5, "halben": 0.5,
+                    "hälfte": 0.5},
+        "ambiguous": ["ein", "eine", "einen", "einem", "einer", "eins", "acht"],
+        "limits": {"under/less": ["unter", "weniger", "jünger", "unterhalb", "niedriger"],
+                   "over/more": ["über", "mehr", "älter", "länger", "ab", "überschreiten",
+                                 "überschreitet", "maximal", "höchstens", "oberhalb"]},
+    },
+    "Arabic": {
+        "code": "arb_Arab", "flores": ["arb_Arab"], "lang": "ar", "rtl": True,
+        "negations": ["لا", "ولا", "فلا", "لم", "لن", "ليس", "ليست", "عدم", "وعدم", "بعدم", "بدون",
+                      "ممنوع", "يمنع", "ألا"],
+        "numbers": {"واحد": 1, "واحدة": 1, "اثنين": 2, "اثنان": 2, "اثنتين": 2, "مرتين": 2,
+                    "ثلاث": 3, "ثلاثة": 3, "أربع": 4, "أربعة": 4, "اربع": 4, "اربعة": 4, "خمس": 5,
+                    "خمسة": 5, "ست": 6, "ستة": 6, "سبع": 7, "سبعة": 7, "ثماني": 8, "ثمانية": 8,
+                    "تسع": 9, "تسعة": 9, "عشر": 10, "عشرة": 10, "اثني عشر": 12, "اثنا عشر": 12,
+                    "اثنتي عشرة": 12, "خمسة عشر": 15, "خمس عشرة": 15, "عشرين": 20, "عشرون": 20,
+                    "أربع وعشرين": 24, "أربعة وعشرين": 24, "اربع وعشرين": 24, "ثلاثين": 30,
+                    "ثلاثون": 30, "نصف": 0.5, "مرة": 1},
+        "ambiguous": ["واحد", "واحدة", "ست", "مرة"],  # مرة = once or "time"
+        "limits": {"under/less": ["أقل", "لأقل", "بأقل", "دون", "تحت", "أصغر", "الأصغر"],
+                   "over/more": ["أكثر", "لأكثر", "بأكثر", "فأكثر", "وأكثر", "أطول", "فوق", "تتجاوز", "يتجاوز",
+                                 "تجاوز", "تتعدى", "يزيد", "تزيد", "أكبر", "الأكبر", "أقصى",
+                                 "الأقصى"]},
+    },
+    "Persian (Farsi)": {
+        "code": "pes_Arab", "flores": ["pes_Arab"], "lang": "fa", "rtl": True,
+        "negations": ["نه", "نکنید", "نکنند", "نکند", "نکن", "نخورید", "ننوشید", "ندهید", "نگیرید",
+                      "نباید", "نیست", "نمی", "نشود", "نشوید", "ننمایید", "بدون", "ممنوع", "هرگز",
+                      "هیچ"],
+        "numbers": {"یک": 1, "دو": 2, "سه": 3, "چهار": 4, "پنج": 5, "شش": 6, "هفت": 7, "هشت": 8,
+                    "نه": 9, "ده": 10, "یازده": 11, "دوازده": 12, "پانزده": 15, "بیست": 20,
+                    "بیست و چهار": 24, "سی": 30, "نیم": 0.5, "نصف": 0.5},
+        "ambiguous": ["یک", "نه", "سی"],  # نه = nine or "no"
+        "limits": {"under/less": ["کمتر", "کم", "زیر", "کوچکتر", "پایین"],
+                   "over/more": ["بیشتر", "بیش", "بالای", "بالاتر", "به بالا", "حداکثر", "تجاوز",
+                                 "بزرگتر", "طولانی تر"]},
+    },
+    "Urdu": {
+        "code": "urd_Arab", "flores": ["urd_Arab"], "lang": "ur", "rtl": True,
+        "negations": ["نہیں", "نہ", "مت", "بغیر", "ممنوع", "ہرگز"],
+        "numbers": {"ایک": 1, "دو": 2, "تین": 3, "چار": 4, "پانچ": 5, "چھ": 6, "سات": 7, "آٹھ": 8,
+                    "نو": 9, "دس": 10, "گیارہ": 11, "بارہ": 12, "پندرہ": 15, "بیس": 20,
+                    "چوبیس": 24, "تیس": 30, "آدھا": 0.5, "آدھی": 0.5},
+        "ambiguous": ["ایک"],
+        "limits": {"under/less": ["کم", "سے کم", "نیچے", "سے چھوٹے"],
+                   "over/more": ["زیادہ", "سے زیادہ", "اوپر", "سے اوپر", "زائد", "سے بڑے"]},
+    },
+    "Hindi": {
+        "code": "hin_Deva", "flores": ["hin_Deva"], "lang": "hi",
+        "negations": ["नहीं", "न", "मत", "बिना", "निषेध", "वर्जित"],
+        "numbers": {"एक": 1, "दो": 2, "तीन": 3, "चार": 4, "पांच": 5, "पाँच": 5, "छह": 6, "छः": 6,
+                    "सात": 7, "आठ": 8, "नौ": 9, "दस": 10, "ग्यारह": 11, "बारह": 12, "पंद्रह": 15,
+                    "पन्द्रह": 15, "बीस": 20, "चौबीस": 24, "तीस": 30, "आधा": 0.5, "आधी": 0.5},
+        "ambiguous": ["एक", "दो"],  # दो = two or "give"
+        "limits": {"under/less": ["कम", "से कम", "नीचे", "से नीचे", "से छोटे"],
+                   "over/more": ["अधिक", "से अधिक", "ज़्यादा", "से ज़्यादा", "ज्यादा", "से ज्यादा",
+                                 "ऊपर", "से ऊपर", "अधिकतम", "से बड़े"]},
+    },
+    "Bengali": {
+        "code": "ben_Beng", "flores": ["ben_Beng"], "lang": "bn",
+        "negations": ["না", "নয়", "নেই", "নি", "বিনা", "নিষেধ", "কখনই"],
+        "numbers": {"এক": 1, "দুই": 2, "তিন": 3, "চার": 4, "পাঁচ": 5, "ছয়": 6, "সাত": 7, "আট": 8,
+                    "নয়": 9, "দশ": 10, "এগারো": 11, "বারো": 12, "পনেরো": 15, "বিশ": 20,
+                    "কুড়ি": 20, "চব্বিশ": 24, "ত্রিশ": 30, "আধা": 0.5, "অর্ধেক": 0.5, "একবার": 1, "দুবার": 2},
+        "ambiguous": ["এক", "নয়", "একবার"],  # নয় = nine or "is not"
+        "limits": {"under/less": ["কম", "এর কম", "নিচে", "নীচে", "অনূর্ধ্ব"],
+                   "over/more": ["বেশি", "এর বেশি", "অধিক", "উপরে", "ঊর্ধ্বে", "সর্বোচ্চ", "অতিক্রম"]},
+    },
+    "Punjabi": {
+        "code": "pan_Guru", "flores": ["pan_Guru"], "lang": "pa",
+        "negations": ["ਨਾ", "ਨਹੀਂ", "ਬਿਨਾਂ", "ਬਿਨਾ", "ਮਨਾਹੀ"],
+        "numbers": {"ਇੱਕ": 1, "ਇਕ": 1, "ਦੋ": 2, "ਤਿੰਨ": 3, "ਚਾਰ": 4, "ਪੰਜ": 5, "ਛੇ": 6, "ਸੱਤ": 7,
+                    "ਅੱਠ": 8, "ਨੌਂ": 9, "ਨੌ": 9, "ਦਸ": 10, "ਗਿਆਰਾਂ": 11, "ਬਾਰਾਂ": 12, "ਪੰਦਰਾਂ": 15,
+                    "ਵੀਹ": 20, "ਚੌਵੀ": 24, "ਤੀਹ": 30, "ਅੱਧਾ": 0.5, "ਅੱਧੀ": 0.5},
+        "ambiguous": ["ਇੱਕ", "ਇਕ"],
+        "limits": {"under/less": ["ਘੱਟ", "ਤੋਂ ਘੱਟ", "ਹੇਠਾਂ", "ਤੋਂ ਛੋਟੇ"],
+                   "over/more": ["ਵੱਧ", "ਤੋਂ ਵੱਧ", "ਜ਼ਿਆਦਾ", "ਜਿਆਦਾ", "ਤੋਂ ਜ਼ਿਆਦਾ", "ਉੱਪਰ", "ਤੋਂ ਉੱਪਰ",
+                                 "ਤੋਂ ਵੱਡੇ", "ਵੱਧ ਤੋਂ ਵੱਧ"]},
+    },
+    "Gujarati": {
+        "code": "guj_Gujr", "flores": ["guj_Gujr"], "lang": "gu",
+        "negations": ["ન", "નહીં", "નહિ", "નથી", "વગર", "વિના", "મનાઈ", "પ્રતિબંધ"],
+        "numbers": {"એક": 1, "બે": 2, "ત્રણ": 3, "ચાર": 4, "પાંચ": 5, "છ": 6, "સાત": 7, "આઠ": 8,
+                    "નવ": 9, "દસ": 10, "અગિયાર": 11, "બાર": 12, "પંદર": 15, "વીસ": 20, "ચોવીસ": 24,
+                    "ત્રીસ": 30, "અડધી": 0.5, "અડધો": 0.5, "અડધું": 0.5},
+        "ambiguous": ["એક"],
+        "limits": {"under/less": ["ઓછું", "ઓછા", "ઓછી", "થી ઓછું", "થી ઓછા", "નીચે"],
+                   "over/more": ["વધુ", "થી વધુ", "વધારે", "થી વધારે", "ઉપર", "થી ઉપર", "થી મોટા",
+                                 "મહત્તમ"]},
+    },
+    "Indonesian": {
+        "code": "ind_Latn", "flores": ["ind_Latn"], "lang": "id",
+        "negations": ["tidak", "jangan", "janganlah", "bukan", "tanpa", "tak", "dilarang"],
+        "numbers": {"satu": 1, "sekali": 1, "dua": 2, "tiga": 3, "empat": 4, "lima": 5, "enam": 6,
+                    "tujuh": 7, "delapan": 8, "sembilan": 9, "sepuluh": 10, "sebelas": 11,
+                    "dua belas": 12, "lima belas": 15, "dua puluh": 20, "dua puluh empat": 24,
+                    "tiga puluh": 30, "setengah": 0.5, "separuh": 0.5},
+        "ambiguous": ["satu", "sekali"],  # sekali = once or "very"
+        # "belum" (not yet) is an age limit here ("belum berusia 12 tahun"), not a "not".
+        "limits": {"under/less": ["di bawah", "kurang", "kurang dari", "lebih muda", "lebih sedikit",
+                                  "lebih rendah", "belum"],
+                   "over/more": ["lebih", "lebih dari", "melebihi", "di atas", "ke atas", "maksimal",
+                                 "maksimum", "lebih tua", "paling banyak"]},
+    },
+    "Malay": {
+        "code": "zsm_Latn", "flores": ["zsm_Latn"], "lang": "ms",
+        "negations": ["tidak", "jangan", "bukan", "tanpa", "tak", "dilarang"],
+        "numbers": {"satu": 1, "sekali": 1, "dua": 2, "tiga": 3, "empat": 4, "lima": 5, "enam": 6,
+                    "tujuh": 7, "lapan": 8, "sembilan": 9, "sepuluh": 10, "sebelas": 11,
+                    "dua belas": 12, "lima belas": 15, "dua puluh": 20, "dua puluh empat": 24,
+                    "tiga puluh": 30, "setengah": 0.5, "separuh": 0.5},
+        "ambiguous": ["satu", "sekali"],
+        "limits": {"under/less": ["di bawah", "kurang", "kurang daripada", "kurang dari",
+                                  "lebih muda", "lebih sedikit", "belum"],
+                   "over/more": ["lebih", "lebih daripada", "lebih dari", "melebihi", "di atas",
+                                 "ke atas", "maksimum", "lebih tua", "paling banyak"]},
+    },
+    "Turkish": {
+        "code": "tur_Latn", "flores": ["tur_Latn"], "lang": "tr",
+        "negations": ["değil", "değildir", "yok", "asla", "hiç", "hiçbir", "yasak", "yasaktır"],
+        "negation_ends": ["mayın", "meyin", "mayınız", "meyiniz", "mamalı", "memeli", "mamalıdır",
+                          "memelidir", "maz", "mez", "madan", "meden", "masın", "mesin", "mamak",
+                          "memek"],  # kullanmayın = don't use, almadan = without taking
+        "numbers": {"bir": 1, "iki": 2, "üç": 3, "dört": 4, "beş": 5, "altı": 6, "yedi": 7,
+                    "sekiz": 8, "dokuz": 9, "on": 10, "on bir": 11, "on iki": 12, "on beş": 15,
+                    "yirmi": 20, "yirmi dört": 24, "otuz": 30, "yarım": 0.5, "yarı": 0.5},
+        "ambiguous": ["bir"],
+        "limits": {"under/less": ["altında", "altındaki", "altındakiler", "küçük", "küçükler",
+                                  "daha az", "az", "aşağı"],
+                   "over/more": ["üzerinde", "üzerindeki", "üstünde", "üzeri", "üstü", "fazla",
+                                 "daha fazla", "fazlası", "en fazla", "büyük", "maksimum", "uzun süre",
+                                 "daha uzun"]},
+    },
+    "Greek": {
+        "code": "ell_Grek", "flores": ["ell_Grek"], "lang": "el",
+        "negations": ["μην", "μη", "δεν", "ποτέ", "χωρίς", "όχι", "απαγορεύεται"],
+        "numbers": {"ένα": 1, "μία": 1, "μια": 1, "ένας": 1, "δύο": 2, "τρία": 3, "τρεις": 3,
+                    "τέσσερα": 4, "τέσσερις": 4, "πέντε": 5, "έξι": 6, "επτά": 7, "εφτά": 7,
+                    "οκτώ": 8, "οχτώ": 8, "εννέα": 9, "εννιά": 9, "δέκα": 10, "έντεκα": 11,
+                    "δώδεκα": 12, "δεκαπέντε": 15, "είκοσι": 20, "είκοσι τέσσερα": 24,
+                    "είκοσι τέσσερις": 24, "τριάντα": 30, "μισό": 0.5, "μισή": 0.5},
+        "ambiguous": ["ένα", "μία", "μια", "ένας"],
+        "limits": {"under/less": ["κάτω", "λιγότερο", "λιγότερα", "λιγότερες", "μικρότερα",
+                                  "μικρότερης", "μικρότερων", "νεότερα"],
+                   "over/more": ["πάνω", "άνω", "περισσότερο", "περισσότερα", "περισσότερες",
+                                 "υπερβαίνετε", "υπερβαίνει", "υπέρβαση", "μέγιστη", "μέγιστο",
+                                 "μεγαλύτερα", "μεγαλύτερης"]},
+    },
+    "Hebrew": {
+        "code": "heb_Hebr", "flores": ["heb_Hebr"], "lang": "he", "rtl": True,
+        "negations": ["לא", "אל", "אין", "ללא", "בלי", "אסור", "ולא", "שלא", "מבלי"],
+        "numbers": {"אחד": 1, "אחת": 1, "שניים": 2, "שתיים": 2, "שני": 2, "שתי": 2, "שלוש": 3,
+                    "שלושה": 3, "ארבע": 4, "ארבעה": 4, "חמש": 5, "חמישה": 5, "שש": 6, "שישה": 6,
+                    "שבע": 7, "שבעה": 7, "שמונה": 8, "תשע": 9, "תשעה": 9, "עשר": 10, "עשרה": 10,
+                    "שתים עשרה": 12, "שנים עשר": 12, "עשרים": 20, "עשרים וארבע": 24,
+                    "עשרים וארבעה": 24, "שלושים": 30, "חצי": 0.5, "פעם": 1, "פעמיים": 2},
+        "ambiguous": ["אחד", "אחת", "שני", "שתי", "פעם"],  # פעם = once or "time"  # שני = two or "second"
+        "limits": {"under/less": ["מתחת", "פחות"],
+                   "over/more": ["יותר", "מעל", "ומעלה", "לחרוג", "חריגה", "מקסימום"]},
     },
 }
 

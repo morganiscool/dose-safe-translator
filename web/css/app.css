@@ -234,6 +234,52 @@ input[type="text"] { font-variant-numeric: tabular-nums; }
 .examples button:hover { background: var(--tint-strong); }
 .examples .hint { margin-top: 10px; }
 
+/* ---- One label line, read from a photo of the label's text: words the reader wasn't sure about
+   are a "check this", so they get the alert red, spelled out in a note as well (never colour alone). */
+.ocr { margin-top: 36px; }
+.ocr h2 { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+.ocr-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.ocr-actions .secondary:disabled { color: var(--disabled); border-color: var(--disabled); background: var(--panel); cursor: not-allowed; }
+.ocr-result { margin-top: 16px; }
+.ocr-preview { display: block; max-width: 100%; max-height: 220px; border: 2px solid var(--ink); background: var(--tint); }
+.ocr-summary { margin-top: 12px; font-size: 15px; line-height: 1.45; }
+.ocr-lines { display: grid; gap: 8px; margin: 12px 0 0; padding: 0; list-style: none; counter-reset: line; }
+.ocr-lines li { display: grid; grid-template-columns: 26px minmax(0, 1fr); align-items: start; counter-increment: line; }
+.ocr-lines li::before { content: counter(line); font-weight: 800; font-size: 15px; padding-top: 13px; }
+.ocr-line {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 2px solid transparent;
+  border-radius: 0;
+  background: var(--tint);
+  padding: 11px 14px;
+  font-size: 15px;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: background-color 120ms ease-out;
+}
+.ocr-line:hover { background: var(--tint-strong); }
+.ocr-line[aria-pressed="true"] { border-color: var(--ink); background: var(--panel); }
+.ocr-line mark {
+  background: none;
+  color: var(--alert);
+  font-weight: 800;
+  text-decoration: underline 2px;
+  text-underline-offset: 3px;
+}
+.ocr-line-note { display: block; margin-top: 4px; font-size: 14px; font-weight: 600; color: var(--alert); }
+.ocr-check-hint { margin-top: 18px; }
+.confirm { display: flex; gap: 10px; align-items: flex-start; margin: 14px 0 0; font-size: 15px; color: var(--alert); cursor: pointer; }
+.confirm input { width: 18px; height: 18px; margin: 2px 0 0; flex: none; accent-color: var(--ink); cursor: pointer; }
+.confirm[hidden] { display: none; }
+
+/* Han characters look different in Japanese and in Traditional Chinese, and Korean has its own fonts.
+   Only translations carry these language tags, in every view and on the printed slips. */
+:lang(ja) { font-family: "Public Sans", "Hiragino Sans", "Yu Gothic", "Meiryo", "Noto Sans JP", system-ui, sans-serif; }
+:lang(zh-Hant) { font-family: "Public Sans", "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", system-ui, sans-serif; }
+:lang(ko) { font-family: "Public Sans", "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", system-ui, sans-serif; }
+
 /* ---- Translation Facts panel ----------------------------------------------------------- */
 .facts-panel { border: var(--frame) solid var(--ink); padding: 22px 28px 28px; }
 .facts-title { font-size: 32px; font-weight: 900; line-height: 1; letter-spacing: -0.02em; }

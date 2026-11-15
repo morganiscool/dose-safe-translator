@@ -1,9 +1,10 @@
 // Dose-Safe Translator: the translator screen. Talks to server.py's /api/status, /api/check,
-// /api/label and /api/check-lines. Everything the model, the label or the user wrote is put on the
-// page with textContent, never as HTML.
+// /api/label, /api/check-lines and /api/read-text. Everything the model, the label, the photo reader
+// or the user wrote is put on the page with textContent, never as HTML.
 
 const LANG_CODES = { "Spanish": "es", "Vietnamese": "vi", "Tagalog": "tl", "Haitian Creole": "ht",
                      "Chinese (Simplified)": "zh-Hans" };
+const LANGS = {};  // name → {lang, rtl} for every language, from /api/status
 const MAX_LINES = 20;  // lines per /api/check-lines request (the server's limit)
 const $ = (id) => document.getElementById(id);
 const work = document.querySelector(".work");
@@ -21,6 +22,7 @@ let ready = false;
 let busy = false;
 let busyWith = "";  // "line", "find" or "label": what the server is working on
 let mode = "line";
+let fromPhoto = null;  // {text, unsure} while the box holds a line read from a photo of the label
 
 function setStatus(text, kind = "") {
   statusLine.textContent = text;
@@ -49,22 +51,41 @@ function updateButtons() {
                               : "Translating turns on when the model is ready";
 }
 
-// ---- Status: is the model loaded yet? ------------------------------------------------------
+// The language tag and writing direction for text in a language.
+function langOf(name) {
+  const info = LANGS[name] || {};
+  return { lang: info.lang || LANG_CODES[name] || "", dir: info.rtl ? "rtl" : "ltr" };
+}
+
+// Tested languages first, then the rest in alphabetical order.
+function fillLanguages(list) {
+  const groups = [["Tested on real label instructions", list.filter((l) => l.tested)],
+                  ["Not tested yet", list.filter((l) => !l.tested).sort((a, b) => a.name.localeCompare(b.name))]];
+  for (const [title, members] of groups) {
+    if (!members.length) continue;
+    const group = document.createElement("optgroup");
+    group.label = title;
+    for (const lang of members) {
+      group.append(new Option(lang.tested ? lang.name : `${lang.name} (not tested yet)`, lang.name));
+      LANGS[lang.name] = lang;
+    }
+    language.append(group);
+  }
+  language.value = "Vietnamese";
+}
+
+// ---- Status: are the model and the photo text reader loaded yet? ---------------------------
 async function pollStatus() {
   try {
     const response = await fetch("/api/status");
     const body = await response.json();
-    if (!language.options.length) {
-      for (const lang of body.languages) {
-        const option = new Option(lang.tested ? lang.name : `${lang.name} (not tested yet)`, lang.name);
-        language.add(option);
-      }
-      language.value = "Vietnamese";
-    }
+    if (!language.options.length) fillLanguages(body.languages);
+    showTextReader(body.text_reader);
     if (body.status === "ready") {
       ready = true;
       if (statusLine.dataset.kind === "waiting") setStatus("");
       updateButtons();
+      if (body.text_reader === "warming_up") setTimeout(pollStatus, 5000);  // the photo reader loads next
       return;
     }
     if (body.status === "error") {
@@ -94,6 +115,7 @@ function setMode(next, { focusTab = false } = {}) {
   }
   $("line-examples").hidden = next !== "line";
   $("photo-examples").hidden = next !== "photo";
+  $("ocr").hidden = next !== "line";
   if (focusTab) tabs[next].focus();
   const sample = document.querySelector(".sample-video");
   if (next === "photo") sample.pause();
@@ -139,7 +161,7 @@ async function checkLine() {
   // Said once (and announced once); only the seconds count changes.
   setStatus("");
   $("checking-text").textContent = `Translating into ${language.value} (${tries}), translating back into ` +
-    "English and running 9 checks. Usually 10–40 seconds.";
+    `English and running ${fromPhoto ? 10 : 9} checks. Usually 10–40 seconds.`;
   const tick = () => { $("checking-seconds").textContent = `${Math.round((Date.now() - started) / 1000)} s`; };
   tick();
   const timer = setInterval(tick, 1000);
@@ -147,7 +169,10 @@ async function checkLine() {
     const response = await fetch("/api/check", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ english: text, language: language.value, safer: safer.checked }),
+      body: JSON.stringify({ english: text, language: language.value, safer: safer.checked,
+                             // Ticking "I compared the marked words" clears them: the pharmacist checked.
+                             photo_unsure: fromPhoto ? ($("ocr-confirm").checked ? [] : fromPhoto.unsure)
+                                                     : undefined }),
     });
     if (response.status === 503) {
       ready = false;
@@ -258,7 +283,7 @@ function show(body) {
   result.classList.remove("animate");
   void result.offsetWidth;
   result.classList.add("animate");
-  const lang = LANG_CODES[body.language] || "";
+  const { lang, dir } = langOf(body.language);
   $("translation-label").textContent = body.language;
   $("untested").hidden = body.language_tested;
   $("untested-language").textContent = body.language;
@@ -289,6 +314,7 @@ function show(body) {
   const translation = $("translation");
   translation.textContent = body.translation;
   translation.lang = lang;
+  translation.dir = dir;
   markRoundTrip($("english-line"), body.english, body.back_translation, "lost");
   markRoundTrip($("back-line"), body.back_translation, body.english, "changed");
   renderChecks($("checks"), body.checks);
@@ -304,6 +330,7 @@ function show(body) {
   const slipText = $("slip-translation");
   slipText.textContent = body.translation;
   slipText.lang = lang;
+  slipText.dir = dir;
   $("slip-english").textContent = body.english;
   $("slip-date").textContent = today();
   $("slip-verdict").textContent = body.verdict === "check"
@@ -325,6 +352,7 @@ $("print").addEventListener("click", () => {
 for (const button of document.querySelectorAll("[data-example]")) {
   button.addEventListener("click", () => {
     english.value = button.dataset.example;
+    clearOcrLine();
     english.focus();
   });
 }
@@ -627,7 +655,7 @@ function showLine(line, answer, targetLanguage) {
   }
   const failed = answer.checks.filter((c) => !c.ok);
   line.translation.textContent = answer.translation;
-  line.translation.lang = LANG_CODES[targetLanguage] || "";
+  Object.assign(line.translation, langOf(targetLanguage));
   setLineState(line, failed.length ? "failed" : "passed");
   const parts = [];
   if (failed.length) {
@@ -723,7 +751,7 @@ for (const control of [language, safer]) {
 
 // The printed slip for the whole label: each line in the patient's language, the English small under it.
 function fillLabelSlip() {
-  const lang = LANG_CODES[labelRun.language] || "";
+  const { lang, dir } = langOf(labelRun.language);
   $("lslip-language").textContent = labelRun.language;
   $("lslip-product").textContent = [$("product-brand").textContent, $("product-active").textContent]
     .filter(Boolean).join(" · ");
@@ -751,6 +779,7 @@ function fillLabelSlip() {
       } else {
         translated.textContent = answer.translation;
         translated.lang = lang;
+        translated.dir = dir;
         entry.append(translated, englishText);
       }
       if (answer.verdict !== "no_problems_found") {
@@ -774,6 +803,195 @@ function fillLabelSlip() {
 $("label-print").addEventListener("click", () => {
   document.body.dataset.print = "label";
   window.print();
+});
+
+// ---- One label line: read the lines from a photo of the label's text ------------------------
+const ocrButton = $("ocr-button");
+const ocrExample = $("ocr-example");
+const ocrFile = $("ocr-file");
+const ocrStatus = $("ocr-status");
+let ocrReady = false;
+let ocrBusy = false;
+
+function setOcrStatus(text, kind = "") {
+  ocrStatus.textContent = text;
+  ocrStatus.dataset.kind = kind;
+}
+
+function setOcrBusy(on) {
+  ocrBusy = on;
+  ocrButton.disabled = ocrExample.disabled = on || !ocrReady;
+  ocrButton.textContent = on ? "Reading the photo…" : "Take or choose a photo";
+}
+
+function showTextReader(state) {
+  ocrReady = state === "ready";
+  if (!ocrBusy) setOcrBusy(false);
+  ocrButton.hidden = ocrExample.hidden = state === "off";
+  if (state === "off") {
+    setOcrStatus("Reading photos of the label's text is off on this copy of the app (the reader isn't " +
+                 "installed). Typing still works.");
+  } else if (state === "error") {
+    setOcrStatus("The photo reader failed to start. Typing still works.", "error");
+  } else if (state === "warming_up") {
+    setOcrStatus("The photo reader is starting up; its buttons turn on when it's ready.", "waiting");
+  } else if (!ocrBusy && (ocrStatus.dataset.kind === "waiting" || !ocrStatus.dataset.kind)) {
+    setOcrStatus("");
+  }
+}
+
+// Phones take 12-megapixel photos. 2000 pixels on the long side is plenty to read a label, and
+// much quicker to send and read. Small JPEG or PNG files go as they are.
+async function shrink(file) {
+  try {
+    const bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });
+    const scale = Math.min(1, 2000 / Math.max(bitmap.width, bitmap.height));
+    if (scale === 1 && /^image\/(jpeg|png)$/.test(file.type) && file.size < 3e6) return file;
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(bitmap.width * scale);
+    canvas.height = Math.round(bitmap.height * scale);
+    canvas.getContext("2d").drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.92));
+    return blob || file;
+  } catch {
+    return file;  // this browser can't open it (e.g. an iPhone HEIC photo on Windows): let the server try
+  }
+}
+
+let ocrPreviewUrl = "";
+async function readTextPhoto(file, what = "the photo") {
+  if (!ocrReady || ocrBusy) return;
+  setOcrBusy(true);
+  setOcrStatus(`Reading ${what}… usually 5–30 seconds.`, "waiting");
+  if (ocrPreviewUrl) URL.revokeObjectURL(ocrPreviewUrl);
+  ocrPreviewUrl = URL.createObjectURL(file);
+  $("ocr-preview").src = ocrPreviewUrl;
+  try {
+    const upload = await shrink(file);
+    const response = await fetch("/api/read-text", {
+      method: "POST",
+      headers: { "Content-Type": upload.type || "application/octet-stream" },
+      body: upload,
+    });
+    const body = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      setOcrStatus(response.status !== 503 && typeof body.detail === "string" ? body.detail
+        : "The photo reader isn't available right now. Typing still works.", "error");
+      return;
+    }
+    showOcrLines(body.instructions);
+  } catch {
+    setOcrStatus("The photo didn't finish uploading: the connection dropped. Try again.", "error");
+  } finally {
+    setOcrBusy(false);
+  }
+}
+
+function showOcrLines(instructions) {
+  const list = $("ocr-lines");
+  list.replaceChildren();
+  clearOcrLine();
+  $("ocr-result").hidden = false;
+  if (!instructions.length) {
+    $("ocr-summary").textContent = "";
+    setOcrStatus("No text found. Try a closer, sharper photo of the Directions, held flat.", "error");
+    return;
+  }
+  setOcrStatus("");
+  const unsure = instructions.reduce((n, item) => n + item.unsure.length, 0);
+  $("ocr-summary").textContent = `Read ${instructions.length} line${instructions.length === 1 ? "" : "s"}. ` +
+    (unsure ? `${unsure} word${unsure === 1 ? " was" : "s were"} hard to read (in red). `
+            : "No word was hard to read, but still compare each line with the label. ") +
+    "Pick a line to put it in the box above.";
+  instructions.forEach((item, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "ocr-line";
+    button.setAttribute("aria-pressed", "false");
+    item.words.forEach((word, i) => {
+      if (i) button.append(" ");
+      if (word.warning) {
+        const mark = document.createElement("mark");
+        mark.textContent = word.text;
+        mark.title = word.warning;
+        button.append(mark);
+      } else {
+        button.append(word.text);
+      }
+    });
+    if (item.unsure.length) {
+      const note = document.createElement("span");
+      note.className = "ocr-line-note";
+      note.textContent = "Check: " + item.unsure.map((u) => u.warning).join(", ");
+      button.append(note);
+    }
+    button.addEventListener("click", () => useOcrLine(item, button, index));
+    const row = document.createElement("li");
+    row.append(button);
+    list.append(row);
+  });
+}
+
+function useOcrLine(item, button, index) {
+  english.value = item.text;
+  fromPhoto = { text: item.text, unsure: item.unsure };
+  $("ocr-confirm").checked = false;
+  $("ocr-confirm-row").hidden = !item.unsure.length;
+  for (const other of document.querySelectorAll(".ocr-line")) {
+    other.setAttribute("aria-pressed", String(other === button));
+  }
+  const toCheck = item.unsure.map((u) => u.warning.split(" (")[0]).join(", ");
+  setStatus(`Line ${index + 1} from the photo is in the box. ` + (item.unsure.length
+    ? `Compare ${toCheck} with the label and fix it if needed, then check it.`
+    : "Compare it with the label, then check it."));
+  english.focus();
+  english.scrollIntoView({ block: "center", behavior: reducedMotion.matches ? "auto" : "smooth" });
+}
+
+function clearOcrLine() {
+  fromPhoto = null;
+  $("ocr-confirm").checked = false;
+  $("ocr-confirm-row").hidden = true;
+  for (const button of document.querySelectorAll(".ocr-line")) button.setAttribute("aria-pressed", "false");
+}
+
+// How much of one text's words are in the other (0 to 1).
+function overlap(a, b) {
+  const first = new Set(words(a));
+  const second = new Set(words(b));
+  if (!first.size || !second.size) return 0;
+  let same = 0;
+  for (const word of first) if (second.has(word)) same += 1;
+  return same / Math.max(first.size, second.size);
+}
+
+// Fixing a word keeps the photo line (and its check); typing a different instruction drops it.
+english.addEventListener("input", () => {
+  if (fromPhoto && overlap(english.value, fromPhoto.text) < 0.5) clearOcrLine();
+});
+
+ocrButton.addEventListener("click", () => ocrFile.click());
+ocrFile.addEventListener("change", () => {
+  const file = ocrFile.files[0];
+  ocrFile.value = "";
+  if (file) readTextPhoto(file, "your photo");
+});
+ocrExample.addEventListener("click", async () => {
+  try {
+    const response = await fetch("/static/media/example-label.jpg", { cache: "no-cache" });
+    if (!response.ok) throw new Error("missing");
+    readTextPhoto(await response.blob(), "the example photo");
+  } catch {
+    setOcrStatus("The example photo didn't load. Try your own photo instead.", "error");
+  }
+});
+// In One label line, a photo pasted anywhere on the page (Ctrl + V) is read too.
+document.addEventListener("paste", (event) => {
+  const file = [...(event.clipboardData?.files || [])].find((f) => f.type.startsWith("image/"));
+  if (mode === "line" && file && ocrReady && !ocrBusy) {
+    event.preventDefault();
+    readTextPhoto(file, "the pasted photo");
+  }
 });
 
 // ---- Start ----------------------------------------------------------------------------------

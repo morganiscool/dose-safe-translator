@@ -1,4 +1,4 @@
-# The web app (server.py), pinned to the versions tested on Nov 14, 2026.
+# The web app (server.py), pinned to the versions tested on Nov 14, 2026 (the photo reader on Nov 15).
 # The Dockerfile installs these; the notebook installs its own packages in Colab (see requirements.txt).
 fastapi==0.162.7
 uvicorn==0.54.0
@@ -9,4 +9,7 @@ sacrebleu==2.6.0
 # Photo mode: looking labels up, and reading barcodes in photos
 requests==2.34.2
 zxing-cpp==3.1.1
+# Reading the text of a label in a photo. Downloads about 100 MB of models the first time the app starts.
+easyocr==1.7.2
+torchvision==0.29.2
 pillow==13.0.0

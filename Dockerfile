@@ -17,6 +17,8 @@ RUN pip install --no-cache-dir --user --extra-index-url https://download.pytorch
 # Download the translation model (about 2.5 GB) while building, so a waking Space doesn't have to.
 RUN python -c "from transformers import AutoModelForSeq2SeqLM, AutoTokenizer; \
 m = 'facebook/nllb-200-distilled-600M'; AutoTokenizer.from_pretrained(m); AutoModelForSeq2SeqLM.from_pretrained(m)"
+# ...and the photo reader's models (about 100 MB).
+RUN python -c "import easyocr; easyocr.Reader(['en'], gpu=False, verbose=False)"
 
 COPY --chown=user . .
 EXPOSE 7860

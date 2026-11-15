@@ -1,10 +1,11 @@
 """Dose-Safe Translator web app: the pages in web/ and a small JSON API.
 
 Run it on your computer:   uvicorn server:app --port 7860   then open http://127.0.0.1:7860
-The first start downloads the translation model (about 2.5 GB).
+The first start downloads the translation model (about 2.5 GB) and the photo text reader (about 100 MB).
 """
 import base64
 import binascii
+import io
 import logging
 import threading
 import time
@@ -12,26 +13,37 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Annotated
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
+from starlette.concurrency import run_in_threadpool
 
 from dose_safe.checks import FORWARD_CHECKS
 from dose_safe.languages import LANGUAGES, TESTED_LANGUAGES
 from dose_safe.lookup import LabelNotFound, LabelSourceDown, search_terms
+from dose_safe.photo import photo_to_instructions, photo_warning, prepare, still_in
 from dose_safe.translator import MAX_TOKENS, translate_and_check
 
 WEB_DIR = Path(__file__).parent / "web"
 SAFER_CANDIDATES = 5  # translations to try in safer mode
 MAX_LINES = 20  # label lines checked in one request (photo mode sends one label section at a time)
+MAX_PHOTO_BYTES = 15 * 1024 * 1024  # the page shrinks photos first, so real uploads are far smaller
+PHOTO_CHECK = "Photo read clearly"
 log = logging.getLogger("dose_safe")
+
+
+class PhotoWord(BaseModel):
+    word: str = Field(max_length=200)
+    warning: str = Field(max_length=300)
 
 
 class CheckRequest(BaseModel):
     english: str = Field(max_length=2000)
     language: str
     safer: bool = True
+    # When the line was read from a photo of the label's text: the words the reader wasn't sure about.
+    photo_unsure: list[PhotoWord] | None = Field(default=None, max_length=100)
 
 
 class LinesRequest(BaseModel):
@@ -95,11 +107,16 @@ def barcode_in_photo(data_url):
     return read_barcode(image_bytes)
 
 
-def create_app(load_translator, load_in_background=True, find_label=label_from_the_internet):
+def create_app(load_translator, load_in_background=True, find_label=label_from_the_internet,
+               load_text_reader=None):
     """`load_translator` makes the translator. It runs once at startup, in the background by default,
     because the real model takes a minute or more to load and the page should answer meanwhile.
-    `find_label(code)` looks a barcode up (tests pass a stand-in that doesn't use the internet)."""
-    state = {"translator": None, "status": "warming_up"}
+    `find_label(code)` looks a barcode up (tests pass a stand-in that doesn't use the internet).
+    `load_text_reader` makes the reader for photos of a label's text (None: that input is off); it
+    loads after the translator."""
+    state = {"translator": None, "status": "warming_up",
+             "text_reader": None, "text_reader_status": "warming_up" if load_text_reader else "off"}
+    text_lock = threading.Lock()  # one photo at a time: the reader isn't made for parallel calls
     labels_seen = {}  # barcode -> label, so showing the same box again doesn't download it again
 
     def load():
@@ -109,6 +126,17 @@ def create_app(load_translator, load_in_background=True, find_label=label_from_t
         except Exception:
             log.exception("Could not load the translation model")
             state["status"] = "error"
+        if load_text_reader:
+            try:
+                state["text_reader"] = load_text_reader()
+                state["text_reader_status"] = "ready"
+            except ImportError:
+                log.warning("Reading a label's text from a photo is off: EasyOCR isn't installed. "
+                            "Run: pip install -r requirements-app.txt")
+                state["text_reader_status"] = "off"
+            except Exception:
+                log.exception("Could not load the photo text reader")
+                state["text_reader_status"] = "error"
 
     @asynccontextmanager
     async def lifespan(_app):
@@ -122,8 +150,10 @@ def create_app(load_translator, load_in_background=True, find_label=label_from_t
 
     @app.get("/api/status")
     def status():
-        return {"status": state["status"],
-                "languages": [{"name": name, "tested": name in TESTED_LANGUAGES} for name in LANGUAGES]}
+        return {"status": state["status"], "text_reader": state["text_reader_status"],
+                "languages": [{"name": name, "tested": name in TESTED_LANGUAGES,
+                               "lang": spec.get("lang", ""), "rtl": bool(spec.get("rtl"))}
+                              for name, spec in LANGUAGES.items()]}
 
     def ready_translator(language):
         translator = state["translator"]
@@ -142,7 +172,17 @@ def create_app(load_translator, load_in_background=True, find_label=label_from_t
         started = time.perf_counter()
         answer = check_lines(translator, [english], request.language, request.safer)[0]
         answer = {**answer, "language": request.language,
-                  "language_tested": request.language in TESTED_LANGUAGES}
+                  "language_tested": request.language in TESTED_LANGUAGES,
+                  "from_photo": request.photo_unsure is not None}
+        if request.photo_unsure is not None and answer["verdict"] != "too_long":
+            # A word the photo reader wasn't sure about, still in the text, keeps the line flagged
+            # until someone compares it with the label and corrects or confirms it.
+            left = [u.warning for u in request.photo_unsure if still_in(u.word, english)]
+            checks = answer["checks"] + [{"name": PHOTO_CHECK, "ok": not left, "looks_at": "photo",
+                                          "detail": "hard to read: " + "; ".join(left) if left else ""}]
+            checks.sort(key=lambda c: c["ok"])  # failed checks first
+            answer = {**answer, "checks": checks,
+                      "verdict": "check" if any(not c["ok"] for c in checks) else "no_problems_found"}
         if answer["verdict"] != "too_long":
             answer["seconds"] = round(time.perf_counter() - started, 1)
         return answer
@@ -188,6 +228,40 @@ def create_app(load_translator, load_in_background=True, find_label=label_from_t
             labels_seen[code] = found
         return {"barcode": code, **labels_seen[code]}
 
+    @app.post("/api/read-text")
+    async def read_text(request: Request):
+        """Read the text of a label in a photo (the request body is the image) into instructions."""
+        reader = state["text_reader"]
+        if reader is None:
+            raise HTTPException(503, detail=state["text_reader_status"])
+        data = bytearray()
+        async for chunk in request.stream():
+            data += chunk
+            if len(data) > MAX_PHOTO_BYTES:
+                raise HTTPException(413, detail="That photo is too big. Try one under 15 MB.")
+        if not data:
+            raise HTTPException(422, detail="Choose a photo first")
+        try:
+            from PIL import Image
+            image = Image.open(io.BytesIO(bytes(data)))
+            image.load()
+        except Exception:
+            raise HTTPException(415, detail="That file isn't a photo the app can open. Use a JPEG or PNG.")
+
+        def read():
+            with text_lock:
+                return photo_to_instructions(reader, prepare(image))
+
+        started = time.perf_counter()
+        found = await run_in_threadpool(read)
+        return {"instructions": [
+                    {"text": item["text"],
+                     "words": [{"text": word, "warning": photo_warning(word, confidence)}
+                               for word, confidence in item["words"]],
+                     "unsure": [{"word": word, "warning": warning} for word, warning in item["unsure"]]}
+                    for item in found],
+                "seconds": round(time.perf_counter() - started, 1)}
+
     @app.get("/", include_in_schema=False)
     def landing_page():
         page = WEB_DIR / "index.html"
@@ -206,4 +280,9 @@ def _load_nllb():
     return NllbTranslator()
 
 
-app = create_app(_load_nllb)
+def _load_text_reader():
+    from dose_safe.photo import load_reader
+    return load_reader()
+
+
+app = create_app(_load_nllb, load_text_reader=_load_text_reader)

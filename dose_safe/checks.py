@@ -14,7 +14,11 @@ from .languages import ENGLISH
 
 BACK_SIMILARITY_MIN = 40  # back-translation similarity (0-100) below this is flagged
 DIGITS = re.compile(r"\d+(?:[.,]\d+)?(?:\s*/\s*\d+)?")
-WORDS = re.compile(r"[^\W\d_]+(?:['’-][^\W\d_]+)*")
+# A word is letters plus the combining marks many scripts write vowels with (Hindi नहीं, Thai ไม่).
+# Python's \w leaves those marks out, which cut such words into pieces at every vowel sign.
+MARKS = "".join(chr(c) for c in range(0x300, 0x10000) if unicodedata.category(chr(c)).startswith("M"))
+LETTER = rf"(?:[^\W\d_]|[{MARKS}])"
+WORDS = re.compile(rf"{LETTER}+(?:['’-]{LETTER}+)*")
 UNITS = {  # ages ("12 years") are already protected by the numbers check
     "hours": ["hour", "hours", "hr", "hrs", "hourly"],
     "days": ["day", "days", "daily"],
@@ -33,7 +37,10 @@ ROUND_TRIP_CHECKS = ["Numbers survive the round trip", "“Not” survives the r
 CHECK_NAMES = FORWARD_CHECKS + ROUND_TRIP_CHECKS
 
 def normalize(text):
-    return unicodedata.normalize("NFKC", text).replace("⁄", "/").lower()
+    # Turkish "İ" lowercases to "i" plus a combining dot; drop the dot so "İlaç" matches "ilaç".
+    text = unicodedata.normalize("NFKC", text).replace("⁄", "/").lower().replace("i̇", "i")
+    # The model sometimes writes "don 't" with a space; join it so the "not" still counts.
+    return re.sub(r"(\w)\s+(['’]t)\b", r"\1\2", text)
 
 
 def match_phrases(text, phrases, cjk=False):
@@ -43,13 +50,16 @@ def match_phrases(text, phrases, cjk=False):
     `phrases` maps each phrase to a label. Returns (the labels found, in order; what is left of the
     text: a string for Chinese, a list of words otherwise)."""
     found = []
-    if cjk:  # Chinese has no spaces: match characters
-        keys = sorted(phrases, key=len, reverse=True)
+    if cjk:  # no spaces between words (Chinese, Japanese, Thai): match characters
+        table = {}
+        for phrase, label in phrases.items():  # normalized like the text (Thai ำ changes)
+            table.setdefault(normalize(phrase), label)
+        keys = sorted((k for k in table if k), key=len, reverse=True)
         rest, i = list(text), 0
         while i < len(text):
-            match = next((k for k in keys if k and text.startswith(k, i)), None)
+            match = next((k for k in keys if text.startswith(k, i)), None)
             if match:
-                found.append(phrases[match])
+                found.append(table[match])
                 rest[i:i + len(match)] = " " * len(match)
                 i += len(match)
             else:
@@ -102,13 +112,17 @@ def number_parts(text, spec):
 
 def count_negations(text, spec):
     """How many "not / don't" words a text has. Words that only contain a negation (Chinese 不满 =
-    under, 不适 = discomfort; Tagalog "hindi pa" = not yet, as in an age limit) don't count."""
+    under, 不适 = discomfort; Tagalog "hindi pa" = not yet, as in an age limit) don't count.
+    Some languages say "not" inside a longer word: "negation_starts" and "negation_ends" say how
+    such words start or end (French n'utilisez, Turkish kullanmayın = don't use)."""
     skip = [p for phrases in spec["limits"].values() for p in phrases] + spec.get("not_negations", [])
     _, rest = match_phrases(normalize(text), dict.fromkeys(skip), spec.get("cjk"))
     if spec.get("cjk"):
-        return sum(rest.count(word) for word in spec["negations"])
-    negations = set(spec["negations"])
-    return sum(1 for t in rest if t in negations or t.endswith(("n't", "n’t")))
+        return sum(rest.count(normalize(word)) for word in spec["negations"])
+    negations = {normalize(word) for word in spec["negations"]}
+    starts = tuple(normalize(word) for word in spec.get("negation_starts", []))
+    ends = ("n't", "n’t") + tuple(normalize(word) for word in spec.get("negation_ends", []))
+    return sum(1 for t in rest if t in negations or t.endswith(ends) or t.startswith(starts))
 
 
 def word_groups(text, groups):
@@ -133,10 +147,15 @@ def compare_numbers(source, text, spec):
     digits, word_hits = digit_numbers(text), word_numbers(text, spec)
     missing = needed - Counter(digits + [float(v) for _, v in word_hits])
     # A number that appears out of nowhere is a problem, written as digits or as a word. Words that
-    # are also ordinary words ("una" = a, "năm" = year) can't be trusted as new numbers.
+    # are also ordinary words ("una" = a, "năm" = year) can't be trusted as new numbers, and nor can
+    # digits in set phrases ("ambiguous_digits": Japanese 1日 = per day, as in 1日3回 = 3 times a day).
     ambiguous = set(spec.get("ambiguous", []))
     firm_words = [float(v) for w, v in word_hits if w not in ambiguous]
-    new = Counter(digits + firm_words) - needed
+    set_phrases = Counter()
+    for phrase in spec.get("ambiguous_digits", []):
+        set_phrases.update(digit_numbers(phrase) * normalize(text).count(normalize(phrase)))
+    firm_digits = list((Counter(digits) - set_phrases).elements())
+    new = Counter(firm_digits + firm_words) - needed
     problems = []
     if missing:
         problems.append("missing " + _show(missing.elements()))
