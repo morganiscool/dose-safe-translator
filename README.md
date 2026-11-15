@@ -139,15 +139,19 @@ _Fill these in from the notebook output (sections 7 and 8). Report what you actu
 weak results._
 
 **Automatic checks** (share of translations flagged, section 7). Re-run on Nov 15, 2026 with the fixed
-checks (the bugs and their tests are in `tests/test_checks.py` and `tests/test_labels.py`): 150 label
-instructions per language, run on a laptop processor. The fixes left the totals where they were (the
-first run on Nov 14 gave 11 % → 10 % and 17 % → 10 % too); they change which single translations get
-flagged in the edge cases the bugs were about.
+checks (the bugs and their tests are in `tests/test_checks.py` and `tests/test_labels.py`) on the
+current data snapshot: 150 label instructions per language, run on a laptop processor. The check fixes
+left the totals where they were (the first run on Nov 14 also gave 11 % → 10 % and 17 % → 10 %); they
+change which single translations get flagged in the edge cases the bugs were about. Splitting
+symbol-font bullets (section 3) then changed one test instruction: five directions that had been read
+as one became *"Do not give more than 6 doses in any 24 hours period"* alone. Its Vietnamese
+translation is no longer flagged, so Vietnamese as-is went from 17 % to 16 %. Every other verdict
+stayed the same.
 
 | Language | NLLB as-is | Safer mode | Safer mode changed |
 |---|---|---|---|
 | Spanish | 11 % | 10 % | 3 % of translations |
-| Vietnamese | 17 % | 10 % | 7 % of translations |
+| Vietnamese | 16 % | 10 % | 7 % of translations |
 
 Safer mode is chosen *by* these checks, so it will always look better here. The ratings below are the
 fair test.

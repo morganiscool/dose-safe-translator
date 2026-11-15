@@ -48,8 +48,8 @@ It doesn't claim translations are correct. It flags the specific kinds of mistak
 
 ## Evidence on Hand
 
-- `data/otc_directions.csv`: 377 instructions from 66 labels, 24 ingredients (snapshot from Nov 14, 2026).
-- Automatic-check results from a test run (150 instructions per language, Colab T4). Spanish: 11% flagged as-is, 10% in safer mode, which changed 2% of translations. Vietnamese: 17% → 10%, safer mode changed 7%. These numbers predate the Nov 14 check fixes and need a re-run.
+- `data/otc_directions.csv`: 378 instructions from 66 labels, 24 ingredients (snapshot from Nov 14, 2026, with symbol-font bullets split).
+- Automatic-check results, re-run on Nov 15, 2026 with the fixed checks on that snapshot (150 instructions per language, laptop CPU). Spanish: 11% flagged as-is, 10% in safer mode, which changed 3% of translations. Vietnamese: 16% → 10%, safer mode changed 7%.
 - Fluent-speaker ratings: **not collected yet.** Never invent rating results, catch rates, testimonials, users or press.
 - Real examples:
   - Missed by the checks: "laxative products should not be used…" came back from Vietnamese as "slimming products…".
