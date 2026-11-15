@@ -109,14 +109,15 @@ positives).
 _Fill these in from the notebook output (sections 7 and 8). Report what you actually got, including
 weak results._
 
-**Automatic checks** (share of translations flagged, section 7). From our test run on Nov 14, 2026
-(150 label instructions per language, Colab T4 GPU). These numbers come from before the fixes to the
-checks (the bugs and their tests are in `tests/test_checks.py` and `tests/test_labels.py`), so re-run
-the notebook and update them:
+**Automatic checks** (share of translations flagged, section 7). Re-run on Nov 15, 2026 with the fixed
+checks (the bugs and their tests are in `tests/test_checks.py` and `tests/test_labels.py`): 150 label
+instructions per language, run on a laptop processor. The fixes left the totals where they were (the
+first run on Nov 14 gave 11 % → 10 % and 17 % → 10 % too); they change which single translations get
+flagged in the edge cases the bugs were about.
 
 | Language | NLLB as-is | Safer mode | Safer mode changed |
 |---|---|---|---|
-| Spanish | 11 % | 10 % | 2 % of translations |
+| Spanish | 11 % | 10 % | 3 % of translations |
 | Vietnamese | 17 % | 10 % | 7 % of translations |
 
 Safer mode is chosen *by* these checks, so it will always look better here. The ratings below are the
