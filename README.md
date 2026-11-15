@@ -44,12 +44,19 @@ Chinese or Spanish.
   translation*. The tool never says a translation is "safe".
 - **Safer mode:** instead of taking the model's first answer, it looks at its top 5 translations and keeps
   the one with the fewest problems in the translation itself (then the fewest problems overall).
-- **Photo input:** the pharmacist can photograph the label's Directions section instead of typing.
-  EasyOCR reads it and **highlights the words it wasn't sure about** (with a stricter bar for numbers).
-  The pharmacist checks the text against the label before anything is translated.
+- **Photo input** (notebook demo): the pharmacist can photograph the label's Directions section instead
+  of typing. EasyOCR reads it and **highlights the words it wasn't sure about** (with a stricter bar for
+  numbers). The pharmacist checks the text against the label before anything is translated.
+- **Photo mode** (web app): photograph the barcode on a medicine box, or type its barcode or NDC number.
+  The app finds the box's official label (openFDA → DailyMed), shows the product so the pharmacist can
+  confirm it's the right box, then translates and checks every line of its **Purpose** (what it does),
+  **Uses** (what the label says it treats), **Directions** (how much, how often, who may take it) and
+  **Do not use** sections, and prints the whole label as one slip. It shows only the label's own words.
+  Because the words come from the official label, not from reading the photo, there are no misread words
+  to check; the pharmacist checks the product instead.
 
 The demo is a Gradio app at the end of the notebook. It prints a public `….gradio.live` link that also
-works on a phone. Photo input is only in this notebook demo so far, not in the web app.
+works on a phone. The notebook demo reads the label's text from a photo; the web app reads its barcode.
 
 ## What we added
 
@@ -131,15 +138,20 @@ positives).
 _Fill these in from the notebook output (sections 7 and 8). Report what you actually got, including
 weak results._
 
-**Automatic checks** (share of translations flagged, section 7). From our test run on Nov 14, 2026
-(150 label instructions per language, Colab T4 GPU). These numbers come from before the fixes to the
-checks (the bugs and their tests are in `tests/test_checks.py` and `tests/test_labels.py`), so re-run
-the notebook and update them:
+**Automatic checks** (share of translations flagged, section 7). Re-run on Nov 15, 2026 with the fixed
+checks (the bugs and their tests are in `tests/test_checks.py` and `tests/test_labels.py`) on the
+current data snapshot: 150 label instructions per language, run on a laptop processor. The check fixes
+left the totals where they were (the first run on Nov 14 also gave 11 % → 10 % and 17 % → 10 %); they
+change which single translations get flagged in the edge cases the bugs were about. Splitting
+symbol-font bullets (section 3) then changed one test instruction: five directions that had been read
+as one became *"Do not give more than 6 doses in any 24 hours period"* alone. Its Vietnamese
+translation is no longer flagged, so Vietnamese as-is went from 17 % to 16 %. Every other verdict
+stayed the same.
 
 | Language | NLLB as-is | Safer mode | Safer mode changed |
 |---|---|---|---|
-| Spanish | 11 % | 10 % | 2 % of translations |
-| Vietnamese | 17 % | 10 % | 7 % of translations |
+| Spanish | 11 % | 10 % | 3 % of translations |
+| Vietnamese | 16 % | 10 % | 7 % of translations |
 
 Safer mode is chosen *by* these checks, so it will always look better here. The ratings below are the
 fair test.
@@ -218,8 +230,8 @@ Known limits:
 
 ## Run the web app
 
-The app (`server.py` and the pages in `web/`) is the same tool as the notebook's demo, with the
-safety checks in `dose_safe/` and a translator screen built for a pharmacy counter. Its front page
+The app (`server.py` and the pages in `web/`) uses the same translator and safety checks as the
+notebook's demo, kept in `dose_safe/`, with a translator screen built for a pharmacy counter. Its front page
 (`/`) explains the project, with a 45-second explainer film (`web/media/explainer.mp4`); the
 translator is at `/translate`. The film and the small looping clips are HyperFrames projects in
 `video/`, and the 3D carton and caplets are rendered by `blender/scene.py`.
@@ -233,6 +245,19 @@ seconds on a normal laptop.
 
 **Just on your own computer:** `pip install -r requirements-app.txt`, then
 `uvicorn server:app --port 7860` and open http://localhost:7860/translate.
+
+**Photo mode** is the "Photo of the box" tab (or `/translate?mode=photo`). It needs an internet
+connection to look the label up. On a phone, the photo button opens the camera. The photo is only used
+to read the barcode (with [zxing-cpp](https://github.com/zxing-cpp/zxing-cpp)) and isn't saved. A whole
+label takes longer than one line: about 100 seconds for a 10-line label in safer mode on a laptop
+processor. Two limits of the data:
+- Only about a third of over-the-counter labels in openFDA list their barcode (16,218 of 49,694 on
+  Nov 15, 2026), so the NDC number printed on the box works too.
+- Some makers fill in a placeholder barcode (012345678905 is on 134 different labels). When a barcode
+  matches more than one product, the app refuses to guess and asks for the NDC number.
+
+No box at hand? The tab shows a real barcode (from an acetaminophen 500 mg label) to photograph from
+the screen, or to use with one click.
 
 **Tests:** `pip install -r requirements-dev.txt`, then `python -m pytest`.
 
@@ -267,7 +292,9 @@ running.
 - Test set (optional): [FLORES+](https://huggingface.co/datasets/openlanguagedata/flores_plus)
 - Libraries: [Hugging Face Transformers](https://github.com/huggingface/transformers),
   [PyTorch](https://pytorch.org), [sacrebleu](https://github.com/mjpost/sacrebleu) (chrF),
-  [Gradio](https://www.gradio.app), [pandas](https://pandas.pydata.org)
+  [Gradio](https://www.gradio.app), [pandas](https://pandas.pydata.org); for the web app,
+  [FastAPI](https://fastapi.tiangolo.com), [zxing-cpp](https://github.com/zxing-cpp/zxing-cpp) (barcode
+  reading), [Pillow](https://python-pillow.org) and [Requests](https://requests.readthedocs.io)
 - Background: [UCSF on Google Translate for discharge instructions](https://universityofcalifornia.edu/news/google-translates-doctors-orders-spanish-and-chinese-few-important-caveats);
   [*Pediatrics* study on Spanish prescription labels](https://www.fiercehealthcare.com/healthcare/up-to-half-spanish-translated-prescriptions-include-dangerous-mistakes)
 - Explainer film: built with [HyperFrames](https://hyperframes.heygen.com) (`video/explainer`), opening on a

@@ -3,3 +3,7 @@ fastapi==0.162.7
 sacrebleu==2.6.0
 pytest==9.2.0
 httpx2==2.16.0
+# Photo mode: looking labels up, and reading barcodes in photos
+requests==2.34.2
+zxing-cpp==3.1.1
+pillow==13.0.0

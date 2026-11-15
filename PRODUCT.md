@@ -34,6 +34,7 @@ It doesn't claim translations are correct. It flags the specific kinds of mistak
 - Languages: Spanish, Vietnamese, Tagalog, Haitian Creole, Chinese (Simplified). Only Spanish and Vietnamese have been run on real label instructions. No language's word lists have been checked by a native speaker yet.
 - Nine checks. Four look at the translation: numbers kept, "not" kept, under/over kept, actually translated. Five look at the back-translation: numbers, "not", units and under/over survive the round trip, and the back-translation matches (chrF ≥ 40).
 - Inputs longer than 256 model tokens are refused, not cut off.
+- Photo mode (added Nov 15, 2026): a photo of the box's barcode, or a typed barcode or NDC number, finds the official label (openFDA → DailyMed). The pharmacist confirms the product, then every line of its Purpose, Uses, Directions and Do not use sections is translated and checked, and the whole label prints as one slip. It shows only the label's own words, never generated claims; "Uses" lists symptoms and conditions, not viruses. A barcode shared by different products is refused rather than guessed. A 10-line label takes about 100 s in safer mode on a laptop CPU.
 - Model: facebook/nllb-200-distilled-600M, CC-BY-NC 4.0, so non-commercial use only.
 - The checks are word rules. They can't understand meaning: a wrong word like "slimming" for "laxative" passes everything.
 
@@ -47,8 +48,8 @@ It doesn't claim translations are correct. It flags the specific kinds of mistak
 
 ## Evidence on Hand
 
-- `data/otc_directions.csv`: 377 instructions from 66 labels, 24 ingredients (snapshot from Nov 14, 2026).
-- Automatic-check results from a test run (150 instructions per language, Colab T4). Spanish: 11% flagged as-is, 10% in safer mode, which changed 2% of translations. Vietnamese: 17% → 10%, safer mode changed 7%. These numbers predate the Nov 14 check fixes and need a re-run.
+- `data/otc_directions.csv`: 378 instructions from 66 labels, 24 ingredients (snapshot from Nov 14, 2026, with symbol-font bullets split).
+- Automatic-check results, re-run on Nov 15, 2026 with the fixed checks on that snapshot (150 instructions per language, laptop CPU). Spanish: 11% flagged as-is, 10% in safer mode, which changed 3% of translations. Vietnamese: 16% → 10%, safer mode changed 7%.
 - Fluent-speaker ratings: **not collected yet.** Never invent rating results, catch rates, testimonials, users or press.
 - Real examples:
   - Missed by the checks: "laxative products should not be used…" came back from Vietnamese as "slimming products…".

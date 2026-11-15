@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Trimmed from the DailyMed label 0005aafa-08f8-4990-a54d-cc097195708f (barcode 0070038610953),
+     downloaded Nov 15, 2026. Only the sections photo mode reads, plus one it skips, are kept. -->
+<document xmlns="urn:hl7-org:v3">
+  <component><structuredBody>
+    <component><section>
+      <code code="55106-9" displayName="OTC - ACTIVE INGREDIENT SECTION"/>
+      <title><content styleCode="bold"><content styleCode="italics">Active ingredient (in each gelcap)</content></content></title>
+      <text><paragraph>Acetaminophen 500 mg</paragraph></text>
+    </section></component>
+    <component><section>
+      <code code="55105-1" displayName="OTC - PURPOSE SECTION"/>
+      <title><content styleCode="bold"><content styleCode="italics">Purpose</content></content></title>
+      <text><paragraph>Pain reliever/fever reducer</paragraph></text>
+    </section></component>
+    <component><section>
+      <code code="34067-9" displayName="INDICATIONS &amp; USAGE SECTION"/>
+      <title><content styleCode="bold"><content styleCode="italics">Uses</content></content></title>
+      <text>
+        <list listType="unordered" styleCode="Square">
+          <item>temporarily relieves minor aches and pains due to:<list listType="unordered" styleCode="Square">
+              <item>headache</item>
+              <item>the common cold</item>
+              <item>backache</item>
+              <item>minor pain of arthritis</item>
+              <item>toothache</item>
+              <item>muscular aches</item>
+              <item>premenstrual and menstrual cramps</item>
+            </list>
+          </item>
+          <item>temporarily reduces fever</item>
+        </list>
+      </text>
+    </section></component>
+    <component><section>
+      <code code="34071-1" displayName="WARNINGS SECTION"/>
+      <title>Warnings</title>
+      <component><section>
+        <code code="50570-1" displayName="OTC - DO NOT USE SECTION"/>
+        <title><content styleCode="bold">Do not use</content></title>
+        <text>
+          <list listType="unordered" styleCode="Square">
+            <item>if you are allergic to acetaminophen or any of the inactive ingredients in this product</item>
+            <item>with any other drug containing acetaminophen (prescription or nonprescription). If you are not sure whether a drug contains acetaminophen, ask a doctor or pharmacist.</item>
+          </list>
+        </text>
+      </section></component>
+    </section></component>
+    <component><section>
+      <code code="34068-7" displayName="DOSAGE &amp; ADMINISTRATION SECTION"/>
+      <title><content styleCode="bold"><content styleCode="italics">Directions</content></content></title>
+      <text>
+        <list listType="unordered" styleCode="Square">
+          <item><content styleCode="bold">do not take more than directed</content></item>
+          <item>adults and children 12 years and over<list listType="unordered" styleCode="Square">
+              <item>take 2 gelcaps every 6 hours while symptoms last</item>
+              <item>do not take more than 6 gelcaps in 24 hours, unless directed by a doctor</item>
+              <item>do not take for more than 10 days unless directed by a doctor</item>
+            </list>
+          </item>
+          <item>children under 12 years: ask a doctor</item>
+        </list>
+      </text>
+    </section></component>
+    <component><section>
+      <code code="44425-7" displayName="STORAGE AND HANDLING SECTION"/>
+      <title>Other information</title>
+      <text><paragraph>store at 20-25°C (68-77°F)</paragraph></text>
+    </section></component>
+  </structuredBody></component>
+</document>

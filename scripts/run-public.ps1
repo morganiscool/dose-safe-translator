@@ -16,11 +16,21 @@ $cloudflared = Join-Path $appHome "cloudflared.exe"
 $port = 7860
 New-Item -ItemType Directory -Force $appHome | Out-Null
 
-if (-not (Test-Path $python)) {
+$requirements = Join-Path $repo "requirements-app.txt"
+$installed = Join-Path $appHome "installed-requirements.txt"  # what the last successful install used
+$firstRun = -not (Test-Path $python)
+if ($firstRun) {
     Write-Host "First run: installing the app's Python packages (about 1 GB, a few minutes)..."
     $base = if (Get-Command py -ErrorAction SilentlyContinue) { "py" } else { "python" }
     & $base -m venv (Join-Path $appHome "venv")
-    & $python -m pip install --disable-pip-version-check --extra-index-url https://download.pytorch.org/whl/cpu -r (Join-Path $repo "requirements-app.txt")
+}
+# Install again whenever requirements-app.txt changes (photo mode added packages on Nov 15, 2026).
+if ($firstRun -or -not (Test-Path $installed) -or
+    (Get-FileHash $requirements).Hash -ne (Get-FileHash $installed).Hash) {
+    if (-not $firstRun) { Write-Host "The app's package list changed: updating its Python packages..." }
+    & $python -m pip install --disable-pip-version-check --extra-index-url https://download.pytorch.org/whl/cpu -r $requirements
+    if ($LASTEXITCODE -ne 0) { throw "Installing the Python packages failed. Check the internet connection and run this again." }
+    Copy-Item $requirements $installed
 }
 if (-not (Test-Path $cloudflared)) {
     Write-Host "First run: downloading cloudflared from Cloudflare's GitHub releases..."

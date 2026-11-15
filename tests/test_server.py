@@ -1,6 +1,9 @@
 """Tests for the web API, using FakeTranslator instead of the 2.5 GB model."""
+import base64
+import io
 import threading
 
+import pytest
 from fastapi.testclient import TestClient
 
 from dose_safe.translator import FakeTranslator
@@ -88,3 +91,80 @@ def test_model_load_failure_is_reported():
     with make_client(broken_loader) as client:
         assert client.get("/api/status").json()["status"] == "error"
         assert client.post("/api/check", json={"english": CAPLETS, "language": "Spanish"}).status_code == 503
+
+
+# ---- Photo mode -----------------------------------------------------------------------------------
+
+def test_check_lines_answers_every_line_in_order():
+    lines = [CAPLETS, "take 1 tablet " * 100]
+    with make_client() as client:
+        body = client.post("/api/check-lines", json={"lines": lines, "language": "Spanish"}).json()
+    first, second = body["results"]
+    assert first["english"] == CAPLETS and first["translation"] == CORRECT
+    assert first["verdict"] == "no_problems_found"
+    assert second["verdict"] == "too_long" and "translation" not in second
+    assert body["language_tested"] is True
+
+
+def test_check_lines_refuses_empty_or_too_many_lines():
+    with make_client() as client:
+        assert client.post("/api/check-lines", json={"lines": [], "language": "Spanish"}).status_code == 422
+        assert client.post("/api/check-lines", json={"lines": ["  "], "language": "Spanish"}).status_code == 422
+        assert client.post("/api/check-lines", json={"lines": [CAPLETS] * 21, "language": "Spanish"}).status_code == 422
+        assert client.post("/api/check-lines", json={"lines": [CAPLETS], "language": "Klingon"}).status_code == 400
+
+
+LABEL = {"product": {"set_id": "0005aafa-08f8-4990-a54d-cc097195708f", "brand": "Pain Reliever Extra Strength"},
+         "active_ingredients": ["Acetaminophen 500 mg"],
+         "sections": [{"name": "Directions", "lines": [CAPLETS]}]}
+
+
+def label_client(find_label):
+    return TestClient(create_app(lambda: FakeTranslator(TABLE), load_in_background=False, find_label=find_label))
+
+
+def test_label_by_typed_barcode_is_looked_up_once():
+    asked = []
+
+    def find_label(code):
+        asked.append(code)
+        return LABEL
+
+    with label_client(find_label) as client:
+        for _ in range(2):
+            body = client.post("/api/label", json={"code": " 070038610953 "}).json()
+    assert body["barcode"] == "070038610953"
+    assert body["sections"] == LABEL["sections"]
+    assert asked == ["070038610953"]  # the second time came from memory
+
+
+def test_label_from_a_photo_reads_the_barcode():
+    zxingcpp = pytest.importorskip("zxingcpp")
+    from test_barcode import photo_of  # pytest puts tests/ on the import path
+
+    photo = "data:image/jpeg;base64," + base64.b64encode(photo_of(zxingcpp.BarcodeFormat.UPCA, "070038610953")).decode()
+    with label_client(lambda code: LABEL) as client:
+        assert client.post("/api/label", json={"image": photo}).json()["barcode"] == "0070038610953"
+
+
+def test_label_errors_say_what_to_do_next():
+    from dose_safe.lookup import LabelNotFound, LabelSourceDown
+
+    def not_found(code):
+        raise LabelNotFound("No medicine label with this barcode is in the FDA's database.")
+
+    def down(code):
+        raise LabelSourceDown("Couldn't reach the FDA's label database.")
+
+    blank = io.BytesIO()
+    pytest.importorskip("PIL.Image").new("RGB", (300, 200), "white").save(blank, "JPEG")
+    no_barcode = "data:image/jpeg;base64," + base64.b64encode(blank.getvalue()).decode()
+    with label_client(not_found) as client:
+        assert client.post("/api/label", json={"code": "070038610953"}).status_code == 404
+        assert client.post("/api/label", json={"code": "aspirin"}).status_code == 422  # not a number
+        assert client.post("/api/label", json={}).status_code == 422
+        assert client.post("/api/label", json={"image": "data:image/jpeg;base64,@@@"}).status_code == 422
+        response = client.post("/api/label", json={"image": no_barcode})
+        assert response.status_code == 422 and "barcode" in response.json()["detail"]
+    with label_client(down) as client:
+        assert client.post("/api/label", json={"code": "070038610953"}).status_code == 502

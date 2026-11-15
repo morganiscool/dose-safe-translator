@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Translator · Dose-Safe Translator</title>
-<meta name="description" content="Translate one over-the-counter medicine instruction, see it translated back into English, and see whether a person should check it.">
+<meta name="description" content="Translate a medicine instruction, or a whole label from a photo of the box, see it translated back into English, and see whether a person should check it.">
 <link rel="icon" href="/static/media/icon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,13 +26,36 @@
   <p class="prototype">Prototype – not medical advice</p>
 </header>
 
-<main class="work">
+<main class="work" data-mode="line">
   <section class="panel instruction" aria-labelledby="page-title">
     <h1 id="page-title">Check a medicine translation</h1>
+    <div class="modes" role="tablist" aria-label="What to translate">
+      <button type="button" role="tab" id="tab-line" aria-selected="true" aria-controls="line-input">One label line</button>
+      <button type="button" role="tab" id="tab-photo" aria-selected="false" aria-controls="photo-input" tabindex="-1">Photo of the box</button>
+    </div>
     <form id="check-form" novalidate>
-      <label for="english">English instruction from the label</label>
-      <textarea id="english" rows="4" maxlength="2000" aria-describedby="english-hint">do not take more than 6 caplets in 24 hours</textarea>
-      <p id="english-hint" class="hint">One bullet from the label at a time. Ctrl + Enter also checks it.</p>
+      <div id="line-input" role="tabpanel" aria-labelledby="tab-line">
+        <label for="english">English instruction from the label</label>
+        <textarea id="english" rows="4" maxlength="2000" aria-describedby="english-hint">do not take more than 6 caplets in 24 hours</textarea>
+        <p id="english-hint" class="hint">One bullet from the label at a time. Ctrl + Enter also checks it.</p>
+      </div>
+
+      <div id="photo-input" role="tabpanel" aria-labelledby="tab-photo" hidden>
+        <label class="photo-pick" for="photo">
+          <input type="file" id="photo" accept="image/*" aria-describedby="photo-hint">
+          <svg class="photo-glyph" viewBox="0 0 32 24" aria-hidden="true"><path d="M1 1h6M1 1v6M31 1h-6M31 1v6M1 23h6M1 23v-6M31 23h-6M31 23v-6" fill="none" stroke="currentColor" stroke-width="2"/><rect x="6" y="5" width="2" height="14"/><rect x="10" y="5" width="1" height="14"/><rect x="13" y="5" width="3" height="14"/><rect x="18" y="5" width="1" height="14"/><rect x="21" y="5" width="2" height="14"/><rect x="25" y="5" width="1" height="14"/></svg>
+          <span class="photo-pick-text">Take or choose a photo of the barcode
+            <span id="photo-hint" class="hint">Fill about half the picture with the barcode, with no glare on it. The photo is only used to read the barcode and isn't kept.</span>
+          </span>
+        </label>
+        <figure id="photo-preview" class="photo-preview" hidden>
+          <figcaption id="photo-preview-text" class="hint"></figcaption>
+        </figure>
+
+        <label for="barcode">Or type the barcode or NDC number</label>
+        <input type="text" id="barcode" inputmode="text" autocomplete="off" spellcheck="false" maxlength="40" aria-describedby="barcode-hint">
+        <p id="barcode-hint" class="hint">The digits under the barcode, or the NDC number printed on the box, like <span class="nowrap">NDC 63941-519-62</span>.</p>
+      </div>
 
       <label for="language">Patient reads</label>
       <select id="language"></select>
@@ -48,7 +71,8 @@
       <button id="submit" class="primary" type="submit" disabled>Translate and check</button>
       <p id="status" class="status" role="status" aria-live="polite"></p>
     </form>
-    <section class="examples" aria-labelledby="examples-title">
+
+    <section class="examples" id="line-examples" aria-labelledby="examples-title">
       <h2 id="examples-title">Try a real label line</h2>
       <ul>
         <li><button type="button" data-example="adults and children 12 years and over: do not take more than 6 gelcaps in 24 hours, unless directed by a doctor">adults and children 12 years and over: do not take more than 6 gelcaps in 24 hours, unless directed by a doctor</button></li>
@@ -56,6 +80,18 @@
         <li><button type="button" data-example="laxative products should not be used for a period longer than 1 week unless directed by a doctor.">laxative products should not be used for a period longer than 1 week unless directed by a doctor.</button></li>
       </ul>
       <p class="hint">From the Directions and Do not use sections of real US drug labels (openFDA and DailyMed).</p>
+    </section>
+
+    <section class="examples" id="photo-examples" aria-labelledby="photo-examples-title" hidden>
+      <h2 id="photo-examples-title">No box at hand?</h2>
+      <figure class="sample-barcode">
+        <img src="/static/media/sample-barcode.svg" width="339" height="165" alt="Barcode 0 70038 61095 3">
+        <figcaption>0 70038 61095 3 · a real acetaminophen 500 mg box</figcaption>
+      </figure>
+      <p class="hint">Photograph this barcode from the screen with a phone, or use the button.</p>
+      <ul>
+        <li><button type="button" data-barcode="070038610953">Use the barcode 0 70038 61095 3</button></li>
+      </ul>
     </section>
   </section>
 
@@ -153,6 +189,70 @@
         </div>
       </div>
     </div>
+
+    <!-- Photo mode -->
+    <div id="photo-empty" class="empty">
+      <p class="empty-lead">Photograph the barcode on a medicine box. Its official label is found, and these four parts of it are translated line by line and checked.</p>
+      <dl class="label-parts">
+        <div><dt>Purpose</dt><dd>What the medicine does, like “pain reliever / fever reducer”.</dd></div>
+        <div><dt>Uses</dt><dd>What the label says it treats.</dd></div>
+        <div><dt>Directions</dt><dd>How much to take, how often, and who may take it.</dd></div>
+        <div><dt>Do not use</dt><dd>When not to take it.</dd></div>
+      </dl>
+      <p class="hint label-source">Labels come from DailyMed (US National Library of Medicine), found through the FDA's openFDA database. Only the label's own words are shown and translated; nothing is added. Not every label lists its barcode there (16,218 of 49,694 over-the-counter labels did on Nov 15, 2026), so if yours isn't found, type the NDC number from the box.</p>
+
+      <figure class="sample label-sample">
+        <figcaption>
+          <h3>What a flagged label line looks like</h3>
+          <p class="hint">A real line from the sample barcode's label, translated into Vietnamese by the model on Nov 15, 2026. The numbers, the “not” and the limit came through; the trip back reworded the rest, so one check flagged it for a person to look at.</p>
+        </figcaption>
+        <ul class="label-lines">
+          <li data-state="failed">
+            <span class="state">Failed</span>
+            <div class="line-body">
+              <p class="line-translation" lang="vi">không dùng nhiều hơn quy định</p>
+              <p class="line-english">do not take more than directed</p>
+              <p class="line-failed">1 of 9 checks failed: Back-translation matches</p>
+              <div class="line-details">
+                <div class="row"><p class="k">English</p><p class="trip">do not <span class="lost">take</span> more than <span class="lost">directed</span></p></div>
+                <div class="row"><p class="k">Back to English</p><p class="trip">Don't <span class="changed">use</span> more than the <span class="changed">prescribed</span> <span class="changed">amount.</span></p></div>
+                <p class="trip-key"><span class="lost">Struck</span> words didn't make the round trip; <span class="changed">underlined</span> words came back different.</p>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </figure>
+    </div>
+
+    <div id="label" hidden>
+      <div class="product">
+        <p id="product-brand" class="product-brand"></p>
+        <p id="product-active" class="product-active"></p>
+        <p id="product-meta" class="hint"></p>
+        <p id="product-confirm" class="product-confirm">Check this is the box in your hand before translating it.</p>
+      </div>
+      <div class="label-go">
+        <button id="label-translate" class="primary" type="button">Translate the label</button>
+        <div id="label-checking" class="checking" hidden>
+          <video id="label-checking-video" src="/static/media/checking.mp4" poster="/static/media/checking-poster.webp"
+                 width="1600" height="400" muted loop playsinline preload="none" aria-hidden="true"></video>
+        </div>
+        <p id="label-progress" class="checking-text" hidden><span id="label-progress-text" role="status"></span> <span id="label-seconds" class="checking-seconds" aria-hidden="true"></span></p>
+      </div>
+      <div id="label-verdict" class="verdict" tabindex="-1" hidden>
+        <svg class="verdict-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 22.5 21h-21z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="miter"/><rect x="11" y="9" width="2" height="6.5" fill="currentColor"/><rect x="11" y="17" width="2" height="2" fill="currentColor"/></svg>
+        <div>
+          <p id="label-verdict-title" class="verdict-title"></p>
+          <p id="label-verdict-detail" class="verdict-detail"></p>
+        </div>
+      </div>
+      <p id="label-untested" class="untested" hidden><span id="label-untested-language"></span> hasn't been tested on real label instructions yet, and no native speaker has checked its word lists. Treat every result as needing a check.</p>
+      <div id="label-sections"></div>
+      <p id="label-meta" class="meta"></p>
+      <div class="actions">
+        <button id="label-print" class="secondary" type="button" hidden>Print for patient</button>
+      </div>
+    </div>
   </section>
 
 </main>
@@ -166,6 +266,16 @@
   <p id="slip-verdict" class="slip-verdict"></p>
   <p class="slip-checked">Checked by: <span class="slip-line"></span></p>
   <p class="slip-foot">Dose-Safe Translator · <span id="slip-date"></span> · Prototype – not medical advice</p>
+</aside>
+
+<aside id="label-slip" class="slip label-slip" aria-hidden="true">
+  <p id="lslip-language" class="slip-language"></p>
+  <p id="lslip-product" class="slip-product"></p>
+  <div class="slip-rule"></div>
+  <div id="lslip-sections"></div>
+  <p id="lslip-verdict" class="slip-verdict"></p>
+  <p class="slip-checked">Checked by: <span class="slip-line"></span></p>
+  <p class="slip-foot">Dose-Safe Translator · <span id="lslip-date"></span> · Label from DailyMed · Prototype – not medical advice</p>
 </aside>
 </body>
 </html>

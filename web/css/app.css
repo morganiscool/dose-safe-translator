@@ -97,7 +97,7 @@ button, select, textarea { font: inherit; color: inherit; }
 /* ---- Instruction panel ----------------------------------------------------------------- */
 h1 { font-size: 24px; font-weight: 800; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 4px; }
 label { display: block; font-weight: 600; font-size: 15px; margin: 20px 0 8px; }
-textarea, select {
+textarea, select, input[type="text"] {
   display: block;
   width: 100%;
   border: 2px solid var(--ink);
@@ -116,7 +116,55 @@ select {
   background-size: 14px 10px;
   cursor: pointer;
 }
-textarea:focus-visible, select:focus-visible { outline-offset: 2px; }
+textarea:focus-visible, select:focus-visible, input[type="text"]:focus-visible { outline-offset: 2px; }
+input[type="text"] { font-variant-numeric: tabular-nums; }
+
+/* Mode switch: one label line, or a whole label from a photo of the box. */
+.modes { display: grid; grid-template-columns: 1fr 1fr; margin-top: 18px; border: 2px solid var(--ink); }
+.modes button {
+  border: 0;
+  border-radius: 0;
+  background: var(--panel);
+  padding: 11px 12px;
+  font-weight: 800;
+  font-size: 15px;
+  line-height: 1.3;
+  cursor: pointer;
+  transition: background-color 120ms ease-out;
+}
+.modes button + button { border-left: 2px solid var(--ink); }
+.modes button:hover { background: var(--tint); }
+.modes button[aria-selected="true"] { background: var(--ink); color: var(--panel); }
+
+.photo-pick {
+  position: relative;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+  margin: 20px 0 0;
+  padding: 18px;
+  border: 2px solid var(--ink);
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 1.3;
+  cursor: pointer;
+  transition: background-color 120ms ease-out;
+}
+.photo-pick:hover { background: var(--tint); }
+.photo-pick input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.photo-pick:has(input:focus-visible) { outline: 3px solid var(--ink); outline-offset: 3px; }
+.photo-glyph { width: 44px; height: 33px; fill: currentColor; }
+.photo-pick-text .hint { display: block; font-weight: 400; margin-top: 4px; }
+.photo-preview { display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 12px; align-items: center; margin: 12px 0 0; }
+.photo-preview[hidden] { display: none; }
+.photo-preview img { display: block; width: 88px; height: 66px; object-fit: cover; border: 2px solid var(--ink); }
+.photo-preview figcaption { margin: 0; font-variant-numeric: tabular-nums; }
+
+.sample-barcode { margin: 0; padding: 16px 16px 12px; border: 2px solid var(--ink); }
+.sample-barcode img { display: block; width: 100%; max-width: 260px; height: auto; margin: 0 auto; }
+.sample-barcode figcaption { margin-top: 10px; font-size: 14px; text-align: center; font-variant-numeric: tabular-nums; }
+.examples .sample-barcode + .hint { margin: 10px 0 12px; }
 .hint { font-size: 14px; line-height: 1.45; color: var(--muted); margin-top: 6px; }
 
 .switch {
@@ -237,7 +285,8 @@ textarea:focus-visible, select:focus-visible { outline-offset: 2px; }
   .sample-video, .checking video { display: none; }
   .sample-static { display: block; }
   #result.animate *, #result.animate *::after, #result.animate .verdict { animation: none !important; }
-  .track::after { transition: none; }
+  #label.animate #label-verdict { animation: none !important; }
+  .track::after, .line-details summary::before { transition: none; }
 }
 
 .verdict {
@@ -309,6 +358,100 @@ textarea:focus-visible, select:focus-visible { outline-offset: 2px; }
 }
 .secondary:hover { background: var(--tint); }
 
+/* ---- Photo mode: a whole label, line by line ------------------------------------------- */
+.work[data-mode="photo"] :is(#empty, #checking, #result),
+.work[data-mode="line"] :is(#photo-empty, #label) { display: none; }
+
+.nowrap { white-space: nowrap; }
+#label { scroll-margin-top: 16px; }
+.label-parts { margin: 24px 0 0; border-top: 2px solid var(--ink); }
+.label-parts div {
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr);
+  gap: 16px;
+  align-items: baseline;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--tint-strong);
+}
+.label-parts dt { font-size: 18px; font-weight: 800; }
+.label-parts dd { margin: 0; font-size: 18px; line-height: 1.45; }
+.label-source { margin-top: 18px; max-width: 72ch; }
+
+.product-brand { font-size: 22px; font-weight: 800; line-height: 1.25; }
+.product-brand:focus { outline: none; }
+.product-active { font-size: 18px; margin-top: 2px; }
+.product .hint a { color: var(--ink); text-underline-offset: 3px; }
+.product-confirm { margin-top: 10px; font-size: 15px; font-weight: 600; }
+.label-go { margin-top: 18px; }
+.label-go .primary { margin-top: 0; width: auto; min-width: 340px; }
+.label-go .primary[hidden] { display: none; }
+.label-go .checking-text { margin-top: 0; }
+#label-checking { margin-bottom: 12px; }
+/* "Find the label" steps back to a framed button once a label is on screen, leaving one black slab. */
+.primary.quiet { background: var(--panel); color: var(--ink); border: 2px solid var(--ink); padding: 16px 20px; }
+.primary.quiet:hover:not(:disabled) { background: var(--tint); }
+.primary.quiet:disabled { background: var(--panel); color: var(--disabled); border-color: var(--disabled); }
+.label-sample .label-lines { margin-top: 4px; }
+.label-sample .label-lines > li { border-bottom: 0; padding-bottom: 0; }
+.label-go .checking-text[data-kind="error"] { font-weight: 700; }
+#label-verdict { margin-top: 20px; }
+#label-verdict[hidden] { display: none; }
+#label[data-verdict="check"] #label-verdict,
+#label[data-verdict="too_long"] #label-verdict { grid-template-columns: 28px minmax(0, 1fr); }
+#label[data-verdict="check"] #label-verdict { background: var(--alert); border-color: var(--alert); color: var(--panel); }
+#label[data-verdict="too_long"] #label-verdict { background: var(--ink); border-color: var(--ink); color: var(--panel); }
+#label[data-verdict="check"] #label-verdict .verdict-icon,
+#label[data-verdict="too_long"] #label-verdict .verdict-icon { display: block; }
+#label.animate #label-verdict { animation: stamp 320ms cubic-bezier(.16, 1, .3, 1) both; }
+
+.label-section { margin-top: 22px; }
+.label-section .bar { margin-top: 0; }
+.label-heading { font-size: 18px; font-weight: 800; line-height: 1.2; padding-bottom: 8px; border-bottom: 2px solid var(--ink); }
+.label-lines > li {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  column-gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--tint-strong);
+}
+.label-lines > li > .state { justify-self: start; align-self: start; margin-top: 3px; font-size: 14px; font-weight: 800; line-height: 1.5; }
+.label-lines > li[data-state="waiting"] > .state { color: var(--muted); font-weight: 600; }
+.label-lines > li[data-state="failed"] > .state { color: var(--alert); border: 2px solid var(--alert); padding: 0 6px; }
+.label-lines > li[data-state="too_long"] > .state { background: var(--ink); color: var(--panel); padding: 0 6px; }
+.line-translation { font-size: 24px; line-height: 1.35; font-weight: 600; overflow-wrap: anywhere; }
+.line-translation:empty { display: none; }
+.line-english { font-size: 18px; line-height: 1.45; overflow-wrap: anywhere; }
+.label-lines > li:is([data-state="passed"], [data-state="failed"]) .line-english { margin-top: 4px; font-size: 16px; color: var(--muted); }
+.line-failed { margin-top: 6px; font-size: 14px; font-weight: 600; color: var(--alert); }
+.line-note { margin-top: 6px; }
+.line-details { margin-top: 8px; }
+.line-details summary {
+  width: fit-content;
+  list-style: none;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.line-details summary::-webkit-details-marker { display: none; }
+.line-details summary::before {
+  content: "";
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin-right: 8px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 12'%3E%3Cpath d='M1.5 1 6.5 6 1.5 11' fill='none' stroke='%23111' stroke-width='2'/%3E%3C/svg%3E") no-repeat center / contain;
+  transition: transform 160ms cubic-bezier(.2, .8, .2, 1);
+}
+.line-details[open] summary::before { transform: rotate(90deg); }
+.line-details .row { grid-template-columns: 140px minmax(0, 1fr); margin-top: 10px; }
+.line-details .trip { font-size: 16px; }
+.line-details .trip-key { margin: 8px 0 0 156px; }
+.line-details .checks { margin-top: 10px; }
+.line-details .checks li:last-child { border-bottom: 0; }
+
 .slip { display: none; }
 
 /* ---- Tablet ---------------------------------------------------------------------------- */
@@ -317,8 +460,14 @@ textarea:focus-visible, select:focus-visible { outline-offset: 2px; }
   .row { grid-template-columns: 1fr; gap: 4px; }
   .trip-key { margin-left: 0; }
   .checks { columns: 1; }
+  .line-details .row { grid-template-columns: 1fr; gap: 2px; }
+  .line-details .trip-key { margin-left: 0; }
+  .label-parts div { grid-template-columns: 130px minmax(0, 1fr); }
 }
 @media (max-width: 860px) {
+  /* The bar's three parts wrap as whole pieces instead of squeezing each label onto two lines. */
+  .shell-bar { flex-wrap: wrap; column-gap: 28px; padding-top: 6px; padding-bottom: 6px; }
+  .wordmark, .shell-bar nav a, .prototype { white-space: nowrap; }
   .work {
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas: "form" "facts";
@@ -344,6 +493,11 @@ textarea:focus-visible, select:focus-visible { outline-offset: 2px; }
   /* The round-trip clip's text would be about 8px here: show the still, readable version. */
   .sample-video { display: none; }
   .sample-static { display: block; }
+  .label-parts div { grid-template-columns: 1fr; gap: 2px; }
+  .label-go .primary { width: 100%; min-width: 0; }
+  .label-lines > li { grid-template-columns: minmax(0, 1fr); row-gap: 6px; }
+  .label-lines > li > .state { margin-top: 0; }
+  .line-translation { font-size: 22px; }
 }
 
 /* ---- The printed slip for the patient -------------------------------------------------- */
@@ -361,4 +515,13 @@ textarea:focus-visible, select:focus-visible { outline-offset: 2px; }
   .slip-checked { font-size: 12pt; margin-top: 18pt; }
   .slip-line { display: inline-block; width: 60mm; border-bottom: 1pt solid #000; }
   .slip-foot { font-size: 9pt; margin-top: 18pt; }
+  /* Only the slip that was asked for prints: one line, or the whole label. */
+  body[data-print="label"] #slip, body:not([data-print="label"]) #label-slip { display: none; }
+  .slip-product { font-size: 13pt; font-weight: 600; margin-top: 2pt; }
+  .lslip-section { margin-top: 10pt; }
+  .lslip-heading { font-size: 11pt; font-weight: 900; padding-bottom: 2pt; border-bottom: 1.5pt solid #000; }
+  .lslip-line { margin-top: 7pt; break-inside: avoid; }
+  .lslip-translation { font-size: 16pt; line-height: 1.3; font-weight: 600; }
+  .lslip-english { font-size: 9.5pt; margin-top: 1pt; }
+  .lslip-flag { display: inline-block; margin-top: 2pt; padding: 0 3pt; border: 1pt solid #000; font-size: 9pt; font-weight: 800; }
 }
