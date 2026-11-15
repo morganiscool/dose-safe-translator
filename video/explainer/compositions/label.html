@@ -2,8 +2,7 @@
   <style>
     @font-face { font-family: "Public Sans"; src: url("assets/fonts/PublicSans-Variable.ttf") format("truetype"); font-weight: 100 900; }
     #root { position: absolute; inset: 0; background: #ffffff; color: #111111; font-family: "Public Sans", sans-serif; overflow: hidden; }
-    #lb-carton { position: absolute; inset: 0; }
-    #lb-carton-img { position: absolute; left: 520px; top: 20px; width: 832px; height: 1040px; transform-origin: 71% 47%; }
+    #lb-turntable { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; }
     #lb-panel { position: absolute; inset: 0; }
     #lb-card { position: absolute; left: 120px; top: 90px; width: 1440px; border: 8px solid #111111; padding: 26px 40px 34px; background: #ffffff; }
     #lb-card h2 { font-size: 92px; font-weight: 900; letter-spacing: -0.03em; line-height: 1; }
@@ -21,9 +20,8 @@
   </style>
 
   <div id="root" data-composition-id="label" data-width="1920" data-height="1080">
-    <div id="lb-carton" class="clip" data-start="0" data-duration="2">
-      <img id="lb-carton-img" src="assets/carton.png" alt="">
-    </div>
+    <!-- Blender turntable (blender/scene.py --shot turntable): the carton turns its Drug Facts panel to the camera. -->
+    <video id="lb-turntable" class="clip" src="assets/turntable.mp4" data-start="0" data-duration="2" muted playsinline></video>
 
     <div id="lb-panel" class="clip" data-start="2" data-duration="4">
       <div id="lb-card">
@@ -45,8 +43,6 @@
 
   <script>
     const tl = gsap.timeline({ paused: true });
-    // The camera pushes from the whole carton into its Drug Facts panel.
-    tl.fromTo("#lb-carton-img", { scale: 1 }, { scale: 1.9, duration: 2.0, ease: "power2.inOut" }, 0);
     // Cut to the flat panel; it settles in from slightly large.
     tl.fromTo("#lb-card", { scale: 1.04, opacity: 0.6 }, { scale: 1, opacity: 1, duration: 0.4, ease: "expo.out" }, 2.0);
     // The one line that matters is underlined in red.

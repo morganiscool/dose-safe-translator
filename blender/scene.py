@@ -20,7 +20,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
 parser = argparse.ArgumentParser()
 parser.add_argument("--out", default=os.path.join(HERE, "..", "web", "media", "src"))
-parser.add_argument("--shot", default="all", choices=["all", "carton", "caplets"])
+parser.add_argument("--shot", default="all", choices=["all", "carton", "caplets", "turntable"])
 parser.add_argument("--samples", type=int, default=160)
 args = parser.parse_args(argv)
 args.out = os.path.abspath(args.out)  # Blender would otherwise resolve it against the drive root
@@ -157,8 +157,11 @@ def carton_box(w=0.55, d=0.40, h=0.90):
     tex = os.path.join(HERE, "textures")
     front = material("Carton front", image=os.path.join(tex, "front.png"), roughness=0.5)
     facts = material("Drug Facts panel", image=os.path.join(tex, "drugfacts.png"), roughness=0.5)
-    plane("Front", (w, h), (0, -d / 2 - eps, h / 2), (math.radians(90), 0, 0), front)
-    plane("Side", (d, h), (w / 2 + eps, 0, h / 2), (math.radians(90), 0, math.radians(90)), facts)
+    faces = [plane("Front", (w, h), (0, -d / 2 - eps, h / 2), (math.radians(90), 0, 0), front),
+             plane("Side", (d, h), (w / 2 + eps, 0, h / 2), (math.radians(90), 0, math.radians(90)), facts)]
+    for face in faces:  # the printed faces turn with the carton
+        face.parent = body
+        face.matrix_parent_inverse = body.matrix_world.inverted()
     return body
 
 
@@ -202,7 +205,58 @@ def shot_caplets():
     render(scene, "caplets.png", 2400, 1350, transparent=False)
 
 
+def shot_turntable():
+    """2 s for the explainer's first shot: the carton turns its Drug Facts panel to the camera while the
+    camera pushes in. Transparent PNG frames; the video script puts them on white."""
+    scene = reset()
+    use_gpu(scene)
+    scene.cycles.samples = min(args.samples, 64)
+    scene.render.fps = 30
+    scene.frame_start, scene.frame_end = 1, 60
+    body = carton_box()
+    white = material("Caplet", (0.94, 0.94, 0.92, 1), roughness=0.38, subsurface=0.08, coat=0.3)
+    for loc, ang in [((-0.20, -0.55, 0.028), 0.5), ((0.05, -0.62, 0.028), -0.35), ((0.33, -0.47, 0.028), 1.2)]:
+        caplet(loc, ang, white)
+    ground = plane("Ground", (8, 8), (0, 0, 0), (0, 0, 0), material("Ground", (1, 1, 1, 1)))
+    ground.is_shadow_catcher = True
+    area_light("Key", (-1.2, -1.6, 3.4), (0, 0, 0.4), 2.6, 300)
+    for light in (area_light("Fill", (2.6, -1.0, 1.0), (0, 0, 0.45), 2.5, 60),
+                  area_light("Rim", (0.8, 2.4, 2.2), (0, 0, 0.6), 1.2, 160)):
+        light.data.use_shadow = False
+    # The carton turns from showing its front to facing its Drug Facts panel at the camera.
+    body.rotation_euler = (0, 0, math.radians(22))
+    body.keyframe_insert("rotation_euler", frame=1)
+    body.rotation_euler = (0, 0, math.radians(-50))
+    body.keyframe_insert("rotation_euler", frame=60)
+    # The camera pushes in on a target that drifts from the whole carton to the panel.
+    target = bpy.data.objects.new("Target", None)
+    bpy.context.collection.objects.link(target)
+    target.location = (0.04, -0.05, 0.45)
+    target.keyframe_insert("location", frame=1)
+    target.location = (0.17, -0.19, 0.52)
+    target.keyframe_insert("location", frame=60)
+    cam = camera((1.55, -2.45, 1.15), (0, 0, 0.45), lens=40)
+    track = cam.constraints.new("TRACK_TO")
+    track.target, track.track_axis, track.up_axis = target, "TRACK_NEGATIVE_Z", "UP_Y"
+    cam.keyframe_insert("location", frame=1)
+    cam.data.keyframe_insert("lens", frame=1)
+    cam.location = (1.05, -1.62, 0.78)
+    cam.data.lens = 78
+    cam.keyframe_insert("location", frame=60)
+    cam.data.keyframe_insert("lens", frame=60)
+    scene.render.resolution_x, scene.render.resolution_y = 1920, 1080
+    scene.render.film_transparent = True
+    frames = os.path.join(args.out, "turntable")
+    os.makedirs(frames, exist_ok=True)
+    scene.render.filepath = os.path.join(frames, "####")
+    scene.render.use_overwrite = False  # a re-run renders only the frames that are missing
+    bpy.ops.render.render(animation=True)
+    print(f"Rendered {scene.frame_end} frames to {frames} on {scene.cycles.device}")
+
+
 if args.shot in ("all", "carton"):
     shot_carton()
 if args.shot in ("all", "caplets"):
     shot_caplets()
+if args.shot == "turntable":
+    shot_turntable()
