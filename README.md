@@ -157,16 +157,14 @@ problems: a dropped "Do not use", Korean and Persian turning "not more than 3 to
 has checked the lists yet, so the app marks them "not tested yet". When unsure, a list leaves a word
 out: a missing word causes a false alarm, a wrong word could let a dangerous translation through.
 
-**Evaluation.** A teammate who reads _TEAM_LANGUAGE_ fluently rates each translation blind (they don't know
+**Evaluation.** A fluent speaker of a tested language rates each translation blind (they don't know
 which version made it or whether it was flagged): 2 = correct, 1 = small mistake but same meaning,
-0 = dangerous. From those ratings we measure how often each version is dangerous, and how many dangerous
+0 = dangerous. The notebook makes the rating sheet in section 8 for the language set as `TEAM_LANGUAGE`
+in section 2 (Vietnamese now). From those ratings we measure how often each version is dangerous, and how many dangerous
 translations each checker **misses** (false negatives) and how many **false alarms** it raises (false
 positives).
 
 ## Results
-
-_Fill these in from the notebook output (sections 7 and 8). Report what you actually got, including
-weak results._
 
 **Automatic checks** (share of translations flagged, section 7). Re-run on Nov 15, 2026 with the fixed
 checks (the bugs and their tests are in `tests/test_checks.py` and `tests/test_labels.py`) on the
@@ -218,24 +216,23 @@ Being strict with numbers is a trade-off. Highlighting numbers read with less th
 92.2% of the dangerous misreads, but also highlighted 18.5% of the photos that were read safely. A 30%
 cut-off caught 89.2%, with 12.8% false alarms.
 
-**Fluent-speaker ratings** (_TEAM_LANGUAGE_, section 8):
+**Fluent-speaker ratings** (section 8): **not collected yet.** We don't have a fluent rater for a tested
+language yet, so these numbers don't exist, and we don't estimate them. When a fluent speaker fills in
+the blind rating sheet, section 8 reports how often each version (NLLB as-is, safer mode) is dangerous,
+and how many dangerous translations the back-translation check alone catches and misses compared with
+our full checks, with the false alarms each raises.
 
-| | NLLB as-is | Safer mode |
-|---|---|---|
-| Dangerous translations | __ % | __ % |
+Until then, the automatic results above count flags, not confirmed errors. One comparison doesn't need
+ratings: back-translation similarity alone (chrF below 40) would have flagged 4 of the 150 Spanish
+translations, 7 of the Vietnamese and 19 of the Chinese; the full checks flagged 17, 24 and 46 (NLLB
+as-is). Which of the extra flags are real errors is what the ratings will show; the Chinese lines we
+read are a first look (above).
 
-| Checker | Dangerous caught | Dangerous **missed** (false negatives) | False alarms (false positives) |
-|---|---|---|---|
-| Back-translation only | __ | __ | __ |
-| Our full safety checks | __ | __ | __ |
+**General translation quality** (FLORES+ chrF, section 9): not run. It's optional, and it scores
+general sentences, not medicine directions.
 
-**General translation quality** (optional, FLORES+ chrF, section 9): Spanish __, _TEAM_LANGUAGE_ __.
-
-**Where it fails.** _Show at least one real example side by side: the English, the model's translation,
-the correct translation from your teammate, and why you think it went wrong (and whether the checks
-caught it)._
-
-Two real examples from our test run, to check with your fluent speaker:
+**Where it fails.** Real examples from our test runs. A fluent speaker still has to confirm them and give
+the correct translations:
 - **Missed by the checks:** *"laxative products should not be used for a period longer than 1 week
   unless directed by a doctor"*. The Vietnamese translation back-translates as *"**slimming** products
   should not be used…"*. Every number, "not" and limit survived, so no check fired, yet the medicine type
@@ -255,8 +252,9 @@ Known limits:
 - Word lists can't judge meaning. A "not" in the wrong place passes the "not" check, and a wrong word
   (like "slimming" for "laxative") passes everything.
 - The word lists for each language were written without a native speaker. In testing, Tagalog *"sa
-  ilalim ng 12"* ("under 12") was flagged until we added *ilalim*. Have your speaker check the lists in
-  section 2. The 23 languages added on Nov 15 were only tuned on 40 machine translations each.
+  ilalim ng 12"* ("under 12") was flagged until we added *ilalim*. The lists (notebook section 2,
+  `dose_safe/languages.py`) still need a fluent speaker to check them. The 23 languages added on Nov 15
+  were only tuned on 40 machine translations each.
 - Number words can be ambiguous: Vietnamese *năm* means both "five" and "year", and Spanish *una* is
   also "a".
 - We only tested US over-the-counter labels, a handful of languages, and one free model.
@@ -373,5 +371,4 @@ running.
   (`blender/scene.py --shot counter` and `--shot slip`, the slip being the app's own print of a real
   label run). The box from another country in it is a made-up example photo, captioned as one: a real
   label's Directions printed beside a real non-US barcode. Same music and sound effects as the explainer.
-- AI tools: Claude (Anthropic) was used as a coding assistant. _Everyone on the team should be able to
-  explain every section before submitting._
+- AI tools: Claude (Anthropic) was used as a coding assistant.
