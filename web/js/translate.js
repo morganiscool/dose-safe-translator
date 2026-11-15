@@ -73,12 +73,11 @@ form.addEventListener("submit", async (event) => {
   showChecking(true);
   const started = Date.now();
   const tries = safer.checked ? "5 translations" : "1 translation";
-  const tick = () => {
-    const text = `Translating into ${language.value} (${tries}), translating back into English and ` +
-      `running 9 checks… ${Math.round((Date.now() - started) / 1000)} s (usually 10–40 s)`;
-    setStatus(text, "waiting");
-    $("checking-text").textContent = text;
-  };
+  // Said once (and announced once); only the seconds count changes.
+  setStatus("");
+  $("checking-text").textContent = `Translating into ${language.value} (${tries}), translating back into ` +
+    "English and running 9 checks. Usually 10–40 seconds.";
+  const tick = () => { $("checking-seconds").textContent = `${Math.round((Date.now() - started) / 1000)} s`; };
   tick();
   const timer = setInterval(tick, 1000);
   try {
@@ -213,10 +212,9 @@ function show(body) {
 
   const list = $("checks");
   list.replaceChildren();
-  for (const [index, check] of body.checks.entries()) {
+  for (const check of body.checks) {
     const item = document.createElement("li");
     item.dataset.ok = check.ok;
-    item.style.setProperty("--i", index);
     const state = document.createElement("span");
     state.className = "state";
     state.textContent = check.ok ? "Passed" : "Failed";
@@ -257,6 +255,13 @@ for (const button of document.querySelectorAll("[data-example]")) {
     english.value = button.dataset.example;
     english.focus();
   });
+}
+
+// A line sent from the landing page ("Paste a label line and check it") arrives as ?q=.
+const sent = new URLSearchParams(location.search).get("q");
+if (sent && sent.trim()) {
+  english.value = sent.trim().slice(0, 2000);
+  english.focus();
 }
 
 pollStatus();

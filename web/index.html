@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dose-Safe Translator · Checking translated medicine directions</title>
+<meta name="description" content="A student prototype that translates over-the-counter medicine directions, translates them back, and flags the translations a pharmacist should check.">
+<link rel="icon" href="/static/media/icon.svg" type="image/svg+xml">
+<link rel="preload" href="/static/fonts/PublicSans-Variable.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="/static/css/landing.css">
+<script>document.documentElement.classList.add("js");</script>
+<script src="/static/js/landing.js" defer></script>
+</head>
+<body>
+<header class="site-bar" id="site-bar">
+  <a class="wordmark" href="/">
+    <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" fill="currentColor"/><rect x="2" y="7" width="20" height="3" class="mark-cut"/><rect x="5" y="13" width="14" height="1.6" class="mark-cut"/><rect x="5" y="16.5" width="10" height="1.6" class="mark-cut"/></svg>
+    Dose-Safe Translator
+  </a>
+  <nav aria-label="Sections">
+    <a href="#how">How it works</a>
+    <a href="#results">Results</a>
+    <a href="#limits">Limits</a>
+  </nav>
+  <a class="button" href="/translate">Try the translator</a>
+</header>
+
+<main>
+  <!-- Hero: one label line across two fields; the word that flips sits in the sentence. -->
+  <section class="hero" data-ink="dark" aria-labelledby="hero-title">
+    <div class="field field-top" aria-hidden="true"></div>
+    <div class="field field-bottom" aria-hidden="true"></div>
+    <div class="hero-type">
+      <h1 id="hero-title" class="hero-line">
+        <span class="row on-paper">Do not take <span class="slot"><video src="/static/media/word-flip.mp4" poster="/static/media/word-flip-poster.webp" width="720" height="288" autoplay muted loop playsinline aria-hidden="true"></video><span class="visually-hidden">more</span></span></span>
+        <span class="row on-carton">than 6 caplets.</span>
+      </h1>
+    </div>
+    <p class="hero-sub reveal">Dose-Safe Translator translates medicine directions for patients, translates them back, and flags what a pharmacist should check.</p>
+  </section>
+
+  <!-- Intro: the problem, with the pharmacy counter of the past passing beside it. -->
+  <section class="intro" data-ink="dark" aria-labelledby="intro-title">
+    <div class="intro-pin">
+      <h2 id="intro-title" class="reveal">Free translation can flip a direction</h2>
+      <p class="statement reveal">In a UCSF study, Google Translate turned “hold the kidney medicine” into “keep taking the medication”.</p>
+      <p class="intro-note reveal">A <em>Pediatrics</em> study found errors in about half of Spanish prescription labels made by pharmacy translation software.</p>
+    </div>
+    <figure class="pass pass-1 reveal">
+      <img src="/static/media/archive/katz-counter.webp" width="1600" height="1273" alt="Black-and-white photograph of a busy drugstore counter with signs reading Don't Take a Chance" loading="lazy">
+      <figcaption>Katz Drug Store, Kansas City, about 1950. National Archives.</figcaption>
+    </figure>
+    <figure class="pass pass-2 reveal">
+      <img src="/static/media/archive/thrifty-1939.webp" width="1125" height="633" alt="Black-and-white photograph of a streamlined Thrifty Drug Store building on a Los Angeles corner" loading="lazy">
+      <figcaption>Thrifty Drug Store, Los Angeles, about 1939.</figcaption>
+    </figure>
+    <figure class="pass pass-3 reveal">
+      <img src="/static/media/archive/katz-floor.webp" width="1600" height="1268" alt="Black-and-white photograph of a drugstore sales floor with a lunch counter and display tables" loading="lazy">
+      <figcaption>Katz Drug Store sales floor, Kansas City. National Archives.</figcaption>
+    </figure>
+  </section>
+
+  <!-- How it works: the real time each stage takes, as one bar. -->
+  <section class="how" id="how" data-ink="dark" aria-labelledby="how-title">
+    <h2 id="how-title" class="display reveal">Where the seconds go</h2>
+    <div class="stages" data-ui>
+      <div class="stage stage-1 reveal" style="--grow: 3.2">
+        <p class="stage-time">About 3 seconds</p>
+        <p class="stage-text">First, the NLLB-200 model writes five translations of the label line.</p>
+      </div>
+      <div class="stage stage-2 reveal" style="--grow: 6.0">
+        <p class="stage-time">About 6 seconds</p>
+        <p class="stage-text">Then each one is translated back into English by the same model.</p>
+      </div>
+      <div class="stage stage-3 reveal" style="--grow: 1.4">
+        <p class="stage-time">0.003 seconds</p>
+        <p class="stage-text">Last, nine checks compare numbers, “not”, limits and units.</p>
+      </div>
+    </div>
+    <p class="how-note reveal">Measured on a student laptop's processor for “do not take more than 6 caplets in 24 hours” in Vietnamese. Safer mode keeps the translation with the fewest problems.</p>
+  </section>
+
+  <!-- Watch: the explainer film. -->
+  <section class="watch" data-ink="light" aria-labelledby="watch-title">
+    <div class="watch-copy">
+      <h2 id="watch-title" class="reveal">One line, out and back</h2>
+      <p class="reveal">A 45-second film of one label line's round trip: the translation, the trip back, the word that changed, the two checks that catch it and the verdict a pharmacist sees.</p>
+    </div>
+    <figure class="watch-film reveal">
+      <video src="/static/media/explainer.mp4" poster="/static/media/explainer-poster.webp" width="1280" height="720" controls muted playsinline preload="metadata"></video>
+      <figcaption>The flip in the film is an illustration of what the checks catch.</figcaption>
+    </figure>
+  </section>
+
+  <!-- Showcase: the carton in front of the type. -->
+  <section class="showcase" data-ink="dark" aria-labelledby="showcase-title">
+    <h2 id="showcase-title" class="stack-line stack-head reveal">377 real lines</h2>
+    <div class="stack" aria-hidden="true">
+      <span class="stack-line muted">from 66 US</span>
+      <span class="stack-line muted">drug labels</span>
+    </div>
+    <img class="carton reveal" src="/static/media/carton-1200.webp" srcset="/static/media/carton-640.webp 640w, /static/media/carton-1200.webp 1200w" sizes="(max-width: 700px) 78vw, 44vw" width="1200" height="1500" alt="An over-the-counter acetaminophen carton with its Drug Facts panel, and three caplets" loading="lazy">
+    <div class="facts reveal">
+      <p>We pulled the Directions and Do not use sections of 66 over-the-counter labels for 24 common medicines, from acetaminophen to nicotine gum, through openFDA and DailyMed, and split them bullet by bullet.</p>
+      <p>We test the lines that hold a number, a “not”, or an age or amount limit, because those are where one wrong word can hurt someone.</p>
+    </div>
+  </section>
+
+  <!-- Results: the figures as a ledger. -->
+  <section class="stats" id="results" data-ink="light" aria-labelledby="stats-title">
+    <h2 id="stats-title" class="reveal"><span class="soft">What got</span> flagged</h2>
+    <table class="ledger">
+      <caption class="visually-hidden">What the checks flagged in our first test run</caption>
+      <tbody>
+        <tr class="reveal"><td class="whole">11</td><td class="cap">% of Spanish translations flagged as the model wrote them</td></tr>
+        <tr class="reveal"><td class="whole">10</td><td class="cap">% of Spanish translations flagged in safer mode, best of five</td></tr>
+        <tr class="reveal"><td class="whole">17</td><td class="cap">% of Vietnamese translations flagged as the model wrote them</td></tr>
+        <tr class="reveal"><td class="whole">10</td><td class="cap">% of Vietnamese translations flagged in safer mode, best of five</td></tr>
+        <tr class="reveal"><td class="whole">9</td><td class="cap">checks on every translation: four on it, five on its trip back</td></tr>
+      </tbody>
+    </table>
+    <p class="stats-note reveal">Our first test run: 150 label lines per language, run on Nov 14, 2026 before the fixes to the checks, so we're re-running it. These numbers are what the checks flagged, not how many translations were wrong: a fluent speaker's ratings will answer that.</p>
+  </section>
+
+  <!-- Limits: an honest table. -->
+  <section class="limits" id="limits" data-ink="dark" aria-labelledby="limits-title">
+    <h2 id="limits-title" class="reveal">Where it still gets <br>things wrong</h2>
+    <p class="table-name">Limits</p>
+    <dl class="limit-table">
+      <div class="limit reveal"><dt>Missed</dt><dd>“laxative” came back as “slimming”</dd><dd class="val">no check fired</dd></div>
+      <div class="limit reveal"><dt>False alarm</dt><dd>correct “menos de 12 años”</dd><dd class="val">flagged anyway</dd></div>
+      <div class="limit reveal"><dt>Meaning</dt><dd>a “not” in the wrong place</dd><dd class="val">passes the check</dd></div>
+      <div class="limit gap reveal"><dt>Word lists</dt><dd>written without native speakers</dd><dd class="val">all 5 languages</dd></div>
+      <div class="limit reveal"><dt>Tested</dt><dd>Spanish and Vietnamese</dd><dd class="val">150 lines each</dd></div>
+      <div class="limit reveal"><dt>Not tested</dt><dd>Tagalog, Haitian Creole, Chinese</dd><dd class="val">the app says so</dd></div>
+      <div class="limit gap reveal"><dt>Ratings</dt><dd>a fluent speaker, blind</dd><dd class="val">in progress</dd></div>
+      <div class="limit reveal"><dt>Model</dt><dd>NLLB-200, 600M, free from Meta</dd><dd class="val">non-commercial</dd></div>
+    </dl>
+    <figure class="limits-photo reveal">
+      <img src="/static/media/archive/apothecary-jar.webp" width="1000" height="1250" alt="A blue and white glazed apothecary jar from Mexico, 1700 to 1750" loading="lazy">
+      <figcaption>Apothecary jar, Mexico, 1700–1750. The Met.</figcaption>
+    </figure>
+  </section>
+
+  <!-- Try it: the closing sentence with a blank. -->
+  <section class="try" data-ink="light" aria-labelledby="try-title">
+    <h2 id="try-title" class="visually-hidden">Try the translator</h2>
+    <form class="try-form" action="/translate" method="get">
+      <p class="try-sentence">
+        <span>Paste a label line</span>
+        <label class="visually-hidden" for="try-line">A medicine instruction in English</label>
+        <input id="try-line" name="q" type="text" placeholder="children under 12 years: ask a doctor" autocomplete="off">
+        <span>and</span> <button type="submit">check it</button>
+      </p>
+    </form>
+    <p class="try-note">Opens the translator with your line. It runs on the team's computer, so it answers while that computer is on.</p>
+  </section>
+</main>
+
+<footer class="close" data-ink="light" aria-labelledby="close-title">
+  <div class="close-top">
+    <div>
+      <h2 id="close-title" class="invite">Bring it to <br>the counter</h2>
+      <a class="button button-invert" href="/translate">Try the translator</a>
+    </div>
+    <ul class="close-links">
+      <li><a href="https://github.com/morganiscool/dose-safe-translator">Code on GitHub</a></li>
+      <li><a href="https://colab.research.google.com/github/morganiscool/dose-safe-translator/blob/main/dose_safe.ipynb">The notebook in Colab</a></li>
+      <li><a href="https://open.fda.gov/apis/drug/label/">openFDA drug labels</a></li>
+      <li><a href="https://huggingface.co/facebook/nllb-200-distilled-600M">The NLLB-200 model</a></li>
+    </ul>
+  </div>
+  <div class="close-legal">
+    <p>Prototype – not medical advice. A Veritas AI International High School Hackathon 2026 project, AI + Languages track.</p>
+    <p class="credits">Pictures: <a href="https://commons.wikimedia.org/wiki/File:Interior_of_Katz_drug_store._Kansas_City,_Mo_-_NARA_-_283621.jpg">“Interior of Katz drug store. Kansas City, Mo”</a> and <a href="https://commons.wikimedia.org/wiki/File:Interior_of_Katz_drug_store._Kansas_City,_Mo_-_NARA_-_283622.jpg">its sales floor</a>, <a href="https://creativecommons.org/publicdomain/mark/1.0/">public domain</a>, via Wikimedia Commons; <a href="https://commons.wikimedia.org/wiki/File:CHS-41356_Exterior_view_of_Thrifty_Drug_Store_and_A%26P_Market_Sunset_%26_Fairfax_Los_Angeles_circa_1939.jpg">“Exterior view of Thrifty Drug Store… Los Angeles”</a> by Jim Lewis, <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.en">CC0</a>, via Wikimedia Commons; <a href="https://www.metmuseum.org/art/collection/search/3460">“Apothecary Jar”</a>, Mexican maker, 1700–1750, <a href="https://creativecommons.org/publicdomain/zero/1.0/">public domain (CC0)</a>, The Metropolitan Museum of Art. The carton and caplets are 3D renders made for this page.</p>
+  </div>
+  <p class="close-name" aria-hidden="true">Dose-Safe</p>
+</footer>
+</body>
+</html>

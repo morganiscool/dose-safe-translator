@@ -132,7 +132,9 @@ _Fill these in from the notebook output (sections 7 and 8). Report what you actu
 weak results._
 
 **Automatic checks** (share of translations flagged, section 7). From our test run on Nov 14, 2026
-(150 label instructions per language, Colab T4 GPU). Re-run and update these numbers:
+(150 label instructions per language, Colab T4 GPU). These numbers come from before the fixes to the
+checks (the bugs and their tests are in `tests/test_checks.py` and `tests/test_labels.py`), so re-run
+the notebook and update them:
 
 | Language | NLLB as-is | Safer mode | Safer mode changed |
 |---|---|---|---|
@@ -217,7 +219,10 @@ Known limits:
 ## Run the web app
 
 The app (`server.py` and the pages in `web/`) is the same tool as the notebook's demo, with the
-safety checks in `dose_safe/` and a translator screen built for a pharmacy counter.
+safety checks in `dose_safe/` and a translator screen built for a pharmacy counter. Its front page
+(`/`) explains the project, with a 45-second explainer film (`web/media/explainer.mp4`); the
+translator is at `/translate`. The film and the small looping clips are HyperFrames projects in
+`video/`, and the 3D carton and caplets are rendered by `blender/scene.py`.
 
 **On a Windows PC, with a free public link:** double-click `run-public.bat`. The first run sets
 up the Python packages (about 1 GB) and downloads Cloudflare's free tunnel program; the
@@ -265,5 +270,9 @@ running.
   [Gradio](https://www.gradio.app), [pandas](https://pandas.pydata.org)
 - Background: [UCSF on Google Translate for discharge instructions](https://universityofcalifornia.edu/news/google-translates-doctors-orders-spanish-and-chinese-few-important-caveats);
   [*Pediatrics* study on Spanish prescription labels](https://www.fiercehealthcare.com/healthcare/up-to-half-spanish-translated-prescriptions-include-dangerous-mistakes)
+- Explainer film: built with [HyperFrames](https://hyperframes.heygen.com) (`video/explainer`), opening on a
+  Blender render (`blender/scene.py`); music from HeyGen's music library (`video/explainer/assets/bgm/CREDITS.md`);
+  CC0 sound effects from Freesound via Openverse (`video/explainer/assets/sfx/CREDITS.md`); archival pharmacy
+  photographs on the landing page are public domain or CC0 (credited in its footer)
 - AI tools: Claude (Anthropic) was used as a coding assistant. _Everyone on the team should be able to
   explain every section before submitting._

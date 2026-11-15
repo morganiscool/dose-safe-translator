@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #ffffff; }
+    </style>
+  </head>
+  <body>
+    <!-- Dose-Safe Translator explainer, storyline A (see SPEC.md): one label line's round trip. -->
+    <div id="root" data-composition-id="main" data-start="0" data-duration="45.3" data-width="1920" data-height="1080">
+      <div id="label" data-composition-id="label" data-composition-src="compositions/label.html"
+           data-start="0" data-duration="6" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="flip" data-composition-id="flip" data-composition-src="compositions/flip.html"
+           data-start="6" data-duration="6" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="reveal" data-composition-id="reveal" data-composition-src="compositions/reveal.html"
+           data-start="12" data-duration="4" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="roundtrip" data-composition-id="roundtrip" data-composition-src="compositions/roundtrip.html"
+           data-start="16" data-duration="16" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="verdict" data-composition-id="verdict" data-composition-src="compositions/verdict.html"
+           data-start="32" data-duration="7" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="endcard" data-composition-id="endcard" data-composition-src="compositions/endcard.html"
+           data-start="39" data-duration="6.3" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+
+      <!-- Music bed from HeyGen's music library (assets/bgm/CREDITS.md), cut to the film with fades. -->
+      <audio id="bgm" src="assets/bgm/bed.mp3" data-start="0" data-duration="45.3" data-volume="0.5" data-track-index="2"></audio>
+
+      <!-- Sound on the visible actions (assets/sfx/CREDITS.md). The effects sit over the music bed. -->
+      <audio id="sfx-cut-panel" src="assets/sfx/whoosh.mp3" data-start="1.92" data-duration="0.6" data-volume="0.3" data-track-index="3"></audio>
+      <audio id="sfx-underline" src="assets/sfx/pencil.mp3" data-start="2.4" data-duration="1.1" data-volume="0.4" data-track-index="4"></audio>
+      <audio id="sfx-flip-strike" src="assets/sfx/pencil.mp3" data-start="8.0" data-duration="1.1" data-volume="0.4" data-track-index="4"></audio>
+      <audio id="sfx-reveal" src="assets/sfx/whoosh.mp3" data-start="12.0" data-duration="0.6" data-volume="0.3" data-track-index="3"></audio>
+      <audio id="sfx-reveal-name" src="assets/sfx/tap.mp3" data-start="12.45" data-duration="0.4" data-volume="0.35" data-track-index="5"></audio>
+      <audio id="sfx-step-1" src="assets/sfx/click.mp3" data-start="18.5" data-duration="0.6" data-volume="0.35" data-track-index="5"></audio>
+      <audio id="sfx-step-2" src="assets/sfx/click.mp3" data-start="21.0" data-duration="0.6" data-volume="0.35" data-track-index="5"></audio>
+      <audio id="sfx-step-3" src="assets/sfx/click.mp3" data-start="23.5" data-duration="0.6" data-volume="0.35" data-track-index="5"></audio>
+      <audio id="sfx-strike" src="assets/sfx/pencil.mp3" data-start="23.6" data-duration="1.1" data-volume="0.4" data-track-index="4"></audio>
+      <audio id="sfx-step-4" src="assets/sfx/click.mp3" data-start="25.4" data-duration="0.6" data-volume="0.35" data-track-index="5"></audio>
+      <audio id="sfx-checks" src="assets/sfx/typing.mp3" data-start="26.2" data-duration="1.5" data-volume="0.3" data-track-index="6"></audio>
+      <audio id="sfx-failed-1" src="assets/sfx/stamp.mp3" data-start="27.5" data-duration="0.6" data-volume="0.45" data-track-index="7"></audio>
+      <audio id="sfx-failed-2" src="assets/sfx/stamp.mp3" data-start="28.0" data-duration="0.6" data-volume="0.45" data-track-index="8"></audio>
+      <audio id="sfx-step-5" src="assets/sfx/click.mp3" data-start="30.0" data-duration="0.6" data-volume="0.35" data-track-index="5"></audio>
+      <audio id="sfx-verdict" src="assets/sfx/stamp.mp3" data-start="32.3" data-duration="0.6" data-volume="0.55" data-track-index="7"></audio>
+      <audio id="sfx-printer" src="assets/sfx/printer.mp3" data-start="34.75" data-duration="3.1" data-volume="0.35" data-track-index="6"></audio>
+      <audio id="sfx-endcard" src="assets/sfx/whoosh.mp3" data-start="41.95" data-duration="0.6" data-volume="0.3" data-track-index="3"></audio>
+    </div>
+    <script>
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

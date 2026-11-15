@@ -32,7 +32,7 @@ FIRST VIEWPORT:
   8. a meta line and "Print for patient".
 - Empty state: the frame and headings, with the nine check names listed as what will be checked.
 
-FORM: Drug Facts Panel, candidate 4 of 7 on my ordered list (assigned by the roll). seed:40afe95296bca757. Signature interaction: the round trip set word against word. Words lost from the English are struck in red, and words that changed on the way back are underlined. Motion: feedback only (press, focus, the running timer). No entrances.
+FORM: Drug Facts Panel, candidate 4 of 7 on my ordered list (assigned by the roll). seed:40afe95296bca757. Signature interaction: the round trip set word against word. Words lost from the English are struck in red, and words that changed on the way back are underlined. Motion: feedback (press, focus, the running timer), plus what the user asked for on Nov 14 ("add animations inside the app ... using hyperframes"): two HyperFrames clips (the empty state's round trip, the checking loop) and one result moment, the verdict stamp with the struck/underlined words drawing in. Nothing else enters.
 
 Raises:
 - Orienteering map: one reserved ink.

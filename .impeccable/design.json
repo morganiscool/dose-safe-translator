@@ -1,0 +1,188 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-15T00:00:00Z",
+  "title": "Design System: Dose-Safe Translator",
+  "extensions": {
+    "colorMeta": {
+      "carton": { "role": "primary", "displayName": "Carton Blue", "canonical": "#0e4c92", "approxOklch": "oklch(42.1% 0.130 255)", "cssVar": "--carton", "tonalRamp": ["#000530", "#002257", "#034082", "#2d62a3", "#5784bf", "#80a8db", "#abccf7", "#d7f1ff"] },
+      "carton-deep": { "role": "primary", "displayName": "Deep Carton", "canonical": "#0a3a70", "approxOklch": "oklch(35.1% 0.106 255)", "cssVar": "--carton-deep", "tonalRamp": ["#00072c", "#002352", "#164277", "#3d6393", "#6385af", "#8ba7cc", "#b4cbe9", "#dff0ff"] },
+      "alert": { "role": "tertiary", "displayName": "Alert Red", "canonical": "#c8102e", "approxOklch": "oklch(53.0% 0.207 22)", "cssVar": "--alert", "usage": "Failed checks, struck words, the 'check this' verdict plate. Nowhere else.", "tonalRamp": ["#2d0000", "#580000", "#87000f", "#b70026", "#dd434b", "#fb7575", "#ffa3a0", "#ffd1cc"] },
+      "panel": { "role": "neutral", "displayName": "Paper White", "canonical": "#ffffff", "cssVar": "--panel (app) / --paper, --on-carton, --on-dark (aliases)", "tonalRamp": ["#0b0b0b", "#252525", "#424242", "#616161", "#828282", "#a5a5a5", "#c9c9c9", "#eeeeee"] },
+      "ink": { "role": "neutral", "displayName": "Label Ink", "canonical": "#111111", "cssVar": "--ink", "tonalRamp": ["#0b0b0b", "#252525", "#424242", "#616161", "#828282", "#a5a5a5", "#c9c9c9", "#eeeeee"] },
+      "muted": { "role": "neutral", "displayName": "Muted Ink", "canonical": "#4a4a4a", "cssVar": "--muted", "tonalRamp": ["#0b0b0b", "#252525", "#424242", "#616161", "#828282", "#a5a5a5", "#c9c9c9", "#eeeeee"] },
+      "tint": { "role": "neutral", "displayName": "Label Tint", "canonical": "#eef1f5", "cssVar": "--tint", "tonalRamp": ["#0a0b0d", "#242527", "#404245", "#5e6266", "#7e8389", "#a0a6ad", "#c3cad3", "#eef1f5"] },
+      "tint-strong": { "role": "neutral", "displayName": "Tint Rule", "canonical": "#dde5ef", "cssVar": "--tint-strong", "tonalRamp": ["#0a0b0d", "#242527", "#404245", "#5e6266", "#7e8389", "#a0a6ad", "#c3cad3", "#e8eff9"] },
+      "on-carton-muted": { "role": "neutral", "displayName": "On-Carton Muted", "canonical": "#d5e2f3", "cssVar": "--on-carton-muted / --on-dark-muted", "tonalRamp": ["#090b0e", "#222529", "#3e4248", "#5c626a", "#7b838d", "#9ca6b3", "#bfcada", "#e3f0ff"] },
+      "disabled": { "role": "neutral", "displayName": "Disabled Grey", "canonical": "#6b6b6b", "cssVar": "--disabled", "tonalRamp": ["#0b0b0b", "#252525", "#424242", "#616161", "#828282", "#a5a5a5", "#c9c9c9", "#eeeeee"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Landing only: the hero line and the stacked headline. Phone: 11.4vw.", "surface": "landing" },
+      "headline": { "displayName": "Headline", "purpose": "Landing only: section headings and the closing invitation. Phone: 9.5vw.", "surface": "landing" },
+      "statement": { "displayName": "Statement", "purpose": "Landing only: hero subline and pinned statement. Phone: 21px.", "surface": "landing" },
+      "panel-title": { "displayName": "Panel Title", "purpose": "'Translation Facts'. 28px on phones." },
+      "translation": { "displayName": "Translation", "purpose": "The patient-facing translation, largest text in the panel. 26px on phones; 26pt on the printed slip." },
+      "heading": { "displayName": "Heading", "purpose": "Page h1. 22px on phones." },
+      "verdict": { "displayName": "Verdict", "purpose": "The verdict plate's sentence." },
+      "subhead": { "displayName": "Subhead", "purpose": "Panel section headings." },
+      "body-large": { "displayName": "Body Large", "purpose": "Round-trip lines, inputs, empty-state lead (60ch)." },
+      "body": { "displayName": "Body", "purpose": "Running text and check names (600 for names)." },
+      "label": { "displayName": "Label", "purpose": "Row keys, check-group headings, secondary button." },
+      "field-label": { "displayName": "Field Label", "purpose": "Form labels, nav links, switch text." },
+      "small": { "displayName": "Small", "purpose": "Hints, meta line, Passed/Failed state, trip key." },
+      "button": { "displayName": "Button", "purpose": "The primary slab." }
+    },
+    "fonts": [
+      { "family": "Public Sans", "source": "self-hosted web/fonts/PublicSans-Variable.ttf, served at /static/fonts/", "weights": "100 900 (used: 900, 800, 600, 400)", "display": "swap" },
+      { "family": "Noto Sans SC", "source": "Google Fonts CSS (400, 600), loaded on the translator only", "role": "Chinese (Simplified) fallback, ahead of Microsoft YaHei and PingFang SC" }
+    ],
+    "shadows": [],
+    "borders": [
+      { "name": "frame", "value": "3px solid #111111", "purpose": "Translation Facts panel, verdict plate (red or ink when filled)." },
+      { "name": "bar", "value": "10px solid ink block, bleeding to the panel's inner edges", "purpose": "Section bars inside the facts panel." },
+      { "name": "rule", "value": "2px solid #111111", "purpose": "Section rules, control borders, Failed box (in alert)." },
+      { "name": "row-rule", "value": "1px solid #dde5ef", "purpose": "Dividers between check rows." },
+      { "name": "focus", "value": "outline: 3px solid #111111; outline-offset: 3px", "purpose": "Every focusable element; white on the blue bar, offset 2px on fields, currentColor offset 4px on the landing." },
+      { "name": "print-frame", "value": "3pt solid #000 with an 8pt bar", "purpose": "The printed patient slip." }
+    ],
+    "motion": [
+      { "name": "press", "value": "transform translateY(1px) 80ms ease-out; background-color 120ms ease-out", "purpose": "Primary slab press and hover." },
+      { "name": "hover-fill", "value": "background-color 120ms ease-out", "purpose": "Secondary button and example lines." },
+      { "name": "switch", "value": "transform 160ms cubic-bezier(.2, .8, .2, 1)", "purpose": "Safer-mode switch knob." },
+      { "name": "verdict-stamp", "value": "320ms cubic-bezier(.16, 1, .3, 1); from opacity 0, translateY(-10px) scale(1.02), clip-path inset(0 0 100% 0)", "purpose": "The verdict plate on each new result." },
+      { "name": "strike-draw", "value": "scaleX 0 to 1, 280ms, delay 460ms, cubic-bezier(.16, 1, .3, 1), origin left", "purpose": "Red strike on lost words and ink underline on changed words." },
+      { "name": "clip-roundtrip", "value": "HyperFrames web/media/roundtrip.mp4 (1600x760), autoplay muted loop", "purpose": "Empty-state example; still HTML version when its container is under 760px, at 640px or less, or under reduced motion." },
+      { "name": "clip-checking", "value": "HyperFrames web/media/checking.mp4 (1600x400), plays while checking", "purpose": "Waiting state; hidden when its container is under 600px or under reduced motion; the timer text stays." },
+      { "name": "landing-reveal", "value": "opacity 0 / translateY(24px) to rest, 700ms cubic-bezier(.16, 1, .3, 1), 80ms stagger", "purpose": "Landing only: section parts arrive once on scroll.", "surface": "landing" },
+      { "name": "landing-bar-ink", "value": "color, background-color 300ms ease", "purpose": "Landing only: the fixed bar takes the field beneath it.", "surface": "landing" },
+      { "name": "clip-word-flip", "value": "HyperFrames web/media/word-flip.mp4 (720x288) in the hero slot", "purpose": "Landing only: the flipped word.", "surface": "landing" },
+      { "name": "explainer", "value": "web/media/explainer.mp4, 45 s, 1920x1080, spec video/explainer/SPEC.md", "purpose": "Landing Watch section; enter expo.out 10-14f, stamp 6f, strike/underline power3.out 9f.", "surface": "landing" },
+      { "name": "reduced-motion", "value": "prefers-reduced-motion: reduce", "purpose": "Clips swap to stills, result animations and switch transition off, landing reveals and smooth scroll off." }
+    ],
+    "breakpoints": [
+      { "name": "translator-tablet", "value": "1100px" },
+      { "name": "translator-stack", "value": "860px" },
+      { "name": "landing-tablet", "value": "900px" },
+      { "name": "phone", "value": "640px" },
+      { "name": "container-roundtrip-still", "value": "759px (container)" },
+      { "name": "container-checking-still", "value": "599px (container)" }
+    ],
+    "surfaces": {
+      "translator": { "files": ["web/translate.html", "web/css/app.css", "web/js/translate.js"], "rules": "Carton ground, unframed white instruction panel at 440px, framed Translation Facts panel, verdict plate, round trip, checks, print slip." },
+      "landing": { "files": ["web/index.html", "web/css/landing.css", "web/js/landing.js"], "rules": "The sentence is the layout: full-bleed single-colour section fields, 12-column grid, five clamp type steps, fixed bar that takes the field's ink, scroll reveals, carton render rotated -4deg, cropped 26vw name in the close. Uses no frames or bars, and no alert red in CSS." },
+      "video": { "files": ["video/app-clips", "video/checking-loop", "video/word-flip", "video/explainer"], "rules": "Same palette and face; frames 8px and bars 14-18px at 1920 wide." },
+      "3d": { "files": ["blender/scene.py"], "rules": "Cycles, Standard view transform for exact carton blue, one soft key-light shadow, transparent background for the carton." }
+    }
+  },
+  "components": [
+    {
+      "name": "Primary Slab",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one main action, full width in the instruction panel.",
+      "html": "<button class=\"ds-btn-primary\">Translate and check</button>",
+      "css": ".ds-btn-primary { display: block; width: 100%; padding: 18px 20px; border: 0; border-radius: 0; background: var(--ink, #111111); color: var(--panel, #ffffff); font: 800 18px/1.5 'Public Sans', system-ui, sans-serif; cursor: pointer; transition: background-color 120ms ease-out, transform 80ms ease-out; } .ds-btn-primary:hover { background: #000; } .ds-btn-primary:active { transform: translateY(1px); } .ds-btn-primary:focus-visible { outline: 3px solid var(--ink, #111111); outline-offset: 3px; } .ds-btn-primary:disabled { background: var(--disabled, #6b6b6b); cursor: not-allowed; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Bordered box for follow-up actions such as printing.",
+      "html": "<button class=\"ds-btn-secondary\">Print for patient</button>",
+      "css": ".ds-btn-secondary { border: 2px solid var(--ink, #111111); border-radius: 0; background: var(--panel, #ffffff); color: var(--ink, #111111); padding: 12px 18px; font: 800 16px/1.3 'Public Sans', system-ui, sans-serif; cursor: pointer; transition: background-color 120ms ease-out; } .ds-btn-secondary:hover { background: var(--tint, #eef1f5); } .ds-btn-secondary:focus-visible { outline: 3px solid var(--ink, #111111); outline-offset: 3px; }"
+    },
+    {
+      "name": "Instruction Field",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "Square 2px-bordered textarea with its label and hint.",
+      "html": "<label class=\"ds-label\" for=\"ds-in\">English instruction from the label</label><textarea id=\"ds-in\" class=\"ds-input\" rows=\"3\">do not take more than 6 caplets in 24 hours</textarea><p class=\"ds-hint\">One bullet from the label at a time.</p>",
+      "css": ".ds-label { display: block; font: 600 15px/1.5 'Public Sans', system-ui, sans-serif; margin: 0 0 8px; color: #111111; } .ds-input { display: block; width: 100%; box-sizing: border-box; border: 2px solid var(--ink, #111111); border-radius: 0; background: #ffffff; color: #111111; font: 400 18px/1.4 'Public Sans', system-ui, sans-serif; padding: 12px 14px; resize: vertical; } .ds-input:focus-visible { outline: 3px solid var(--ink, #111111); outline-offset: 2px; } .ds-hint { margin: 6px 0 0; font: 400 14px/1.45 'Public Sans', system-ui, sans-serif; color: var(--muted, #4a4a4a); }"
+    },
+    {
+      "name": "Example Line",
+      "kind": "chip",
+      "refersTo": "example-line",
+      "description": "Tint block holding a real label line to try.",
+      "html": "<button class=\"ds-example\">children under 12 years: ask a doctor</button>",
+      "css": ".ds-example { display: block; width: 100%; text-align: left; border: 0; border-radius: 0; background: var(--tint, #eef1f5); color: #111111; padding: 11px 14px; font: 400 15px/1.4 'Public Sans', system-ui, sans-serif; cursor: pointer; transition: background-color 120ms ease-out; } .ds-example:hover { background: var(--tint-strong, #dde5ef); } .ds-example:focus-visible { outline: 3px solid #111111; outline-offset: 3px; }"
+    },
+    {
+      "name": "Shell Bar",
+      "kind": "nav",
+      "refersTo": "shell-bar",
+      "description": "Carton-blue top bar with wordmark, nav and the prototype note.",
+      "html": "<header class=\"ds-bar\"><a class=\"ds-wordmark\" href=\"#\"><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\"><rect x=\"2\" y=\"2\" width=\"20\" height=\"20\" fill=\"#fff\"/><rect x=\"2\" y=\"7\" width=\"20\" height=\"3\" fill=\"#111\"/><rect x=\"5\" y=\"13\" width=\"14\" height=\"1.6\" fill=\"#111\"/><rect x=\"5\" y=\"16.5\" width=\"10\" height=\"1.6\" fill=\"#111\"/></svg>Dose-Safe Translator</a><nav class=\"ds-nav\"><a href=\"#\" aria-current=\"page\">Translator</a><a href=\"#\">How it works</a></nav><p class=\"ds-proto\">Prototype – not medical advice</p></header>",
+      "css": ".ds-bar { display: flex; align-items: center; gap: 32px; min-height: 64px; padding: 0 40px; background: var(--carton, #0e4c92); color: #ffffff; font-family: 'Public Sans', system-ui, sans-serif; } .ds-wordmark { display: flex; align-items: center; gap: 10px; color: #ffffff; text-decoration: none; font-weight: 900; font-size: 20px; letter-spacing: -0.01em; } .ds-nav { display: flex; gap: 24px; margin-left: auto; } .ds-nav a { color: var(--on-carton-muted, #d5e2f3); text-decoration: none; font-weight: 600; font-size: 15px; padding: 20px 0 17px; border-bottom: 3px solid transparent; } .ds-nav a:hover { color: #ffffff; } .ds-nav a[aria-current=page] { color: #ffffff; border-bottom-color: #ffffff; } .ds-nav a:focus-visible, .ds-wordmark:focus-visible { outline: 3px solid #ffffff; outline-offset: 3px; } .ds-proto { margin: 0; font-size: 14px; color: var(--on-carton-muted, #d5e2f3); }"
+    },
+    {
+      "name": "Translation Facts Panel",
+      "kind": "card",
+      "refersTo": "verdict-check",
+      "description": "The signature: 3px-framed white panel, 10px bar, red verdict plate, translation set large, and the round trip with struck and underlined words.",
+      "html": "<section class=\"ds-facts\"><h2 class=\"ds-facts-title\">Translation Facts</h2><div class=\"ds-bar10\"></div><div class=\"ds-verdict\"><svg viewBox=\"0 0 24 24\" width=\"28\" height=\"28\" aria-hidden=\"true\"><path d=\"M12 2.5 22.5 21h-21z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\"/><rect x=\"11\" y=\"9\" width=\"2\" height=\"6.5\" fill=\"currentColor\"/><rect x=\"11\" y=\"17\" width=\"2\" height=\"2\" fill=\"currentColor\"/></svg><div><p class=\"ds-vt\">Ask a pharmacist or interpreter to check this translation</p><p class=\"ds-vd\">2 of 9 checks failed: Under / over kept, Under / over survives the round trip.</p></div></div><div class=\"ds-row\"><p class=\"ds-k\">Vietnamese</p><p class=\"ds-tr\" lang=\"vi\">không uống ít hơn 6 viên trong 24 giờ</p></div><div class=\"ds-rule\"></div><div class=\"ds-row\"><p class=\"ds-k\">English</p><p class=\"ds-trip\">do not take <span class=\"ds-lost\">more</span> than 6 caplets</p></div><div class=\"ds-row\"><p class=\"ds-k\">Back to English</p><p class=\"ds-trip\">do not take <span class=\"ds-changed\">less</span> than 6 tablets</p></div></section>",
+      "css": ".ds-facts { background: #ffffff; border: 3px solid var(--ink, #111111); padding: 22px 28px 28px; color: #111111; font-family: 'Public Sans', 'Noto Sans SC', system-ui, sans-serif; } .ds-facts p { margin: 0; } .ds-facts-title { margin: 0; font-size: 32px; font-weight: 900; line-height: 1; letter-spacing: -0.02em; } .ds-bar10 { height: 10px; background: #111111; margin: 16px -28px; } .ds-rule { height: 2px; background: #111111; margin: 18px 0; } .ds-verdict { display: grid; grid-template-columns: 28px minmax(0,1fr); gap: 14px; padding: 16px 18px; border: 3px solid var(--alert, #c8102e); background: var(--alert, #c8102e); color: #ffffff; } .ds-vt { font-size: 22px; font-weight: 800; line-height: 1.25; } .ds-vd { font-size: 16px; line-height: 1.45; margin-top: 4px; } .ds-row { display: grid; grid-template-columns: 170px minmax(0,1fr); gap: 16px; align-items: baseline; margin-top: 16px; } .ds-k { font-size: 16px; font-weight: 800; line-height: 1.3; } .ds-tr { font-size: 30px; font-weight: 600; line-height: 1.3; } .ds-trip { font-size: 18px; line-height: 1.5; } .ds-lost, .ds-changed { position: relative; } .ds-lost::after, .ds-changed::after { content: ''; position: absolute; left: -2px; right: -2px; height: 2px; } .ds-lost::after { top: 54%; background: var(--alert, #c8102e); } .ds-changed::after { bottom: -3px; background: #111111; }"
+    },
+    {
+      "name": "Check Row",
+      "kind": "custom",
+      "refersTo": "check-failed-state",
+      "description": "A check named in words: Failed in a 2px red box with red name and detail; Passed in ink.",
+      "html": "<ul class=\"ds-checks\"><li data-ok=\"false\"><span class=\"ds-state\">Failed</span><span class=\"ds-name\">Under / over kept</span><span class=\"ds-where\">“more” became “less” · checks the translation</span></li><li><span class=\"ds-state\">Passed</span><span class=\"ds-name\">Numbers kept</span><span class=\"ds-where\">checks the translation</span></li></ul>",
+      "css": ".ds-checks { list-style: none; margin: 0; padding: 0; font-family: 'Public Sans', system-ui, sans-serif; color: #111111; } .ds-checks li { display: grid; grid-template-columns: 72px minmax(0,1fr); column-gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--tint-strong, #dde5ef); } .ds-state { grid-row: span 2; font-weight: 800; font-size: 14px; align-self: start; padding-top: 1px; } .ds-name { font-weight: 600; font-size: 16px; } .ds-where { font-size: 14px; color: var(--muted, #4a4a4a); } .ds-checks li[data-ok=false] .ds-state { justify-self: start; color: var(--alert, #c8102e); border: 2px solid var(--alert, #c8102e); padding: 0 6px; line-height: 1.5; } .ds-checks li[data-ok=false] .ds-name, .ds-checks li[data-ok=false] .ds-where { color: var(--alert, #c8102e); }"
+    },
+    {
+      "name": "Safer-Mode Switch",
+      "kind": "custom",
+      "refersTo": "input-field",
+      "description": "Square track and knob; fills ink when on.",
+      "html": "<label class=\"ds-switch\"><input type=\"checkbox\" checked><span class=\"ds-track\"></span><span class=\"ds-switch-text\">Safer mode</span></label>",
+      "css": ".ds-switch { position: relative; display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: start; cursor: pointer; font: 600 15px/1.5 'Public Sans', system-ui, sans-serif; color: #111111; } .ds-switch input { position: absolute; opacity: 0; width: 44px; height: 24px; margin: 0; } .ds-track { position: relative; width: 44px; height: 24px; box-sizing: border-box; border: 2px solid #111111; background: #ffffff; } .ds-track::after { content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; background: #111111; transition: transform 160ms cubic-bezier(.2,.8,.2,1); } .ds-switch input:checked + .ds-track { background: #111111; } .ds-switch input:checked + .ds-track::after { background: #ffffff; transform: translateX(20px); } .ds-switch input:focus-visible + .ds-track { outline: 3px solid #111111; outline-offset: 3px; }"
+    },
+    {
+      "name": "Landing Button",
+      "kind": "button",
+      "refersTo": "landing-button",
+      "description": "Landing only: ink slab that turns carton blue on hover.",
+      "html": "<a class=\"ds-landing-btn\" href=\"#\">Try the translator</a>",
+      "css": ".ds-landing-btn { display: inline-block; padding: 13px 20px; background: var(--ink, #111111); color: #ffffff; font: 800 16px/1.55 'Public Sans', system-ui, sans-serif; text-decoration: none; transition: background-color 300ms ease, transform 120ms ease; } .ds-landing-btn:hover { background: var(--carton, #0e4c92); } .ds-landing-btn:active { transform: translateY(1px); } .ds-landing-btn:focus-visible { outline: 3px solid currentColor; outline-offset: 4px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Drug Facts Panel",
+    "overview": "Every surface borrows the grammar of the FDA Drug Facts label the instructions come from: a field of carton blue, white panels drawn in black, heavy section bars, thin rules, and one plain federal grotesque. The tool's answer is set as a \"Translation Facts\" panel, so the result reads like the label it was checked against rather than like a software card. Structure is drawn in ink, not implied with shadows or tinted cards.\n\nThe working screen is dense and literal: two columns on the blue ground, the instruction form on the left, the framed facts panel on the right, read top to bottom from verdict to translation to round trip to checks. The landing page uses the same palette and type at poster scale, one field of colour per section, and lets the sentences carry the layout.\n\nColour is quarantined. Carton blue owns the ground and the bar; white owns the work; ink owns every word and every line; alert red appears only where a check failed. Motion exists to give feedback and to show the round trip, never to decorate.",
+    "keyCharacteristics": [
+      "Carton-blue shell, white working panels, black ink structure.",
+      "One framed panel with 10px black section bars and 2px rules, after the Drug Facts label.",
+      "Alert red only on failed checks, struck words and the \"check this\" verdict plate.",
+      "Public Sans alone, 900/800/600/400, with a Chinese fallback.",
+      "Square corners everywhere, no shadows.",
+      "State always given as a word plus a form, never hue alone."
+    ],
+    "rules": [
+      { "name": "The Carton Owns the Ground Rule", "body": "Blue is a field, never a component colour inside a panel. Inside white panels, everything is ink.", "section": "colors" },
+      { "name": "The Quarantined Red Rule", "body": "Alert red marks a failed check, a struck word or the \"check this\" verdict plate. Errors in the form, the \"too long\" refusal and every other state use ink and weight, not red.", "section": "colors" },
+      { "name": "The Word and Form Rule", "body": "Every state is named in words and drawn as a form: \"Failed\" in a 2px red box, struck versus underlined words with a key underneath, a verdict plate with a sentence. Colour only reinforces.", "section": "colors" },
+      { "name": "The One Grotesque Rule", "body": "Public Sans is the only face on every surface, in the HyperFrames clips and in the explainer. No second family, no mono, no serif.", "section": "typography" },
+      { "name": "The Translation Leads Rule", "body": "In any panel or print that carries a translation, the translation is the largest text after the panel title (30px on screen, 26pt on the printed slip).", "section": "typography" },
+      { "name": "The Printed Label Rule", "body": "Surfaces are flat like printed card stock. Separate with ink lines and fields of colour, never with shadows, blur or tonal elevation.", "section": "elevation" },
+      { "name": "The Square Corner Rule", "body": "Nothing is rounded. Not buttons, not inputs, not the switch knob, not video frames.", "section": "shapes" }
+    ],
+    "dos": [
+      "Do set the shell on carton blue and the work on white, with all structure in ink (3px frame, 10px bars, 2px rules).",
+      "Do keep alert red to failed checks, struck words and the \"check this\" verdict plate.",
+      "Do name every state in words and draw it as a form, so it reads without colour.",
+      "Do use Public Sans alone, keeping the Noto Sans SC / YaHei / PingFang fallback on any surface that shows a translation.",
+      "Do keep every corner square and every surface flat.",
+      "Do limit motion on the working screen to feedback (press, focus, switch, timer), the two HyperFrames clips with their still fallbacks, and the result's verdict stamp plus the strike/underline draw; turn all of it off under `prefers-reduced-motion`.",
+      "Do write the positive verdict as \"No problems found by the automatic checks\" and carry \"Prototype – not medical advice\" on every surface (the translator bar, the printed slip, the landing footer, the explainer end card)."
+    ],
+    "donts": [
+      "Don't call a translation \"safe\" anywhere: in copy, verdicts, the slip, video or alt text (the product name and the \"Safer mode\" control are the only uses of the word, and neither describes a translation).",
+      "Don't use red for form errors, the \"too long\" refusal, hover states or emphasis.",
+      "Don't add shadows, rounded corners, gradients or tinted cards on grey.",
+      "Don't add a second typeface beyond the Chinese fallback.",
+      "Don't let a clip's text render below 14px; swap in the still instead.",
+      "Don't present the illustrated flip (\"ít hơn\" / \"less\") as real model output; label it as an illustration."
+    ]
+  }
+}

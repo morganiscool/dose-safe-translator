@@ -1,0 +1,41 @@
+<template>
+  <style>
+    @font-face { font-family: "Public Sans"; src: url("assets/fonts/PublicSans-Variable.ttf") format("truetype"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; background: #ffffff; color: #111111; font-family: "Public Sans", sans-serif; overflow: hidden; }
+    .ec-line { position: absolute; left: 120px; font-size: 96px; font-weight: 900; letter-spacing: -0.035em; line-height: 1; white-space: nowrap; }
+    .ec-line span { display: inline-block; }
+    #ec-1 { top: 330px; }
+    #ec-2 { top: 470px; }
+    .ec-blue { color: #0e4c92; }
+    #ec-field { position: absolute; inset: 0; background: #0e4c92; }
+    #ec-name { position: absolute; left: 120px; top: 360px; font-size: 140px; font-weight: 900; letter-spacing: -0.04em; color: #ffffff; line-height: 1; white-space: nowrap; }
+    #ec-name span { display: inline-block; }
+    #ec-proto { position: absolute; left: 124px; top: 560px; font-size: 40px; font-weight: 600; color: #ffffff; }
+    #ec-event { position: absolute; left: 124px; top: 630px; font-size: 34px; font-weight: 500; color: #d5e2f3; }
+  </style>
+
+  <div id="root" data-composition-id="endcard" data-width="1920" data-height="1080">
+    <div id="ec-1" class="ec-line clip" data-start="0.2" data-duration="2.8">
+      <span>It</span> <span>never</span> <span>says</span> <span>a</span> <span>translation</span> <span>is</span> <span>safe.</span>
+    </div>
+    <div id="ec-2" class="ec-line clip" data-start="1.1" data-duration="1.9">
+      <span>It</span> <span>shows</span> <span class="ec-blue">what</span> <span class="ec-blue">to</span> <span class="ec-blue">check.</span>
+    </div>
+    <div id="ec-field" class="clip" data-start="3.0" data-duration="3.3"></div>
+    <div id="ec-name" class="clip" data-start="3.25" data-duration="3.05"><span>D</span><span>o</span><span>s</span><span>e</span><span>-</span><span>S</span><span>a</span><span>f</span><span>e</span><span>&nbsp;</span><span>T</span><span>r</span><span>a</span><span>n</span><span>s</span><span>l</span><span>a</span><span>t</span><span>o</span><span>r</span></div>
+    <div id="ec-proto" class="clip" data-start="3.5" data-duration="2.8">Prototype – not medical advice</div>
+    <div id="ec-event" class="clip" data-start="3.7" data-duration="2.6">Veritas AI International High School Hackathon 2026 · AI + Languages</div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#ec-1 span", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.13, stagger: 0.067, ease: "power2.out" }, 0.2);
+    tl.fromTo("#ec-2 span", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.13, stagger: 0.067, ease: "power2.out" }, 1.1);
+    // The carton field wipes across from the right, carrying the name in.
+    tl.fromTo("#ec-field", { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.6, ease: "power2.inOut" }, 3.0);
+    tl.fromTo("#ec-name span", { opacity: 0 }, { opacity: 1, duration: 0.02, stagger: 0.03 }, 3.25);
+    tl.fromTo("#ec-proto", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "expo.out" }, 3.5);
+    tl.fromTo("#ec-event", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "expo.out" }, 3.7);
+    window.__timelines["endcard"] = tl;
+  </script>
+</template>

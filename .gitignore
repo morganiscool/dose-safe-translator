@@ -28,3 +28,14 @@ video/renders/
 video/*/.hyperframes/
 video/*/.thumbnails/
 blender/*.blend1
+
+# Full-size Blender renders (regenerate with blender/scene.py)
+web/media/src/
+
+# HyperFrames media cache (sound files are copied into assets/sfx with credits)
+video/*/.media/
+
+# Full-length music download (bed.mp3 is the cut used in the film)
+video/explainer/assets/bgm/track.mp3
+video/explainer/audio_request.json
+video/explainer/audio_meta.json

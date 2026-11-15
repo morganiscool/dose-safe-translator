@@ -48,6 +48,15 @@
       <button id="submit" class="primary" type="submit" disabled>Translate and check</button>
       <p id="status" class="status" role="status" aria-live="polite"></p>
     </form>
+    <section class="examples" aria-labelledby="examples-title">
+      <h2 id="examples-title">Try a real label line</h2>
+      <ul>
+        <li><button type="button" data-example="adults and children 12 years and over: do not take more than 6 gelcaps in 24 hours, unless directed by a doctor">adults and children 12 years and over: do not take more than 6 gelcaps in 24 hours, unless directed by a doctor</button></li>
+        <li><button type="button" data-example="children under 12 years: ask a doctor">children under 12 years: ask a doctor</button></li>
+        <li><button type="button" data-example="laxative products should not be used for a period longer than 1 week unless directed by a doctor.">laxative products should not be used for a period longer than 1 week unless directed by a doctor.</button></li>
+      </ul>
+      <p class="hint">From the Directions and Do not use sections of real US drug labels (openFDA and DailyMed).</p>
+    </section>
   </section>
 
   <section class="panel facts-panel" aria-labelledby="facts-title">
@@ -78,13 +87,13 @@
           <p class="hint">An illustration of the format, not real model output. The label says “more than”, the translation says “less than”, and two checks catch it.</p>
         </figcaption>
         <video class="sample-video" src="/static/media/roundtrip.mp4" poster="/static/media/roundtrip-poster.webp"
-               width="1600" height="700" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+               width="1600" height="760" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
         <div class="sample-static">
         <div class="verdict sample-verdict">
           <svg class="verdict-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 22.5 21h-21z" fill="none" stroke="currentColor" stroke-width="2.2"/><rect x="11" y="9" width="2" height="6.5" fill="currentColor"/><rect x="11" y="17" width="2" height="2" fill="currentColor"/></svg>
           <div>
             <p class="verdict-title">Ask a pharmacist or interpreter to check this translation</p>
-            <p class="verdict-detail">2 of 9 checks failed: Under / over kept, Under / over survives the round trip.</p>
+            <p class="verdict-detail">Example: 2 of 9 checks failed, Under / over kept and Under / over survives the round trip.</p>
           </div>
         </div>
         <div class="row">
@@ -106,7 +115,7 @@
     <div id="checking" class="checking" hidden>
       <video id="checking-video" src="/static/media/checking.mp4" poster="/static/media/checking-poster.webp"
              width="1600" height="400" muted loop playsinline preload="auto" aria-hidden="true"></video>
-      <p id="checking-text" class="checking-text"></p>
+      <p class="checking-text"><span id="checking-text" role="status"></span> <span id="checking-seconds" class="checking-seconds" aria-hidden="true"></span></p>
     </div>
 
     <div id="result" hidden>
@@ -146,15 +155,6 @@
     </div>
   </section>
 
-  <section class="panel examples" aria-labelledby="examples-title">
-    <h2 id="examples-title">Try a real label line</h2>
-    <ul>
-      <li><button type="button" data-example="adults and children 12 years and over: do not take more than 6 gelcaps in 24 hours, unless directed by a doctor">adults and children 12 years and over: do not take more than 6 gelcaps in 24 hours, unless directed by a doctor</button></li>
-      <li><button type="button" data-example="children under 12 years: ask a doctor">children under 12 years: ask a doctor</button></li>
-      <li><button type="button" data-example="laxative products should not be used for a period longer than 1 week unless directed by a doctor.">laxative products should not be used for a period longer than 1 week unless directed by a doctor.</button></li>
-    </ul>
-    <p class="hint">From the Directions and Do not use sections of real US drug labels (openFDA and DailyMed).</p>
-  </section>
 </main>
 
 <aside id="slip" class="slip" aria-hidden="true">
