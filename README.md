@@ -44,8 +44,13 @@ Chinese or Spanish.
   translation*. The tool never says a translation is "safe".
 - **Safer mode:** instead of taking the model's first answer, it looks at its top 5 translations and keeps
   the one with the fewest problems in the translation itself (then the fewest problems overall).
+- **Photo mode** (web app): photograph the barcode on a medicine box, or type its barcode or NDC number.
+  The app finds the box's official label (openFDA → DailyMed), shows the product so the pharmacist can
+  confirm it's the right box, then translates and checks every line of its **Purpose** (what it does),
+  **Uses** (what the label says it treats), **Directions** (how much, how often, who may take it) and
+  **Do not use** sections, and prints the whole label as one slip. It shows only the label's own words.
 
-The demo is a Gradio app at the end of the notebook.
+The demo is a Gradio app at the end of the notebook; the web app below adds photo mode.
 
 ## What we added
 
@@ -181,6 +186,19 @@ seconds on a normal laptop.
 **Just on your own computer:** `pip install -r requirements-app.txt`, then
 `uvicorn server:app --port 7860` and open http://localhost:7860/translate.
 
+**Photo mode** is the "Photo of the box" tab (or `/translate?mode=photo`). It needs an internet
+connection to look the label up. On a phone, the photo button opens the camera. The photo is only used
+to read the barcode (with [zxing-cpp](https://github.com/zxing-cpp/zxing-cpp)) and isn't saved. A whole
+label takes longer than one line: about 100 seconds for a 10-line label in safer mode on a laptop
+processor. Two limits of the data:
+- Only about a third of over-the-counter labels in openFDA list their barcode (16,218 of 49,694 on
+  Nov 15, 2026), so the NDC number printed on the box works too.
+- Some makers fill in a placeholder barcode (012345678905 is on 134 different labels). When a barcode
+  matches more than one product, the app refuses to guess and asks for the NDC number.
+
+No box at hand? The tab shows a real barcode (from an acetaminophen 500 mg label) to photograph from
+the screen, or to use with one click.
+
 **Tests:** `pip install -r requirements-dev.txt`, then `python -m pytest`.
 
 **On Hugging Face:** the repo is set up as a Docker Space (`Dockerfile` and the settings at the
@@ -207,7 +225,9 @@ running.
 - Test set (optional): [FLORES+](https://huggingface.co/datasets/openlanguagedata/flores_plus)
 - Libraries: [Hugging Face Transformers](https://github.com/huggingface/transformers),
   [PyTorch](https://pytorch.org), [sacrebleu](https://github.com/mjpost/sacrebleu) (chrF),
-  [Gradio](https://www.gradio.app), [pandas](https://pandas.pydata.org)
+  [Gradio](https://www.gradio.app), [pandas](https://pandas.pydata.org); for the web app,
+  [FastAPI](https://fastapi.tiangolo.com), [zxing-cpp](https://github.com/zxing-cpp/zxing-cpp) (barcode
+  reading), [Pillow](https://python-pillow.org) and [Requests](https://requests.readthedocs.io)
 - Background: [UCSF on Google Translate for discharge instructions](https://universityofcalifornia.edu/news/google-translates-doctors-orders-spanish-and-chinese-few-important-caveats);
   [*Pediatrics* study on Spanish prescription labels](https://www.fiercehealthcare.com/healthcare/up-to-half-spanish-translated-prescriptions-include-dangerous-mistakes)
 - Explainer film: built with [HyperFrames](https://hyperframes.heygen.com) (`video/explainer`), opening on a
