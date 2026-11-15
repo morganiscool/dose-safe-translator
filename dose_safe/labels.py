@@ -18,12 +18,14 @@ PHOTO_SECTIONS = {  # in the order photo mode shows them
     "50570-1": "Do not use",
 }
 UNTITLED_PART = "42229-5"  # "SPL unclassified section": a sub-part with no heading of its own
+# Bullet marks. Some labels use a symbol-font bullet stored as a private-use character (like U+F06E).
+BULLETS = r"[•●▪■◦-]"
 
 
 def clean(text):
     text = unicodedata.normalize("NFKC", text).replace("⁄", "/")
     text = text.replace("’", "'").replace("‘", "'").replace("“", '"').replace("”", '"')
-    text = re.sub(r"[•●▪■◦]", " ", text)
+    text = re.sub(BULLETS, " ", text)
     return " ".join(text.split()).strip(" ;,-–—:")
 
 
@@ -118,7 +120,7 @@ def section_units(section, heading):
                 elif own_text.rstrip().endswith(":"):
                     lead = clean(own_text)
                 else:
-                    units += [clean(piece) for piece in re.split(r"[•●▪■]", own_text)]
+                    units += [clean(piece) for piece in re.split(BULLETS, own_text)]
                 for table in child.iter(f"{HL7}table"):
                     units += table_units(table)
     for sub_section in section.findall(f"{HL7}component/{HL7}section"):

@@ -7,4 +7,8 @@ gradio
 pandas
 requests
 ipython
-datasets  # optional, for the FLORES+ section
+easyocr     # reads photos of the label (installed by the notebook if missing)
+pillow
+numpy
+matplotlib  # only for its bundled DejaVu fonts, used to print the made-up label photos
+datasets    # optional, for the FLORES+ section

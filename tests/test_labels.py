@@ -89,6 +89,18 @@ def test_dosing_lines_are_never_joined_only_short_lists_of_uses():
         ["helps: a cough", "helps: a cough due to minor throat irritation", "helps: sneezing, runny nose"]
 
 
+def test_symbol_font_bullets_split_a_paragraph():
+    # From the Rompe Pechito DM label: its bullets are U+F06E (a symbol-font square), so the whole
+    # paragraph used to come out as one instruction with the dose limit buried in it.
+    root = ET.fromstring(HL7_DOC.format(section_xml(
+        "34068-7", "Directions",
+        "<paragraph> Do not give more than 6 doses in any 24 hours period  shake well before use"
+        "</paragraph>")))
+    assert label_sections(root) == [
+        {"name": "Directions", "lines": ["Do not give more than 6 doses in any 24 hours period",
+                                         "shake well before use"]}]
+
+
 def test_dot_leaders_repeated_headings_and_missing_sections():
     root = ET.fromstring(HL7_DOC.format(
         section_xml("55106-9", "Active ingredients (in each tablet)",

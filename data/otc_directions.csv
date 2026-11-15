@@ -120,259 +120,260 @@ instruction_id,instruction,section,ingredient,brand,set_id
 119,adults and children 12 years and over: 30 mL every 4 hours,Directions,dextromethorphan,Daytime Cold and Flu,0044c53c-11dd-41a9-a5d9-622dd8b1c144
 120,chlldren under 12 years of age: do not use,Directions,dextromethorphan,Daytime Cold and Flu,0044c53c-11dd-41a9-a5d9-622dd8b1c144
 121,"Do not use in child who is taking a prescription monoamine oxidase inhibitor (MAOI) (certain drugs for depression, psychiatric, or emotional condition, or Parkinson's disease), or for 2 weeks after stopping the MAOI drug. If you do not know if your child's prescription drug contains an MAOI, ask a doctor or pharmacist before giving this product.",Do not use,dextromethorphan,Rompe Pechito DM for Kids,004d12e1-6e3d-84c8-e063-6394a90aa653
-122,Do not give more than 6 doses in any 24 hours period  shake well before use  measure only with dosing cup provided  keep dosing cup with product  mL = milliliter,Directions,dextromethorphan,Rompe Pechito DM for Kids,004d12e1-6e3d-84c8-e063-6394a90aa653
-123,Children 6 to under 12 years of age 5 mL every 4 hours,Directions,dextromethorphan,Rompe Pechito DM for Kids,004d12e1-6e3d-84c8-e063-6394a90aa653
-124,Children 4 to under 6 years of age 2.5 mL every 4 hours,Directions,dextromethorphan,Rompe Pechito DM for Kids,004d12e1-6e3d-84c8-e063-6394a90aa653
-125,Children under 4 years of age Do not use,Directions,dextromethorphan,Rompe Pechito DM for Kids,004d12e1-6e3d-84c8-e063-6394a90aa653
-126,take only as directed – see Overdose warning,Directions,dextromethorphan,basic care daytime severe cold and flu,0100f86e-257f-4197-9849-3c4429cdf0f2
-127,only use the dose cup provided,Directions,dextromethorphan,basic care daytime severe cold and flu,0100f86e-257f-4197-9849-3c4429cdf0f2
-128,do not exceed 4 doses per 24 hrs,Directions,dextromethorphan,basic care daytime severe cold and flu,0100f86e-257f-4197-9849-3c4429cdf0f2
-129,adults & children 12 yrs & over: 30 mL every 4 hrs,Directions,dextromethorphan,basic care daytime severe cold and flu,0100f86e-257f-4197-9849-3c4429cdf0f2
-130,children 6 to under 12 yrs: 15 mL every 4 hrs,Directions,dextromethorphan,basic care daytime severe cold and flu,0100f86e-257f-4197-9849-3c4429cdf0f2
-131,children 4 to under 6 yrs: ask a doctor,Directions,dextromethorphan,basic care daytime severe cold and flu,0100f86e-257f-4197-9849-3c4429cdf0f2
-132,children under 4 yrs: do not use,Directions,dextromethorphan,basic care daytime severe cold and flu,0100f86e-257f-4197-9849-3c4429cdf0f2
-133,"do not crush, chew, or break tablet",Directions,guaifenesin,Guaifenesin,00c40e3b-6962-dfb4-e063-6294a90afec6
-134,take with a full glass of water,Directions,guaifenesin,Guaifenesin,00c40e3b-6962-dfb4-e063-6294a90afec6
-135,this product can be administered without regard for timing of meals,Directions,guaifenesin,Guaifenesin,00c40e3b-6962-dfb4-e063-6294a90afec6
-136,adults and children 12 years of age and over: 1 tablet every 12 hours. Do not exceed 2 tablets in 24 hours.,Directions,guaifenesin,Guaifenesin,00c40e3b-6962-dfb4-e063-6294a90afec6
-137,"Adults: when practical, cleanse area with mild soap and warm water and rinse thoroughly. Gently dry by patting or blotting with toilet tissue or soft cloth before applying. Adults and children 12 years and older: apply externally to the affected area up to 4 times a day. Children under 12 years of age: consult a doctor.",Directions,phenylephrine,DCH Hemorrhoidal,0050701f-4393-3f01-e063-6394a90a4e0e
-138,"Do not use if you have trouble or pain swallowing food, vomiting with blood, or bloody or black stools. These may be signs of a serious condition. See your doctor.",Do not use,famotidine,Famotidine,018b02e8-1005-4736-a4fc-962881f52adf
-139,Do not use with other acid reducers,Do not use,famotidine,Famotidine,018b02e8-1005-4736-a4fc-962881f52adf
-140,"adults and children 12 years and over: to relieve symptoms, swallow 1 tablet with a glass of water. Do not chew.",Directions,famotidine,Famotidine,018b02e8-1005-4736-a4fc-962881f52adf
-141,"adults and children 12 years and over: to prevent symptoms, swallow 1 tablet with a glass of water at any time from 15 to 60 minutes before eating food or drinking beverages that cause heartburn",Directions,famotidine,Famotidine,018b02e8-1005-4736-a4fc-962881f52adf
-142,adults and children 12 years and over: do not use more than 2 tablets in 24 hours,Directions,famotidine,Famotidine,018b02e8-1005-4736-a4fc-962881f52adf
-143,adults and children 12 years and over,Directions,famotidine,heartburn relief,05c03fd8-abc8-47f7-868c-895b9a38c5b3
-144,"to relieve symptoms, swallow 1 tablet with a glass of water. Do not chew.",Directions,famotidine,heartburn relief,05c03fd8-abc8-47f7-868c-895b9a38c5b3
-145,"to prevent symptoms, swallow 1 tablet with a glass of water at any time from 15 to 60 minutes before eating food or drinking beverages that cause heartburn",Directions,famotidine,heartburn relief,05c03fd8-abc8-47f7-868c-895b9a38c5b3
-146,do not use more than 2 tablets in 24 hours,Directions,famotidine,heartburn relief,05c03fd8-abc8-47f7-868c-895b9a38c5b3
-147,"adults and children 12 years and over: to prevent symptoms, swallow 1 tablet with a glass of water at any time from 10 to 60 minutes before eating food or drinking beverages that cause heartburn",Directions,famotidine,Maximum Strength Acid Reducer,07a924f1-14cc-4e7d-e063-6394a90ac7f3
-148,"Do not use if you have: trouble or pain swallowing food, vomiting with blood, or bloody or black stools",Do not use,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
-149,"Do not use if you have: heartburn with lightheadedness, sweating or dizziness",Do not use,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
-150,"Do not use if you have: chest pain or shoulder pain with shortness of breath; sweating; pain spreading to arms, neck or shoulders; or lightheadedness",Do not use,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
-151,Do not use if you have: frequent chest pain,Do not use,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
-152,These may be signs of a serious condition. See your doctor.,Do not use,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
-153,for adults 18 years of age and older,Directions,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
-154,"this product is to be used once a day (every 24 hours), every day for 14 days",Directions,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
-155,it may take 1 to 4 days for full effect; some people get complete relief of symptoms within 24 hours,Directions,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
-156,14-Day Course of Treatment,Directions,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
-157,swallow 1 tablet with a glass of water before eating in the morning,Directions,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
-158,take every day for 14 days,Directions,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
-159,do not take more than 1 tablet a day,Directions,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
-160,do not use for more than 14 days unless directed by your doctor,Directions,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
-161,swallow whole. Do not chew or crush tablets,Directions,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
-162,Repeated 14-Day Courses (if needed),Directions,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
-163,you may repeat a 14-day course every 4 months,Directions,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
-164,do not take for more than 14 days or more often than every 4 months unless directed by a doctor,Directions,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
-165,children under 18 years of age: ask a doctor. Heartburn in children may sometimes be caused by a serious condition.,Directions,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
-166,"Do not use if you have: chest or shoulder pain with shortness of breath; sweating; pain spreading to arms, neck or shoulders; or lightheadedness",Do not use,omeprazole,Omeprazole,01bde9ca-0114-426d-8188-c55aefaa0961
-167,take 1 tablet before eating in the morning,Directions,omeprazole,Omeprazole,01bde9ca-0114-426d-8188-c55aefaa0961
-168,do not crush or chew tablets,Directions,omeprazole,Omeprazole,01bde9ca-0114-426d-8188-c55aefaa0961
-169,"place the tablet on tongue; tablet disintegrates, with or without water. The tablets can also be swallowed whole with water.",Directions,omeprazole,Omeprazole,01bde9ca-0114-426d-8188-c55aefaa0961
-170,do not take this medicine with alcohol,Directions,omeprazole,Omeprazole,01bde9ca-0114-426d-8188-c55aefaa0961
-171,Repeated 14-Day Course (if needed),Directions,omeprazole,Omeprazole,01bde9ca-0114-426d-8188-c55aefaa0961
-172,children under 18 years of age: ask a doctor before use. Heartburn in children may sometimes be caused by a serious condition.,Directions,omeprazole,Omeprazole,01bde9ca-0114-426d-8188-c55aefaa0961
-173,it may take 1 to 4 days for full effect; some people get complete relief of symptoms within 24 hours 14-Day Course of Treatment,Directions,omeprazole,omeprazole,0340ef94-d2b4-47af-a045-d0d031293984
-174,swallow 1 capsule with a glass of water before eating in the morning,Directions,omeprazole,omeprazole,0340ef94-d2b4-47af-a045-d0d031293984
-175,do not take more than 1 capsule a day,Directions,omeprazole,omeprazole,0340ef94-d2b4-47af-a045-d0d031293984
-176,swallow whole. Do not chew or crush capsules. Repeated 14-Day Courses (if needed),Directions,omeprazole,omeprazole,0340ef94-d2b4-47af-a045-d0d031293984
-177,Do not use if you have bloody or black stool,Do not use,loperamide,anti diarrheal,01964f8a-f05c-4f72-9530-e0cffd981ffa
-178,drink plenty of clear fluids to help prevent dehydration caused by diarrhea,Directions,loperamide,anti diarrheal,01964f8a-f05c-4f72-9530-e0cffd981ffa
-179,use only enclosed dosing cup specifically designed for use with this product. Do not use any other dosing device.,Directions,loperamide,anti diarrheal,01964f8a-f05c-4f72-9530-e0cffd981ffa
-180,adults and children 12 years and over: 30 mL after the first loose stool; 15 mL after each subsequent loose stool; but no more than 60 mL in 24 hours,Directions,loperamide,anti diarrheal,01964f8a-f05c-4f72-9530-e0cffd981ffa
-181,children 9-11 years (60-95 lbs): 15 mL after the first loose stool; 7.5 mL after each subsequent loose stool; but no more than 45 mL in 24 hours,Directions,loperamide,anti diarrheal,01964f8a-f05c-4f72-9530-e0cffd981ffa
-182,children 6-8 years (48-59 lbs): 15 mL after the first loose stool; 7.5 mL after each subsequent loose stool; but no more than 30 mL in 24 hours,Directions,loperamide,anti diarrheal,01964f8a-f05c-4f72-9530-e0cffd981ffa
-183,children 2-5 years (34 to 47 lbs): ask a doctor,Directions,loperamide,anti diarrheal,01964f8a-f05c-4f72-9530-e0cffd981ffa
-184,children under 2 years (up to 33 lbs): do not use,Directions,loperamide,anti diarrheal,01964f8a-f05c-4f72-9530-e0cffd981ffa
-185,take only on an empty stomach (1 hour before or 2 hours after a meal),Directions,loperamide,Loperamide Hydrochloride and Simethicone,0199a50f-f367-40e7-8af0-745a959d3fde
-186,take with a full (8 oz.) glass of water,Directions,loperamide,Loperamide Hydrochloride and Simethicone,0199a50f-f367-40e7-8af0-745a959d3fde
-187,"find right dose on chart below. If possible, use weight to dose; otherwise, use age.",Directions,loperamide,Loperamide Hydrochloride and Simethicone,0199a50f-f367-40e7-8af0-745a959d3fde
-188,adults and children 12 years and over: 2 tablets after the first loose stool; 1 tablet after each subsequent loose stool; but no more than 4 tablets in 24 hours,Directions,loperamide,Loperamide Hydrochloride and Simethicone,0199a50f-f367-40e7-8af0-745a959d3fde
-189,children 9-11 years (60-95 lbs): 1 tablet after the first loose stool; 1/2 tablet after each subsequent loose stool; but no more than 3 tablets in 24 hours,Directions,loperamide,Loperamide Hydrochloride and Simethicone,0199a50f-f367-40e7-8af0-745a959d3fde
-190,children 6-8 years (48-59 lbs): 1 tablet after the first loose stool; 1/2 tablet after each subsequent loose stool; but no more than 2 tablets in 24 hours,Directions,loperamide,Loperamide Hydrochloride and Simethicone,0199a50f-f367-40e7-8af0-745a959d3fde
-191,"find right dose on chart. If possible, use weight to dose; otherwise, use age.",Directions,loperamide,Imodium A-D,01da76d0-1979-4c45-9d39-c72ae4e4ffe2
-192,adults and children 12 years and over: 2 caplets after the first loose stool; 1 caplet after each subsequent loose stool; but no more than 4 caplets in 24 hours,Directions,loperamide,Imodium A-D,01da76d0-1979-4c45-9d39-c72ae4e4ffe2
-193,children 9-11 years (60-95 lbs): 1 caplet after the first loose stool; 1/2 caplet after each subsequent loose stool; but no more than 3 caplets in 24 hours,Directions,loperamide,Imodium A-D,01da76d0-1979-4c45-9d39-c72ae4e4ffe2
-194,children 6-8 years (48-59 lbs): 1 caplet after the first loose stool; 1/2 caplet after each subsequent loose stool; but no more than 2 caplets in 24 hours,Directions,loperamide,Imodium A-D,01da76d0-1979-4c45-9d39-c72ae4e4ffe2
-195,Do not use if you have: an ulcer,Do not use,bismuth subsalicylate,Bismuth,015ca07a-f6b5-4741-a7b0-821cf6d4e418
-196,Do not use if you have: a bleeding problem,Do not use,bismuth subsalicylate,Bismuth,015ca07a-f6b5-4741-a7b0-821cf6d4e418
-197,Do not use if you have: bloody or black stool,Do not use,bismuth subsalicylate,Bismuth,015ca07a-f6b5-4741-a7b0-821cf6d4e418
-198,chew or dissolve in mouth,Directions,bismuth subsalicylate,Bismuth,015ca07a-f6b5-4741-a7b0-821cf6d4e418
-199,Adults and children over 12 years : 2 tablets (1 dose) every 1/2 hour or 4 tablets (2 doses) every hour as needed for diarrhea,Directions,bismuth subsalicylate,Bismuth,015ca07a-f6b5-4741-a7b0-821cf6d4e418
-200,"2 tablets (1 dose) every 1/2 hour as needed for overindulgence (upset stomach, heartburn, indigestion, nausea)",Directions,bismuth subsalicylate,Bismuth,015ca07a-f6b5-4741-a7b0-821cf6d4e418
-201,do not exceed 8 doses (16 tablets) in 24 hours,Directions,bismuth subsalicylate,Bismuth,015ca07a-f6b5-4741-a7b0-821cf6d4e418
-202,use until diarrhea stops but no more than 2 days,Directions,bismuth subsalicylate,Bismuth,015ca07a-f6b5-4741-a7b0-821cf6d4e418
-203,Children under 12 years of age: ask a doctor,Directions,bismuth subsalicylate,Bismuth,015ca07a-f6b5-4741-a7b0-821cf6d4e418
-204,drink plenty of clear fluids to prevent dehydration caused by diarrhea,Directions,bismuth subsalicylate,Bismuth,015ca07a-f6b5-4741-a7b0-821cf6d4e418
-205,adults and children 12 years and over: 2 tablets every 1/2 to 1 hour as needed,Directions,bismuth subsalicylate,Stomach Relief,01a4782f-93af-4d30-8ca3-7b39c272f60e
-206,use until diarrhea stops but not more than 2 days,Directions,bismuth subsalicylate,Stomach Relief,01a4782f-93af-4d30-8ca3-7b39c272f60e
-207,Do not use an ulcer,Do not use,bismuth subsalicylate,Pepto-Bismol,01b318d2-586d-4953-8f98-addc4e3cd441
-208,Do not use a bleeding problem,Do not use,bismuth subsalicylate,Pepto-Bismol,01b318d2-586d-4953-8f98-addc4e3cd441
-209,Do not use bloody or black stool,Do not use,bismuth subsalicylate,Pepto-Bismol,01b318d2-586d-4953-8f98-addc4e3cd441
-210,"swallow with water, do not chew adults and children 12 years and over: 2 caplets (1 dose) every 1/2 hour or 4 caplets (2 doses) every hour as needed for diarrhea",Directions,bismuth subsalicylate,Pepto-Bismol,01b318d2-586d-4953-8f98-addc4e3cd441
-211,"swallow with water, do not chew adults and children 12 years and over: 2 caplets (1 dose) every 1/2 hour as needed for overindulgence (upset stomach, heartburn, indigestion, nausea)",Directions,bismuth subsalicylate,Pepto-Bismol,01b318d2-586d-4953-8f98-addc4e3cd441
-212,do not exceed 8 doses (16 caplets) in 24 hours,Directions,bismuth subsalicylate,Pepto-Bismol,01b318d2-586d-4953-8f98-addc4e3cd441
-213,take one to four tablets daily.,Directions,calcium carbonate,ANTACID,0108b97f-02e9-4f86-9f33-cde4f919affd
-214,do not take more than 4 tablets in 24 hours,Directions,calcium carbonate,ANTACID,0108b97f-02e9-4f86-9f33-cde4f919affd
-215,do not use the maximum dosage for more than 2 weeks,Directions,calcium carbonate,ANTACID,0108b97f-02e9-4f86-9f33-cde4f919affd
-216,"Do not use if you have ear tubes, damaged ear drums or after ear surgery.",Do not use,calcium carbonate,Hylands Naturals Earache Drops,017ed754-9fe8-2cb5-e063-6294a90ab2f6
-217,Adults and children ages 4 years and over,Directions,calcium carbonate,Hylands Naturals Earache Drops,017ed754-9fe8-2cb5-e063-6294a90ab2f6
-218,Tilt head sideways and apply 3-4 drops into involved ear (tip of applicator should not enter ear canal).,Directions,calcium carbonate,Hylands Naturals Earache Drops,017ed754-9fe8-2cb5-e063-6294a90ab2f6
-219,Keep head tilted for at least 2 minutes to keep drops in ear.,Directions,calcium carbonate,Hylands Naturals Earache Drops,017ed754-9fe8-2cb5-e063-6294a90ab2f6
-220,"Repeat until relieved, up to 4 times per day.",Directions,calcium carbonate,Hylands Naturals Earache Drops,017ed754-9fe8-2cb5-e063-6294a90ab2f6
-221,Shake well before using.,Directions,calcium carbonate,Hylands Naturals Earache Drops,017ed754-9fe8-2cb5-e063-6294a90ab2f6
-222,chew 2-4 tablets completely as symptoms occur or as directed by a doctor. Do not swallow tablets whole.,Directions,calcium carbonate,Multi Symptom Antacid Berry Flavor,021c050e-786c-4078-a005-e0c29d85fb77
-223,Take only by mouth. Doses may be taken as a single daily dose or in divided doses.,Directions,docusate,Docusate Sodium,025e03e0-e273-47ed-87f7-98e388abe047
-224,adults and children 12 years and over: take 1-3 softgels daily,Directions,docusate,Docusate Sodium,025e03e0-e273-47ed-87f7-98e388abe047
-225,children 2 to under 12 years of age: take 1 softgel daily,Directions,docusate,Docusate Sodium,025e03e0-e273-47ed-87f7-98e388abe047
-226,children under 2 years: ask a doctor,Directions,docusate,Docusate Sodium,025e03e0-e273-47ed-87f7-98e388abe047
-227,take preferably at bedtime or as directed by a doctor,Directions,docusate,SENNA-S,02a5299c-4b0d-47ac-9838-afd0b0fdd4a6
-228,"adults and children 12 years of age or older - starting dosage: 2 tablets once a day, maximum dosage: 4 tablets twice a day",Directions,docusate,SENNA-S,02a5299c-4b0d-47ac-9838-afd0b0fdd4a6
-229,"children 6 to under 12 years - starting dosage: 1 tablet once a day, maximum dosage: 2 tablets twice a day",Directions,docusate,SENNA-S,02a5299c-4b0d-47ac-9838-afd0b0fdd4a6
-230,"children 2 to under 6 years - starting dosage: 1/2 tablet once a day, maximum dosage: 1 tablet twice a day",Directions,docusate,SENNA-S,02a5299c-4b0d-47ac-9838-afd0b0fdd4a6
-231,"children under 2 years - starting dosage: ask a doctor, maximum dosage: ask a doctor",Directions,docusate,SENNA-S,02a5299c-4b0d-47ac-9838-afd0b0fdd4a6
-232,take with a glass of water,Directions,docusate,Stool Softener Laxative,056ec3cf-edcf-4a9a-8cfa-7cf9c4a9a138
-233,adults and children 12 years and over: take 1-3 softgels daily. This dose may be taken as a single daily dose or in divided doses.,Directions,docusate,Stool Softener Laxative,056ec3cf-edcf-4a9a-8cfa-7cf9c4a9a138
-234,Do not exceed recommended dose,Directions,sennosides,GeriCare Senna Syrup,05a54614-a6ad-4861-87b8-9e2ee49bad20
-235,Age: Starting Dose; Maximum Dose,Directions,sennosides,GeriCare Senna Syrup,05a54614-a6ad-4861-87b8-9e2ee49bad20
-236,adults and children 12 years and older: 2-3 teaspoonfuls once a day preferably at bedtime; increase as needed or as recommended by a doctor; 3 teaspoons in the morning and 3 teaspoons at bedtime,Directions,sennosides,GeriCare Senna Syrup,05a54614-a6ad-4861-87b8-9e2ee49bad20
-237,Under 12 years of age: ask a doctor; ask a doctor,Directions,sennosides,GeriCare Senna Syrup,05a54614-a6ad-4861-87b8-9e2ee49bad20
-238,"Do not use laxative products when abdominal pain, nausea, or vomiting are present unless directed by a doctor",Do not use,sennosides,Stimulant Laxative,0901d005-da72-4eee-a44d-e3a59f1d5aba
-239,Do not use for a period longer than 1 week unless directed by a doctor,Do not use,sennosides,Stimulant Laxative,0901d005-da72-4eee-a44d-e3a59f1d5aba
-240,swallow tablet(s) with a glass of water,Directions,sennosides,Stimulant Laxative,0901d005-da72-4eee-a44d-e3a59f1d5aba
-241,"swallow tablet(s) whole; do not crush, break, or chew",Directions,sennosides,Stimulant Laxative,0901d005-da72-4eee-a44d-e3a59f1d5aba
-242,adults and children 12 years and over: 2 tablets once or twice daily,Directions,sennosides,Stimulant Laxative,0901d005-da72-4eee-a44d-e3a59f1d5aba
-243,children 6 to under 12 years: 1 tablet once or twice daily,Directions,sennosides,Stimulant Laxative,0901d005-da72-4eee-a44d-e3a59f1d5aba
-244,children under 6 years: ask a doctor,Directions,sennosides,Stimulant Laxative,0901d005-da72-4eee-a44d-e3a59f1d5aba
-245,"Do not use if you are presently taking mineral oil, unless directed by a doctor.",Do not use,sennosides,Colon Detox,0a4d3265-080c-d2ed-e063-6394a90adbee
-246,laxative products should not be used for a period longer than 1 week unless directed by a doctor.,Do not use,sennosides,Colon Detox,0a4d3265-080c-d2ed-e063-6394a90adbee
-247,adults and children 12 years of age and older: 2 tablets once a day; 4 tablets twice a day,Directions,sennosides,Colon Detox,0a4d3265-080c-d2ed-e063-6394a90adbee
-248,children 6 to under 12 years: 1 tablet once a day; 2 tablets twice a day,Directions,sennosides,Colon Detox,0a4d3265-080c-d2ed-e063-6394a90adbee
-249,children 2 to under 6 years: 1/2 tablet once a day; 1 tablet twice a day,Directions,sennosides,Colon Detox,0a4d3265-080c-d2ed-e063-6394a90adbee
-250,children under 2 years: ask a doctor; ask a doctor,Directions,sennosides,Colon Detox,0a4d3265-080c-d2ed-e063-6394a90adbee
-251,"Do not use if you have kidney disease, except under the advice and supervision of a doctor",Do not use,polyethylene glycol 3350,purelax,006a9eca-400f-47f5-bee5-facf7034043e
-252,do not take more than directed unless advised by your doctor,Directions,polyethylene glycol 3350,purelax,006a9eca-400f-47f5-bee5-facf7034043e
-253,the bottle top is a measuring cap marked to contain 17 grams of powder when filled to the indicated line (white section in cap),Directions,polyethylene glycol 3350,purelax,006a9eca-400f-47f5-bee5-facf7034043e
-254,adults and children 17 years of age and older,Directions,polyethylene glycol 3350,purelax,006a9eca-400f-47f5-bee5-facf7034043e
-255,use once a day,Directions,polyethylene glycol 3350,purelax,006a9eca-400f-47f5-bee5-facf7034043e
-256,fill to top of white section in cap which is marked to indicate correct dose (17 g),Directions,polyethylene glycol 3350,purelax,006a9eca-400f-47f5-bee5-facf7034043e
-257,"stir and dissolve in any 4 to 8 ounces of beverage (cold, hot or room temperature) then drink",Directions,polyethylene glycol 3350,purelax,006a9eca-400f-47f5-bee5-facf7034043e
-258,do not combine with starch-based thickeners used for difficulty swallowing,Directions,polyethylene glycol 3350,purelax,006a9eca-400f-47f5-bee5-facf7034043e
-259,ensure that the powder is fully dissolved before drinking,Directions,polyethylene glycol 3350,purelax,006a9eca-400f-47f5-bee5-facf7034043e
-260,do not drink if there are any clumps,Directions,polyethylene glycol 3350,purelax,006a9eca-400f-47f5-bee5-facf7034043e
-261,do not use no more than 7 days,Directions,polyethylene glycol 3350,purelax,006a9eca-400f-47f5-bee5-facf7034043e
-262,children 16 years of age or under: ask a doctor,Directions,polyethylene glycol 3350,purelax,006a9eca-400f-47f5-bee5-facf7034043e
-263,this product is supplied with a dosing cup marked to contain 17 grams of powder when filled to the indicated line,Directions,polyethylene glycol 3350,COMFORTLAX,02a44a41-0039-f6ec-e063-6394a90ae6f1
-264,adults and children 17 years of age and older: use once a day,Directions,polyethylene glycol 3350,COMFORTLAX,02a44a41-0039-f6ec-e063-6394a90ae6f1
-265,adults and children 17 years of age and older: fill to the indicated 17 grams line on cup which is marked to indicate the correct dose 17 grams,Directions,polyethylene glycol 3350,COMFORTLAX,02a44a41-0039-f6ec-e063-6394a90ae6f1
-266,"adults and children 17 years of age and older: stir and dissolve in any 4 to 8 ounces of beverage (cold, hot or room temperature) then drink",Directions,polyethylene glycol 3350,COMFORTLAX,02a44a41-0039-f6ec-e063-6394a90ae6f1
-267,adults and children 17 years of age and older: do not combine with starch-based thickeners used for difficulty swallowing,Directions,polyethylene glycol 3350,COMFORTLAX,02a44a41-0039-f6ec-e063-6394a90ae6f1
-268,adults and children 17 years of age and older: ensure that the powder is fully dissolved before drinking,Directions,polyethylene glycol 3350,COMFORTLAX,02a44a41-0039-f6ec-e063-6394a90ae6f1
-269,adults and children 17 years of age and older: do not drink if there are any clumps,Directions,polyethylene glycol 3350,COMFORTLAX,02a44a41-0039-f6ec-e063-6394a90ae6f1
-270,adults and children 17 years of age and older: do not use no more than 7 days,Directions,polyethylene glycol 3350,COMFORTLAX,02a44a41-0039-f6ec-e063-6394a90ae6f1
-271,fill to top of white section in cap which is marked to indicate the correct dose (17 g),Directions,polyethylene glycol 3350,Polyethylene Glycol 3350,02e36812-53c2-003b-e063-6394a90aed12
-272,do not combine with starch-based thickeners used for difficult swallowing,Directions,polyethylene glycol 3350,Polyethylene Glycol 3350,02e36812-53c2-003b-e063-6394a90aed12
-273,do not use more than 7 days,Directions,polyethylene glycol 3350,Polyethylene Glycol 3350,02e36812-53c2-003b-e063-6394a90aed12
-274,Do not use in children under 12 years of age,Do not use,doxylamine,Sleep Aid,005b5ad8-d762-46b5-a7a5-e0ff11ba936a
-275,Do not use with any other product containing doxylamine,Do not use,doxylamine,Sleep Aid,005b5ad8-d762-46b5-a7a5-e0ff11ba936a
-276,Do not use unless you have time for a full night's sleep,Do not use,doxylamine,Sleep Aid,005b5ad8-d762-46b5-a7a5-e0ff11ba936a
-277,adults and children 12 years of age and over: take one tablet 30 minutes before going to bed; take once daily or as directed by a doctor,Directions,doxylamine,Sleep Aid,005b5ad8-d762-46b5-a7a5-e0ff11ba936a
-278,take only as directed - see overdose warning,Directions,doxylamine,Daytime Nighttime Cold and Flu,0175332e-9cd9-491b-b6b9-a72ff33f4e7d
-279,do not exceed 8 caplets per 24 hrs,Directions,doxylamine,Daytime Nighttime Cold and Flu,0175332e-9cd9-491b-b6b9-a72ff33f4e7d
-280,adults & children 12 yrs & over: 2 caplets with water every 4 hrs,Directions,doxylamine,Daytime Nighttime Cold and Flu,0175332e-9cd9-491b-b6b9-a72ff33f4e7d
-281,children 4 to under 12 yrs: ask a doctor,Directions,doxylamine,Daytime Nighttime Cold and Flu,0175332e-9cd9-491b-b6b9-a72ff33f4e7d
-282,take dose one hour before travel starts tablets can be chewed or swallowed whole with water,Directions,meclizine,Meclizine HCL,02d1af4d-d97d-4019-a5bf-3ec391238676
-283,adults & children 12 years and over: take 1-2 tablets once daily,Directions,meclizine,Meclizine HCL,02d1af4d-d97d-4019-a5bf-3ec391238676
-284,dosage should be taken 1 hour before travel starts,Directions,meclizine,MECLIZINE,032a89f2-17e7-45d2-94a1-cc7a601ebdee
-285,adults and children 12 years and over: take 2 or 4 caplets once daily or as directed by a doctor,Directions,meclizine,MECLIZINE,032a89f2-17e7-45d2-94a1-cc7a601ebdee
-286,Do not use in children under 12 years of age unless directed by a doctor.,Do not use,meclizine,BONINE,0b2ea6b8-b342-4940-8922-898758fbeb31
-287,dosage should be taken one hour before travel starts,Directions,meclizine,BONINE,0b2ea6b8-b342-4940-8922-898758fbeb31
-288,chew or crush tablets completely before swallowing; do not swallow tablets whole,Directions,meclizine,BONINE,0b2ea6b8-b342-4940-8922-898758fbeb31
-289,adults and children 12 years and over: take 1 to 2 chewable tablets once daily or as directed by a doctor,Directions,meclizine,BONINE,0b2ea6b8-b342-4940-8922-898758fbeb31
-290,Do not use in the genital area if you have a vaginal discharge. Consult a doctor.,Do not use,hydrocortisone,anti itch,00040bfe-001a-484e-bec0-e21e8b27f369
-291,Do not use for the treatment of diaper rash. Consult a doctor.,Do not use,hydrocortisone,anti itch,00040bfe-001a-484e-bec0-e21e8b27f369
-292,"for itching of skin irritation, inflammation, and rashes",Directions,hydrocortisone,anti itch,00040bfe-001a-484e-bec0-e21e8b27f369
-293,adults and children 2 years of age and older: apply to affected area not more than 3 to 4 times daily,Directions,hydrocortisone,anti itch,00040bfe-001a-484e-bec0-e21e8b27f369
-294,"children under 2 years of age: do not use, ask a doctor",Directions,hydrocortisone,anti itch,00040bfe-001a-484e-bec0-e21e8b27f369
-295,"for external anal and genital itching, adults",Directions,hydrocortisone,anti itch,00040bfe-001a-484e-bec0-e21e8b27f369
-296,"when practical, clean the affected area with mild soap and warm water and rinse thoroughly",Directions,hydrocortisone,anti itch,00040bfe-001a-484e-bec0-e21e8b27f369
-297,gently dry by patting or blotting with toilet tissue or a soft cloth before applying,Directions,hydrocortisone,anti itch,00040bfe-001a-484e-bec0-e21e8b27f369
-298,apply to affected area not more than 3 to 4 times daily,Directions,hydrocortisone,anti itch,00040bfe-001a-484e-bec0-e21e8b27f369
-299,Do not use for the treatment of diaper rash. Ask a doctor.,Do not use,hydrocortisone,hydrocortisone,0174411c-1b10-4298-b820-87b24065b118
-300,Do not use in the genital area if you have a vaginal discharge. Ask a doctor.,Do not use,hydrocortisone,hydrocortisone,0174411c-1b10-4298-b820-87b24065b118
-301,"for itching of skin irritation, inflammation, and rashes: adults and children 2 years of age and older: apply to affected area not more than 3 to 4 times daily",Directions,hydrocortisone,hydrocortisone,0174411c-1b10-4298-b820-87b24065b118
-302,"for itching of skin irritation, inflammation, and rashes: children under 2 years of age: do not use, ask a doctor",Directions,hydrocortisone,hydrocortisone,0174411c-1b10-4298-b820-87b24065b118
-303,"for external anal and genital itching, adults: when practical, clean the affected area with mild soap and warm water and rinse thoroughly",Directions,hydrocortisone,hydrocortisone,0174411c-1b10-4298-b820-87b24065b118
-304,"for external anal and genital itching, adults: gently dry by patting or blotting with toilet tissue or a soft cloth before applying",Directions,hydrocortisone,hydrocortisone,0174411c-1b10-4298-b820-87b24065b118
-305,"for external anal and genital itching, adults: apply to affected area not more than 3 to 4 times daily",Directions,hydrocortisone,hydrocortisone,0174411c-1b10-4298-b820-87b24065b118
-306,"for external anal and genital itching, adults: children under 12 years of age: ask a doctor",Directions,hydrocortisone,hydrocortisone,0174411c-1b10-4298-b820-87b24065b118
-307,Do not use in the genital area if you have a vaginal discharge.,Do not use,hydrocortisone,TheraCare Hydrocortisone Cream,01cb7b47-2c3c-707d-e063-6294a90a5d97
-308,Do not use for the treatment of diaper rash.,Do not use,hydrocortisone,TheraCare Hydrocortisone Cream,01cb7b47-2c3c-707d-e063-6294a90a5d97
-309,Do not use with any other hydrocortisone product unless you have asked a doctor,Do not use,hydrocortisone,TheraCare Hydrocortisone Cream,01cb7b47-2c3c-707d-e063-6294a90a5d97
-310,adults and children 2 years of age and over: apply to affected area not more than 3 to 4 times daily,Directions,hydrocortisone,TheraCare Hydrocortisone Cream,01cb7b47-2c3c-707d-e063-6294a90a5d97
-311,children under 2 years of age: consult a physician,Directions,hydrocortisone,TheraCare Hydrocortisone Cream,01cb7b47-2c3c-707d-e063-6294a90a5d97
-312,"for external anal and genital itching, adults and children 12 years of age and over: when practical, clean the affected area with mild soap and warm water and rinse thoroughly",Directions,hydrocortisone,TheraCare Hydrocortisone Cream,01cb7b47-2c3c-707d-e063-6294a90a5d97
-313,"for external anal and genital itching, adults and children 12 years of age and over: gently dry by patting or blotting with toilet tissue or a soft cloth before applying",Directions,hydrocortisone,TheraCare Hydrocortisone Cream,01cb7b47-2c3c-707d-e063-6294a90a5d97
-314,"for external anal and genital itching, adults and children 12 years of age and over: apply to affected area not more than 3 to 4 times daily",Directions,hydrocortisone,TheraCare Hydrocortisone Cream,01cb7b47-2c3c-707d-e063-6294a90a5d97
-315,"for external anal and genital itching, adults and children 12 years of age and over: children under 12 years of age: consult a physician",Directions,hydrocortisone,TheraCare Hydrocortisone Cream,01cb7b47-2c3c-707d-e063-6294a90a5d97
-316,Do not use on children under 2 years of age unless directed by a doctor,Do not use,miconazole,Remedy Antifungal,021b4a31-d7f6-4921-b4b1-cbe832eecd93
-317,Do not use on scalp or nails,Do not use,miconazole,Remedy Antifungal,021b4a31-d7f6-4921-b4b1-cbe832eecd93
-318,Clean the affected area and dry thoroughly,Directions,miconazole,Remedy Antifungal,021b4a31-d7f6-4921-b4b1-cbe832eecd93
-319,Apply a thin layer of powder over affected area twice daily (morning and night) or as directed by a doctor,Directions,miconazole,Remedy Antifungal,021b4a31-d7f6-4921-b4b1-cbe832eecd93
-320,Supervise children in the use of this product,Directions,miconazole,Remedy Antifungal,021b4a31-d7f6-4921-b4b1-cbe832eecd93
-321,"For athlete's foot, pay special attention between spaces in toes; wear well-fitting, ventilated shoes, and change shoes and socks at least once daily",Directions,miconazole,Remedy Antifungal,021b4a31-d7f6-4921-b4b1-cbe832eecd93
-322,"For athlete's foot and ringworm, use daily for 4 weeks",Directions,miconazole,Remedy Antifungal,021b4a31-d7f6-4921-b4b1-cbe832eecd93
-323,"For jock itch, use daily for 2 weeks",Directions,miconazole,Remedy Antifungal,021b4a31-d7f6-4921-b4b1-cbe832eecd93
-324,"If condition persists longer, consult a doctor",Directions,miconazole,Remedy Antifungal,021b4a31-d7f6-4921-b4b1-cbe832eecd93
-325,This product is not effective on the scalp or nails.,Directions,miconazole,Remedy Antifungal,021b4a31-d7f6-4921-b4b1-cbe832eecd93
-326,Do not use on children under 2 years of age unless directed by a doctor.,Do not use,miconazole,Jock Itch,030f1316-ab3c-ce37-e063-6394a90a0f88
-327,wash affected area and dry thoroughly,Directions,miconazole,Jock Itch,030f1316-ab3c-ce37-e063-6394a90a0f88
-328,shake can well and spray a thin layer over affected area twice daily (morning and night) or as directed by a doctor,Directions,miconazole,Jock Itch,030f1316-ab3c-ce37-e063-6394a90a0f88
-329,"use daily for 2 weeks; if condition persists, consult a doctor",Directions,miconazole,Jock Itch,030f1316-ab3c-ce37-e063-6394a90a0f88
-330,this product is not effective on the scalp or nails,Directions,miconazole,Jock Itch,030f1316-ab3c-ce37-e063-6394a90a0f88
-331,"if nozzle clogs, clean with a pin",Directions,miconazole,Jock Itch,030f1316-ab3c-ce37-e063-6394a90a0f88
-332,"for athlete's foot: pay special attention to spaces between the toes; wear well-fitting, ventilated shoes, and change shoes and socks at least once daily",Directions,miconazole,Antifungal Miconazole Liquid Continuous,030f2a31-334b-a6d8-e063-6394a90a98fc
-333,"for athlete's foot and ringworm, use daily for 4 weeks; for jock itch, use daily for 2 weeks",Directions,miconazole,Antifungal Miconazole Liquid Continuous,030f2a31-334b-a6d8-e063-6394a90a98fc
-334,"2 mg: if you are under 18 years of age, ask a doctor before use. No studies have been done to show if this product will work for you.",Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-335,"2 mg: before using this product, read the enclosed User's Guide for complete directions and other important information",Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-336,2 mg: begin using the lozenge on your quit day,Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-337,"2 mg: if you smoke your first cigarette within 30 minutes of waking up, use 4 mg nicotine lozenge",Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-338,"2 mg: if you smoke your first cigarette more than 30 minutes after waking up, use 2 mg nicotine lozenge according to the following 12 week schedule",Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-339,Weeks 1 to 6: Weeks 7 to 9; Weeks 10 to 12,Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-340,1 lozenge every 1 to 2 hours: 1 lozenge every 2 to 4 hours; 1 lozenge every 4 to 8 hours,Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-341,2 mg: nicotine lozenge is a medicine and must be used a certain way to get the best results,Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-342,2 mg: place the lozenge in your mouth and allow the lozenge to slowly dissolve (about 20-30 minutes). Minimize swallowing. Do not chew or swallow lozenge.,Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-343,2 mg: you may feel a warm or tingling sensation,Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-344,2 mg: occasionally move the lozenge from one side of your mouth to the other until completely dissolved (about 20-30 minutes),Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-345,2 mg: do not eat or drink 15 minutes before using or while the lozenge is in your mouth,Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-346,"2 mg: to improve your chances of quitting, use at least 9 lozenges per day for the first 6 weeks",Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-347,"2 mg: do not use more than one lozenge at a time or continuously use one lozenge after another since this may cause you hiccups, heartburn, nausea or other side effects",Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-348,2 mg: do not use more than 5 lozenges in 6 hours. Do not use more than 20 lozenges per day.,Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-349,"2 mg: it is important to complete treatment. If you feel you need to use the lozenge for a longer period to keep from smoking, talk to your health care provider.",Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-350,"4 mg: if you are under 18 years of age, ask a doctor before use. No studies have been done to show if this product will work for you.",Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-351,"4 mg: before using this product, read the enclosed User's Guide for complete directions and other important information",Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-352,4 mg: begin using the lozenge on your quit day,Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-353,"4 mg: if you smoke your first cigarette more than 30 minutes after waking up, use 2 mg nicotine lozenge",Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-354,"4 mg: if you smoke your first cigarette within 30 minutes of waking up, use 4 mg nicotine lozenge according to the following 12 week schedule",Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-355,4 mg: nicotine lozenge is a medicine and must be used a certain way to get the best results,Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-356,4 mg: place the lozenge in your mouth and allow the lozenge to slowly dissolve (about 20-30 minutes). Minimize swallowing. Do not chew or swallow lozenge .,Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-357,4 mg: you may feel a warm or tingling sensation,Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-358,4 mg: occasionally move the lozenge from one side of your mouth to the other until completely dissolved (about 20-30 minutes),Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-359,4 mg: do not eat or drink 15 minutes before using or while the lozenge is in your mouth,Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-360,"4 mg: to improve your chances of quitting, use at least 9 lozenges per day for the first 6 weeks",Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-361,"4 mg: do not use more than one lozenge at a time or continuously use one lozenge after another since this may cause you hiccups, heartburn, nausea or other side effects",Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-362,4 mg: do not use more than 5 lozenges in 6 hours. Do not use more than 20 lozenges per day .,Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-363,"4 mg: it is important to complete treatment. If you feel you need to use the lozenge for a longer period to keep from smoking, talk to your health care provider.",Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
-364,"if you are under 18 years of age, ask a doctor before use. No studies have been done to show if this product will work for you.",Directions,nicotine,nicotine,00b40bb3-3785-4a53-804e-633795e87f71
-365,"before using this product, read the enclosed User's Guide for complete directions and other important information",Directions,nicotine,nicotine,00b40bb3-3785-4a53-804e-633795e87f71
-366,begin using the lozenge on your quit day,Directions,nicotine,nicotine,00b40bb3-3785-4a53-804e-633795e87f71
-367,"if you smoke your first cigarette more than 30 minutes after waking up, use 2 mg nicotine lozenge",Directions,nicotine,nicotine,00b40bb3-3785-4a53-804e-633795e87f71
-368,"if you smoke your first cigarette within 30 minutes of waking up, use 4 mg nicotine lozenge according to the following 12 week schedule",Directions,nicotine,nicotine,00b40bb3-3785-4a53-804e-633795e87f71
-369,nicotine lozenge is a medicine and must be used a certain way to get the best results,Directions,nicotine,nicotine,00b40bb3-3785-4a53-804e-633795e87f71
-370,place the lozenge in your mouth and allow the lozenge to slowly dissolve (about 20-30 minutes). Minimize swallowing. Do not chew or swallow lozenge.,Directions,nicotine,nicotine,00b40bb3-3785-4a53-804e-633795e87f71
-371,you may feel a warm or tingling sensation,Directions,nicotine,nicotine,00b40bb3-3785-4a53-804e-633795e87f71
-372,occasionally move the lozenge from one side of your mouth to the other until completely dissolved (about 20-30 minutes),Directions,nicotine,nicotine,00b40bb3-3785-4a53-804e-633795e87f71
-373,do not eat or drink 15 minutes before using or while the lozenge is in your mouth,Directions,nicotine,nicotine,00b40bb3-3785-4a53-804e-633795e87f71
-374,"to improve your chances of quitting, use at least 9 lozenges per day for the first 6 weeks",Directions,nicotine,nicotine,00b40bb3-3785-4a53-804e-633795e87f71
-375,"do not use more than one lozenge at a time or continuously use one lozenge after another since this may cause you hiccups, heartburn, nausea or other side effects",Directions,nicotine,nicotine,00b40bb3-3785-4a53-804e-633795e87f71
-376,do not use more than 5 lozenges in 6 hours. Do not use more than 20 lozenges per day.,Directions,nicotine,nicotine,00b40bb3-3785-4a53-804e-633795e87f71
-377,"it is important to complete treatment. If you feel you need to use the lozenge for a longer period to keep from smoking, talk to your health care provider.",Directions,nicotine,nicotine,00b40bb3-3785-4a53-804e-633795e87f71
+122,Do not give more than 6 doses in any 24 hours period,Directions,dextromethorphan,Rompe Pechito DM for Kids,004d12e1-6e3d-84c8-e063-6394a90aa653
+123,shake well before use,Directions,dextromethorphan,Rompe Pechito DM for Kids,004d12e1-6e3d-84c8-e063-6394a90aa653
+124,Children 6 to under 12 years of age 5 mL every 4 hours,Directions,dextromethorphan,Rompe Pechito DM for Kids,004d12e1-6e3d-84c8-e063-6394a90aa653
+125,Children 4 to under 6 years of age 2.5 mL every 4 hours,Directions,dextromethorphan,Rompe Pechito DM for Kids,004d12e1-6e3d-84c8-e063-6394a90aa653
+126,Children under 4 years of age Do not use,Directions,dextromethorphan,Rompe Pechito DM for Kids,004d12e1-6e3d-84c8-e063-6394a90aa653
+127,take only as directed – see Overdose warning,Directions,dextromethorphan,basic care daytime severe cold and flu,0100f86e-257f-4197-9849-3c4429cdf0f2
+128,only use the dose cup provided,Directions,dextromethorphan,basic care daytime severe cold and flu,0100f86e-257f-4197-9849-3c4429cdf0f2
+129,do not exceed 4 doses per 24 hrs,Directions,dextromethorphan,basic care daytime severe cold and flu,0100f86e-257f-4197-9849-3c4429cdf0f2
+130,adults & children 12 yrs & over: 30 mL every 4 hrs,Directions,dextromethorphan,basic care daytime severe cold and flu,0100f86e-257f-4197-9849-3c4429cdf0f2
+131,children 6 to under 12 yrs: 15 mL every 4 hrs,Directions,dextromethorphan,basic care daytime severe cold and flu,0100f86e-257f-4197-9849-3c4429cdf0f2
+132,children 4 to under 6 yrs: ask a doctor,Directions,dextromethorphan,basic care daytime severe cold and flu,0100f86e-257f-4197-9849-3c4429cdf0f2
+133,children under 4 yrs: do not use,Directions,dextromethorphan,basic care daytime severe cold and flu,0100f86e-257f-4197-9849-3c4429cdf0f2
+134,"do not crush, chew, or break tablet",Directions,guaifenesin,Guaifenesin,00c40e3b-6962-dfb4-e063-6294a90afec6
+135,take with a full glass of water,Directions,guaifenesin,Guaifenesin,00c40e3b-6962-dfb4-e063-6294a90afec6
+136,this product can be administered without regard for timing of meals,Directions,guaifenesin,Guaifenesin,00c40e3b-6962-dfb4-e063-6294a90afec6
+137,adults and children 12 years of age and over: 1 tablet every 12 hours. Do not exceed 2 tablets in 24 hours.,Directions,guaifenesin,Guaifenesin,00c40e3b-6962-dfb4-e063-6294a90afec6
+138,"Adults: when practical, cleanse area with mild soap and warm water and rinse thoroughly. Gently dry by patting or blotting with toilet tissue or soft cloth before applying. Adults and children 12 years and older: apply externally to the affected area up to 4 times a day. Children under 12 years of age: consult a doctor.",Directions,phenylephrine,DCH Hemorrhoidal,0050701f-4393-3f01-e063-6394a90a4e0e
+139,"Do not use if you have trouble or pain swallowing food, vomiting with blood, or bloody or black stools. These may be signs of a serious condition. See your doctor.",Do not use,famotidine,Famotidine,018b02e8-1005-4736-a4fc-962881f52adf
+140,Do not use with other acid reducers,Do not use,famotidine,Famotidine,018b02e8-1005-4736-a4fc-962881f52adf
+141,"adults and children 12 years and over: to relieve symptoms, swallow 1 tablet with a glass of water. Do not chew.",Directions,famotidine,Famotidine,018b02e8-1005-4736-a4fc-962881f52adf
+142,"adults and children 12 years and over: to prevent symptoms, swallow 1 tablet with a glass of water at any time from 15 to 60 minutes before eating food or drinking beverages that cause heartburn",Directions,famotidine,Famotidine,018b02e8-1005-4736-a4fc-962881f52adf
+143,adults and children 12 years and over: do not use more than 2 tablets in 24 hours,Directions,famotidine,Famotidine,018b02e8-1005-4736-a4fc-962881f52adf
+144,adults and children 12 years and over,Directions,famotidine,heartburn relief,05c03fd8-abc8-47f7-868c-895b9a38c5b3
+145,"to relieve symptoms, swallow 1 tablet with a glass of water. Do not chew.",Directions,famotidine,heartburn relief,05c03fd8-abc8-47f7-868c-895b9a38c5b3
+146,"to prevent symptoms, swallow 1 tablet with a glass of water at any time from 15 to 60 minutes before eating food or drinking beverages that cause heartburn",Directions,famotidine,heartburn relief,05c03fd8-abc8-47f7-868c-895b9a38c5b3
+147,do not use more than 2 tablets in 24 hours,Directions,famotidine,heartburn relief,05c03fd8-abc8-47f7-868c-895b9a38c5b3
+148,"adults and children 12 years and over: to prevent symptoms, swallow 1 tablet with a glass of water at any time from 10 to 60 minutes before eating food or drinking beverages that cause heartburn",Directions,famotidine,Maximum Strength Acid Reducer,07a924f1-14cc-4e7d-e063-6394a90ac7f3
+149,"Do not use if you have: trouble or pain swallowing food, vomiting with blood, or bloody or black stools",Do not use,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
+150,"Do not use if you have: heartburn with lightheadedness, sweating or dizziness",Do not use,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
+151,"Do not use if you have: chest pain or shoulder pain with shortness of breath; sweating; pain spreading to arms, neck or shoulders; or lightheadedness",Do not use,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
+152,Do not use if you have: frequent chest pain,Do not use,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
+153,These may be signs of a serious condition. See your doctor.,Do not use,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
+154,for adults 18 years of age and older,Directions,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
+155,"this product is to be used once a day (every 24 hours), every day for 14 days",Directions,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
+156,it may take 1 to 4 days for full effect; some people get complete relief of symptoms within 24 hours,Directions,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
+157,14-Day Course of Treatment,Directions,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
+158,swallow 1 tablet with a glass of water before eating in the morning,Directions,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
+159,take every day for 14 days,Directions,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
+160,do not take more than 1 tablet a day,Directions,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
+161,do not use for more than 14 days unless directed by your doctor,Directions,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
+162,swallow whole. Do not chew or crush tablets,Directions,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
+163,Repeated 14-Day Courses (if needed),Directions,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
+164,you may repeat a 14-day course every 4 months,Directions,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
+165,do not take for more than 14 days or more often than every 4 months unless directed by a doctor,Directions,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
+166,children under 18 years of age: ask a doctor. Heartburn in children may sometimes be caused by a serious condition.,Directions,omeprazole,omeprazole,015b1c8f-9d5b-4afc-a55c-1a731b5fc72a
+167,"Do not use if you have: chest or shoulder pain with shortness of breath; sweating; pain spreading to arms, neck or shoulders; or lightheadedness",Do not use,omeprazole,Omeprazole,01bde9ca-0114-426d-8188-c55aefaa0961
+168,take 1 tablet before eating in the morning,Directions,omeprazole,Omeprazole,01bde9ca-0114-426d-8188-c55aefaa0961
+169,do not crush or chew tablets,Directions,omeprazole,Omeprazole,01bde9ca-0114-426d-8188-c55aefaa0961
+170,"place the tablet on tongue; tablet disintegrates, with or without water. The tablets can also be swallowed whole with water.",Directions,omeprazole,Omeprazole,01bde9ca-0114-426d-8188-c55aefaa0961
+171,do not take this medicine with alcohol,Directions,omeprazole,Omeprazole,01bde9ca-0114-426d-8188-c55aefaa0961
+172,Repeated 14-Day Course (if needed),Directions,omeprazole,Omeprazole,01bde9ca-0114-426d-8188-c55aefaa0961
+173,children under 18 years of age: ask a doctor before use. Heartburn in children may sometimes be caused by a serious condition.,Directions,omeprazole,Omeprazole,01bde9ca-0114-426d-8188-c55aefaa0961
+174,it may take 1 to 4 days for full effect; some people get complete relief of symptoms within 24 hours 14-Day Course of Treatment,Directions,omeprazole,omeprazole,0340ef94-d2b4-47af-a045-d0d031293984
+175,swallow 1 capsule with a glass of water before eating in the morning,Directions,omeprazole,omeprazole,0340ef94-d2b4-47af-a045-d0d031293984
+176,do not take more than 1 capsule a day,Directions,omeprazole,omeprazole,0340ef94-d2b4-47af-a045-d0d031293984
+177,swallow whole. Do not chew or crush capsules. Repeated 14-Day Courses (if needed),Directions,omeprazole,omeprazole,0340ef94-d2b4-47af-a045-d0d031293984
+178,Do not use if you have bloody or black stool,Do not use,loperamide,anti diarrheal,01964f8a-f05c-4f72-9530-e0cffd981ffa
+179,drink plenty of clear fluids to help prevent dehydration caused by diarrhea,Directions,loperamide,anti diarrheal,01964f8a-f05c-4f72-9530-e0cffd981ffa
+180,use only enclosed dosing cup specifically designed for use with this product. Do not use any other dosing device.,Directions,loperamide,anti diarrheal,01964f8a-f05c-4f72-9530-e0cffd981ffa
+181,adults and children 12 years and over: 30 mL after the first loose stool; 15 mL after each subsequent loose stool; but no more than 60 mL in 24 hours,Directions,loperamide,anti diarrheal,01964f8a-f05c-4f72-9530-e0cffd981ffa
+182,children 9-11 years (60-95 lbs): 15 mL after the first loose stool; 7.5 mL after each subsequent loose stool; but no more than 45 mL in 24 hours,Directions,loperamide,anti diarrheal,01964f8a-f05c-4f72-9530-e0cffd981ffa
+183,children 6-8 years (48-59 lbs): 15 mL after the first loose stool; 7.5 mL after each subsequent loose stool; but no more than 30 mL in 24 hours,Directions,loperamide,anti diarrheal,01964f8a-f05c-4f72-9530-e0cffd981ffa
+184,children 2-5 years (34 to 47 lbs): ask a doctor,Directions,loperamide,anti diarrheal,01964f8a-f05c-4f72-9530-e0cffd981ffa
+185,children under 2 years (up to 33 lbs): do not use,Directions,loperamide,anti diarrheal,01964f8a-f05c-4f72-9530-e0cffd981ffa
+186,take only on an empty stomach (1 hour before or 2 hours after a meal),Directions,loperamide,Loperamide Hydrochloride and Simethicone,0199a50f-f367-40e7-8af0-745a959d3fde
+187,take with a full (8 oz.) glass of water,Directions,loperamide,Loperamide Hydrochloride and Simethicone,0199a50f-f367-40e7-8af0-745a959d3fde
+188,"find right dose on chart below. If possible, use weight to dose; otherwise, use age.",Directions,loperamide,Loperamide Hydrochloride and Simethicone,0199a50f-f367-40e7-8af0-745a959d3fde
+189,adults and children 12 years and over: 2 tablets after the first loose stool; 1 tablet after each subsequent loose stool; but no more than 4 tablets in 24 hours,Directions,loperamide,Loperamide Hydrochloride and Simethicone,0199a50f-f367-40e7-8af0-745a959d3fde
+190,children 9-11 years (60-95 lbs): 1 tablet after the first loose stool; 1/2 tablet after each subsequent loose stool; but no more than 3 tablets in 24 hours,Directions,loperamide,Loperamide Hydrochloride and Simethicone,0199a50f-f367-40e7-8af0-745a959d3fde
+191,children 6-8 years (48-59 lbs): 1 tablet after the first loose stool; 1/2 tablet after each subsequent loose stool; but no more than 2 tablets in 24 hours,Directions,loperamide,Loperamide Hydrochloride and Simethicone,0199a50f-f367-40e7-8af0-745a959d3fde
+192,"find right dose on chart. If possible, use weight to dose; otherwise, use age.",Directions,loperamide,Imodium A-D,01da76d0-1979-4c45-9d39-c72ae4e4ffe2
+193,adults and children 12 years and over: 2 caplets after the first loose stool; 1 caplet after each subsequent loose stool; but no more than 4 caplets in 24 hours,Directions,loperamide,Imodium A-D,01da76d0-1979-4c45-9d39-c72ae4e4ffe2
+194,children 9-11 years (60-95 lbs): 1 caplet after the first loose stool; 1/2 caplet after each subsequent loose stool; but no more than 3 caplets in 24 hours,Directions,loperamide,Imodium A-D,01da76d0-1979-4c45-9d39-c72ae4e4ffe2
+195,children 6-8 years (48-59 lbs): 1 caplet after the first loose stool; 1/2 caplet after each subsequent loose stool; but no more than 2 caplets in 24 hours,Directions,loperamide,Imodium A-D,01da76d0-1979-4c45-9d39-c72ae4e4ffe2
+196,Do not use if you have: an ulcer,Do not use,bismuth subsalicylate,Bismuth,015ca07a-f6b5-4741-a7b0-821cf6d4e418
+197,Do not use if you have: a bleeding problem,Do not use,bismuth subsalicylate,Bismuth,015ca07a-f6b5-4741-a7b0-821cf6d4e418
+198,Do not use if you have: bloody or black stool,Do not use,bismuth subsalicylate,Bismuth,015ca07a-f6b5-4741-a7b0-821cf6d4e418
+199,chew or dissolve in mouth,Directions,bismuth subsalicylate,Bismuth,015ca07a-f6b5-4741-a7b0-821cf6d4e418
+200,Adults and children over 12 years : 2 tablets (1 dose) every 1/2 hour or 4 tablets (2 doses) every hour as needed for diarrhea,Directions,bismuth subsalicylate,Bismuth,015ca07a-f6b5-4741-a7b0-821cf6d4e418
+201,"2 tablets (1 dose) every 1/2 hour as needed for overindulgence (upset stomach, heartburn, indigestion, nausea)",Directions,bismuth subsalicylate,Bismuth,015ca07a-f6b5-4741-a7b0-821cf6d4e418
+202,do not exceed 8 doses (16 tablets) in 24 hours,Directions,bismuth subsalicylate,Bismuth,015ca07a-f6b5-4741-a7b0-821cf6d4e418
+203,use until diarrhea stops but no more than 2 days,Directions,bismuth subsalicylate,Bismuth,015ca07a-f6b5-4741-a7b0-821cf6d4e418
+204,Children under 12 years of age: ask a doctor,Directions,bismuth subsalicylate,Bismuth,015ca07a-f6b5-4741-a7b0-821cf6d4e418
+205,drink plenty of clear fluids to prevent dehydration caused by diarrhea,Directions,bismuth subsalicylate,Bismuth,015ca07a-f6b5-4741-a7b0-821cf6d4e418
+206,adults and children 12 years and over: 2 tablets every 1/2 to 1 hour as needed,Directions,bismuth subsalicylate,Stomach Relief,01a4782f-93af-4d30-8ca3-7b39c272f60e
+207,use until diarrhea stops but not more than 2 days,Directions,bismuth subsalicylate,Stomach Relief,01a4782f-93af-4d30-8ca3-7b39c272f60e
+208,Do not use an ulcer,Do not use,bismuth subsalicylate,Pepto-Bismol,01b318d2-586d-4953-8f98-addc4e3cd441
+209,Do not use a bleeding problem,Do not use,bismuth subsalicylate,Pepto-Bismol,01b318d2-586d-4953-8f98-addc4e3cd441
+210,Do not use bloody or black stool,Do not use,bismuth subsalicylate,Pepto-Bismol,01b318d2-586d-4953-8f98-addc4e3cd441
+211,"swallow with water, do not chew adults and children 12 years and over: 2 caplets (1 dose) every 1/2 hour or 4 caplets (2 doses) every hour as needed for diarrhea",Directions,bismuth subsalicylate,Pepto-Bismol,01b318d2-586d-4953-8f98-addc4e3cd441
+212,"swallow with water, do not chew adults and children 12 years and over: 2 caplets (1 dose) every 1/2 hour as needed for overindulgence (upset stomach, heartburn, indigestion, nausea)",Directions,bismuth subsalicylate,Pepto-Bismol,01b318d2-586d-4953-8f98-addc4e3cd441
+213,do not exceed 8 doses (16 caplets) in 24 hours,Directions,bismuth subsalicylate,Pepto-Bismol,01b318d2-586d-4953-8f98-addc4e3cd441
+214,take one to four tablets daily.,Directions,calcium carbonate,ANTACID,0108b97f-02e9-4f86-9f33-cde4f919affd
+215,do not take more than 4 tablets in 24 hours,Directions,calcium carbonate,ANTACID,0108b97f-02e9-4f86-9f33-cde4f919affd
+216,do not use the maximum dosage for more than 2 weeks,Directions,calcium carbonate,ANTACID,0108b97f-02e9-4f86-9f33-cde4f919affd
+217,"Do not use if you have ear tubes, damaged ear drums or after ear surgery.",Do not use,calcium carbonate,Hylands Naturals Earache Drops,017ed754-9fe8-2cb5-e063-6294a90ab2f6
+218,Adults and children ages 4 years and over,Directions,calcium carbonate,Hylands Naturals Earache Drops,017ed754-9fe8-2cb5-e063-6294a90ab2f6
+219,Tilt head sideways and apply 3-4 drops into involved ear (tip of applicator should not enter ear canal).,Directions,calcium carbonate,Hylands Naturals Earache Drops,017ed754-9fe8-2cb5-e063-6294a90ab2f6
+220,Keep head tilted for at least 2 minutes to keep drops in ear.,Directions,calcium carbonate,Hylands Naturals Earache Drops,017ed754-9fe8-2cb5-e063-6294a90ab2f6
+221,"Repeat until relieved, up to 4 times per day.",Directions,calcium carbonate,Hylands Naturals Earache Drops,017ed754-9fe8-2cb5-e063-6294a90ab2f6
+222,Shake well before using.,Directions,calcium carbonate,Hylands Naturals Earache Drops,017ed754-9fe8-2cb5-e063-6294a90ab2f6
+223,chew 2-4 tablets completely as symptoms occur or as directed by a doctor. Do not swallow tablets whole.,Directions,calcium carbonate,Multi Symptom Antacid Berry Flavor,021c050e-786c-4078-a005-e0c29d85fb77
+224,Take only by mouth. Doses may be taken as a single daily dose or in divided doses.,Directions,docusate,Docusate Sodium,025e03e0-e273-47ed-87f7-98e388abe047
+225,adults and children 12 years and over: take 1-3 softgels daily,Directions,docusate,Docusate Sodium,025e03e0-e273-47ed-87f7-98e388abe047
+226,children 2 to under 12 years of age: take 1 softgel daily,Directions,docusate,Docusate Sodium,025e03e0-e273-47ed-87f7-98e388abe047
+227,children under 2 years: ask a doctor,Directions,docusate,Docusate Sodium,025e03e0-e273-47ed-87f7-98e388abe047
+228,take preferably at bedtime or as directed by a doctor,Directions,docusate,SENNA-S,02a5299c-4b0d-47ac-9838-afd0b0fdd4a6
+229,"adults and children 12 years of age or older - starting dosage: 2 tablets once a day, maximum dosage: 4 tablets twice a day",Directions,docusate,SENNA-S,02a5299c-4b0d-47ac-9838-afd0b0fdd4a6
+230,"children 6 to under 12 years - starting dosage: 1 tablet once a day, maximum dosage: 2 tablets twice a day",Directions,docusate,SENNA-S,02a5299c-4b0d-47ac-9838-afd0b0fdd4a6
+231,"children 2 to under 6 years - starting dosage: 1/2 tablet once a day, maximum dosage: 1 tablet twice a day",Directions,docusate,SENNA-S,02a5299c-4b0d-47ac-9838-afd0b0fdd4a6
+232,"children under 2 years - starting dosage: ask a doctor, maximum dosage: ask a doctor",Directions,docusate,SENNA-S,02a5299c-4b0d-47ac-9838-afd0b0fdd4a6
+233,take with a glass of water,Directions,docusate,Stool Softener Laxative,056ec3cf-edcf-4a9a-8cfa-7cf9c4a9a138
+234,adults and children 12 years and over: take 1-3 softgels daily. This dose may be taken as a single daily dose or in divided doses.,Directions,docusate,Stool Softener Laxative,056ec3cf-edcf-4a9a-8cfa-7cf9c4a9a138
+235,Do not exceed recommended dose,Directions,sennosides,GeriCare Senna Syrup,05a54614-a6ad-4861-87b8-9e2ee49bad20
+236,Age: Starting Dose; Maximum Dose,Directions,sennosides,GeriCare Senna Syrup,05a54614-a6ad-4861-87b8-9e2ee49bad20
+237,adults and children 12 years and older: 2-3 teaspoonfuls once a day preferably at bedtime; increase as needed or as recommended by a doctor; 3 teaspoons in the morning and 3 teaspoons at bedtime,Directions,sennosides,GeriCare Senna Syrup,05a54614-a6ad-4861-87b8-9e2ee49bad20
+238,Under 12 years of age: ask a doctor; ask a doctor,Directions,sennosides,GeriCare Senna Syrup,05a54614-a6ad-4861-87b8-9e2ee49bad20
+239,"Do not use laxative products when abdominal pain, nausea, or vomiting are present unless directed by a doctor",Do not use,sennosides,Stimulant Laxative,0901d005-da72-4eee-a44d-e3a59f1d5aba
+240,Do not use for a period longer than 1 week unless directed by a doctor,Do not use,sennosides,Stimulant Laxative,0901d005-da72-4eee-a44d-e3a59f1d5aba
+241,swallow tablet(s) with a glass of water,Directions,sennosides,Stimulant Laxative,0901d005-da72-4eee-a44d-e3a59f1d5aba
+242,"swallow tablet(s) whole; do not crush, break, or chew",Directions,sennosides,Stimulant Laxative,0901d005-da72-4eee-a44d-e3a59f1d5aba
+243,adults and children 12 years and over: 2 tablets once or twice daily,Directions,sennosides,Stimulant Laxative,0901d005-da72-4eee-a44d-e3a59f1d5aba
+244,children 6 to under 12 years: 1 tablet once or twice daily,Directions,sennosides,Stimulant Laxative,0901d005-da72-4eee-a44d-e3a59f1d5aba
+245,children under 6 years: ask a doctor,Directions,sennosides,Stimulant Laxative,0901d005-da72-4eee-a44d-e3a59f1d5aba
+246,"Do not use if you are presently taking mineral oil, unless directed by a doctor.",Do not use,sennosides,Colon Detox,0a4d3265-080c-d2ed-e063-6394a90adbee
+247,laxative products should not be used for a period longer than 1 week unless directed by a doctor.,Do not use,sennosides,Colon Detox,0a4d3265-080c-d2ed-e063-6394a90adbee
+248,adults and children 12 years of age and older: 2 tablets once a day; 4 tablets twice a day,Directions,sennosides,Colon Detox,0a4d3265-080c-d2ed-e063-6394a90adbee
+249,children 6 to under 12 years: 1 tablet once a day; 2 tablets twice a day,Directions,sennosides,Colon Detox,0a4d3265-080c-d2ed-e063-6394a90adbee
+250,children 2 to under 6 years: 1/2 tablet once a day; 1 tablet twice a day,Directions,sennosides,Colon Detox,0a4d3265-080c-d2ed-e063-6394a90adbee
+251,children under 2 years: ask a doctor; ask a doctor,Directions,sennosides,Colon Detox,0a4d3265-080c-d2ed-e063-6394a90adbee
+252,"Do not use if you have kidney disease, except under the advice and supervision of a doctor",Do not use,polyethylene glycol 3350,purelax,006a9eca-400f-47f5-bee5-facf7034043e
+253,do not take more than directed unless advised by your doctor,Directions,polyethylene glycol 3350,purelax,006a9eca-400f-47f5-bee5-facf7034043e
+254,the bottle top is a measuring cap marked to contain 17 grams of powder when filled to the indicated line (white section in cap),Directions,polyethylene glycol 3350,purelax,006a9eca-400f-47f5-bee5-facf7034043e
+255,adults and children 17 years of age and older,Directions,polyethylene glycol 3350,purelax,006a9eca-400f-47f5-bee5-facf7034043e
+256,use once a day,Directions,polyethylene glycol 3350,purelax,006a9eca-400f-47f5-bee5-facf7034043e
+257,fill to top of white section in cap which is marked to indicate correct dose (17 g),Directions,polyethylene glycol 3350,purelax,006a9eca-400f-47f5-bee5-facf7034043e
+258,"stir and dissolve in any 4 to 8 ounces of beverage (cold, hot or room temperature) then drink",Directions,polyethylene glycol 3350,purelax,006a9eca-400f-47f5-bee5-facf7034043e
+259,do not combine with starch-based thickeners used for difficulty swallowing,Directions,polyethylene glycol 3350,purelax,006a9eca-400f-47f5-bee5-facf7034043e
+260,ensure that the powder is fully dissolved before drinking,Directions,polyethylene glycol 3350,purelax,006a9eca-400f-47f5-bee5-facf7034043e
+261,do not drink if there are any clumps,Directions,polyethylene glycol 3350,purelax,006a9eca-400f-47f5-bee5-facf7034043e
+262,do not use no more than 7 days,Directions,polyethylene glycol 3350,purelax,006a9eca-400f-47f5-bee5-facf7034043e
+263,children 16 years of age or under: ask a doctor,Directions,polyethylene glycol 3350,purelax,006a9eca-400f-47f5-bee5-facf7034043e
+264,this product is supplied with a dosing cup marked to contain 17 grams of powder when filled to the indicated line,Directions,polyethylene glycol 3350,COMFORTLAX,02a44a41-0039-f6ec-e063-6394a90ae6f1
+265,adults and children 17 years of age and older: use once a day,Directions,polyethylene glycol 3350,COMFORTLAX,02a44a41-0039-f6ec-e063-6394a90ae6f1
+266,adults and children 17 years of age and older: fill to the indicated 17 grams line on cup which is marked to indicate the correct dose 17 grams,Directions,polyethylene glycol 3350,COMFORTLAX,02a44a41-0039-f6ec-e063-6394a90ae6f1
+267,"adults and children 17 years of age and older: stir and dissolve in any 4 to 8 ounces of beverage (cold, hot or room temperature) then drink",Directions,polyethylene glycol 3350,COMFORTLAX,02a44a41-0039-f6ec-e063-6394a90ae6f1
+268,adults and children 17 years of age and older: do not combine with starch-based thickeners used for difficulty swallowing,Directions,polyethylene glycol 3350,COMFORTLAX,02a44a41-0039-f6ec-e063-6394a90ae6f1
+269,adults and children 17 years of age and older: ensure that the powder is fully dissolved before drinking,Directions,polyethylene glycol 3350,COMFORTLAX,02a44a41-0039-f6ec-e063-6394a90ae6f1
+270,adults and children 17 years of age and older: do not drink if there are any clumps,Directions,polyethylene glycol 3350,COMFORTLAX,02a44a41-0039-f6ec-e063-6394a90ae6f1
+271,adults and children 17 years of age and older: do not use no more than 7 days,Directions,polyethylene glycol 3350,COMFORTLAX,02a44a41-0039-f6ec-e063-6394a90ae6f1
+272,fill to top of white section in cap which is marked to indicate the correct dose (17 g),Directions,polyethylene glycol 3350,Polyethylene Glycol 3350,02e36812-53c2-003b-e063-6394a90aed12
+273,do not combine with starch-based thickeners used for difficult swallowing,Directions,polyethylene glycol 3350,Polyethylene Glycol 3350,02e36812-53c2-003b-e063-6394a90aed12
+274,do not use more than 7 days,Directions,polyethylene glycol 3350,Polyethylene Glycol 3350,02e36812-53c2-003b-e063-6394a90aed12
+275,Do not use in children under 12 years of age,Do not use,doxylamine,Sleep Aid,005b5ad8-d762-46b5-a7a5-e0ff11ba936a
+276,Do not use with any other product containing doxylamine,Do not use,doxylamine,Sleep Aid,005b5ad8-d762-46b5-a7a5-e0ff11ba936a
+277,Do not use unless you have time for a full night's sleep,Do not use,doxylamine,Sleep Aid,005b5ad8-d762-46b5-a7a5-e0ff11ba936a
+278,adults and children 12 years of age and over: take one tablet 30 minutes before going to bed; take once daily or as directed by a doctor,Directions,doxylamine,Sleep Aid,005b5ad8-d762-46b5-a7a5-e0ff11ba936a
+279,take only as directed - see overdose warning,Directions,doxylamine,Daytime Nighttime Cold and Flu,0175332e-9cd9-491b-b6b9-a72ff33f4e7d
+280,do not exceed 8 caplets per 24 hrs,Directions,doxylamine,Daytime Nighttime Cold and Flu,0175332e-9cd9-491b-b6b9-a72ff33f4e7d
+281,adults & children 12 yrs & over: 2 caplets with water every 4 hrs,Directions,doxylamine,Daytime Nighttime Cold and Flu,0175332e-9cd9-491b-b6b9-a72ff33f4e7d
+282,children 4 to under 12 yrs: ask a doctor,Directions,doxylamine,Daytime Nighttime Cold and Flu,0175332e-9cd9-491b-b6b9-a72ff33f4e7d
+283,take dose one hour before travel starts tablets can be chewed or swallowed whole with water,Directions,meclizine,Meclizine HCL,02d1af4d-d97d-4019-a5bf-3ec391238676
+284,adults & children 12 years and over: take 1-2 tablets once daily,Directions,meclizine,Meclizine HCL,02d1af4d-d97d-4019-a5bf-3ec391238676
+285,dosage should be taken 1 hour before travel starts,Directions,meclizine,MECLIZINE,032a89f2-17e7-45d2-94a1-cc7a601ebdee
+286,adults and children 12 years and over: take 2 or 4 caplets once daily or as directed by a doctor,Directions,meclizine,MECLIZINE,032a89f2-17e7-45d2-94a1-cc7a601ebdee
+287,Do not use in children under 12 years of age unless directed by a doctor.,Do not use,meclizine,BONINE,0b2ea6b8-b342-4940-8922-898758fbeb31
+288,dosage should be taken one hour before travel starts,Directions,meclizine,BONINE,0b2ea6b8-b342-4940-8922-898758fbeb31
+289,chew or crush tablets completely before swallowing; do not swallow tablets whole,Directions,meclizine,BONINE,0b2ea6b8-b342-4940-8922-898758fbeb31
+290,adults and children 12 years and over: take 1 to 2 chewable tablets once daily or as directed by a doctor,Directions,meclizine,BONINE,0b2ea6b8-b342-4940-8922-898758fbeb31
+291,Do not use in the genital area if you have a vaginal discharge. Consult a doctor.,Do not use,hydrocortisone,anti itch,00040bfe-001a-484e-bec0-e21e8b27f369
+292,Do not use for the treatment of diaper rash. Consult a doctor.,Do not use,hydrocortisone,anti itch,00040bfe-001a-484e-bec0-e21e8b27f369
+293,"for itching of skin irritation, inflammation, and rashes",Directions,hydrocortisone,anti itch,00040bfe-001a-484e-bec0-e21e8b27f369
+294,adults and children 2 years of age and older: apply to affected area not more than 3 to 4 times daily,Directions,hydrocortisone,anti itch,00040bfe-001a-484e-bec0-e21e8b27f369
+295,"children under 2 years of age: do not use, ask a doctor",Directions,hydrocortisone,anti itch,00040bfe-001a-484e-bec0-e21e8b27f369
+296,"for external anal and genital itching, adults",Directions,hydrocortisone,anti itch,00040bfe-001a-484e-bec0-e21e8b27f369
+297,"when practical, clean the affected area with mild soap and warm water and rinse thoroughly",Directions,hydrocortisone,anti itch,00040bfe-001a-484e-bec0-e21e8b27f369
+298,gently dry by patting or blotting with toilet tissue or a soft cloth before applying,Directions,hydrocortisone,anti itch,00040bfe-001a-484e-bec0-e21e8b27f369
+299,apply to affected area not more than 3 to 4 times daily,Directions,hydrocortisone,anti itch,00040bfe-001a-484e-bec0-e21e8b27f369
+300,Do not use for the treatment of diaper rash. Ask a doctor.,Do not use,hydrocortisone,hydrocortisone,0174411c-1b10-4298-b820-87b24065b118
+301,Do not use in the genital area if you have a vaginal discharge. Ask a doctor.,Do not use,hydrocortisone,hydrocortisone,0174411c-1b10-4298-b820-87b24065b118
+302,"for itching of skin irritation, inflammation, and rashes: adults and children 2 years of age and older: apply to affected area not more than 3 to 4 times daily",Directions,hydrocortisone,hydrocortisone,0174411c-1b10-4298-b820-87b24065b118
+303,"for itching of skin irritation, inflammation, and rashes: children under 2 years of age: do not use, ask a doctor",Directions,hydrocortisone,hydrocortisone,0174411c-1b10-4298-b820-87b24065b118
+304,"for external anal and genital itching, adults: when practical, clean the affected area with mild soap and warm water and rinse thoroughly",Directions,hydrocortisone,hydrocortisone,0174411c-1b10-4298-b820-87b24065b118
+305,"for external anal and genital itching, adults: gently dry by patting or blotting with toilet tissue or a soft cloth before applying",Directions,hydrocortisone,hydrocortisone,0174411c-1b10-4298-b820-87b24065b118
+306,"for external anal and genital itching, adults: apply to affected area not more than 3 to 4 times daily",Directions,hydrocortisone,hydrocortisone,0174411c-1b10-4298-b820-87b24065b118
+307,"for external anal and genital itching, adults: children under 12 years of age: ask a doctor",Directions,hydrocortisone,hydrocortisone,0174411c-1b10-4298-b820-87b24065b118
+308,Do not use in the genital area if you have a vaginal discharge.,Do not use,hydrocortisone,TheraCare Hydrocortisone Cream,01cb7b47-2c3c-707d-e063-6294a90a5d97
+309,Do not use for the treatment of diaper rash.,Do not use,hydrocortisone,TheraCare Hydrocortisone Cream,01cb7b47-2c3c-707d-e063-6294a90a5d97
+310,Do not use with any other hydrocortisone product unless you have asked a doctor,Do not use,hydrocortisone,TheraCare Hydrocortisone Cream,01cb7b47-2c3c-707d-e063-6294a90a5d97
+311,adults and children 2 years of age and over: apply to affected area not more than 3 to 4 times daily,Directions,hydrocortisone,TheraCare Hydrocortisone Cream,01cb7b47-2c3c-707d-e063-6294a90a5d97
+312,children under 2 years of age: consult a physician,Directions,hydrocortisone,TheraCare Hydrocortisone Cream,01cb7b47-2c3c-707d-e063-6294a90a5d97
+313,"for external anal and genital itching, adults and children 12 years of age and over: when practical, clean the affected area with mild soap and warm water and rinse thoroughly",Directions,hydrocortisone,TheraCare Hydrocortisone Cream,01cb7b47-2c3c-707d-e063-6294a90a5d97
+314,"for external anal and genital itching, adults and children 12 years of age and over: gently dry by patting or blotting with toilet tissue or a soft cloth before applying",Directions,hydrocortisone,TheraCare Hydrocortisone Cream,01cb7b47-2c3c-707d-e063-6294a90a5d97
+315,"for external anal and genital itching, adults and children 12 years of age and over: apply to affected area not more than 3 to 4 times daily",Directions,hydrocortisone,TheraCare Hydrocortisone Cream,01cb7b47-2c3c-707d-e063-6294a90a5d97
+316,"for external anal and genital itching, adults and children 12 years of age and over: children under 12 years of age: consult a physician",Directions,hydrocortisone,TheraCare Hydrocortisone Cream,01cb7b47-2c3c-707d-e063-6294a90a5d97
+317,Do not use on children under 2 years of age unless directed by a doctor,Do not use,miconazole,Remedy Antifungal,021b4a31-d7f6-4921-b4b1-cbe832eecd93
+318,Do not use on scalp or nails,Do not use,miconazole,Remedy Antifungal,021b4a31-d7f6-4921-b4b1-cbe832eecd93
+319,Clean the affected area and dry thoroughly,Directions,miconazole,Remedy Antifungal,021b4a31-d7f6-4921-b4b1-cbe832eecd93
+320,Apply a thin layer of powder over affected area twice daily (morning and night) or as directed by a doctor,Directions,miconazole,Remedy Antifungal,021b4a31-d7f6-4921-b4b1-cbe832eecd93
+321,Supervise children in the use of this product,Directions,miconazole,Remedy Antifungal,021b4a31-d7f6-4921-b4b1-cbe832eecd93
+322,"For athlete's foot, pay special attention between spaces in toes; wear well-fitting, ventilated shoes, and change shoes and socks at least once daily",Directions,miconazole,Remedy Antifungal,021b4a31-d7f6-4921-b4b1-cbe832eecd93
+323,"For athlete's foot and ringworm, use daily for 4 weeks",Directions,miconazole,Remedy Antifungal,021b4a31-d7f6-4921-b4b1-cbe832eecd93
+324,"For jock itch, use daily for 2 weeks",Directions,miconazole,Remedy Antifungal,021b4a31-d7f6-4921-b4b1-cbe832eecd93
+325,"If condition persists longer, consult a doctor",Directions,miconazole,Remedy Antifungal,021b4a31-d7f6-4921-b4b1-cbe832eecd93
+326,This product is not effective on the scalp or nails.,Directions,miconazole,Remedy Antifungal,021b4a31-d7f6-4921-b4b1-cbe832eecd93
+327,Do not use on children under 2 years of age unless directed by a doctor.,Do not use,miconazole,Jock Itch,030f1316-ab3c-ce37-e063-6394a90a0f88
+328,wash affected area and dry thoroughly,Directions,miconazole,Jock Itch,030f1316-ab3c-ce37-e063-6394a90a0f88
+329,shake can well and spray a thin layer over affected area twice daily (morning and night) or as directed by a doctor,Directions,miconazole,Jock Itch,030f1316-ab3c-ce37-e063-6394a90a0f88
+330,"use daily for 2 weeks; if condition persists, consult a doctor",Directions,miconazole,Jock Itch,030f1316-ab3c-ce37-e063-6394a90a0f88
+331,this product is not effective on the scalp or nails,Directions,miconazole,Jock Itch,030f1316-ab3c-ce37-e063-6394a90a0f88
+332,"if nozzle clogs, clean with a pin",Directions,miconazole,Jock Itch,030f1316-ab3c-ce37-e063-6394a90a0f88
+333,"for athlete's foot: pay special attention to spaces between the toes; wear well-fitting, ventilated shoes, and change shoes and socks at least once daily",Directions,miconazole,Antifungal Miconazole Liquid Continuous,030f2a31-334b-a6d8-e063-6394a90a98fc
+334,"for athlete's foot and ringworm, use daily for 4 weeks; for jock itch, use daily for 2 weeks",Directions,miconazole,Antifungal Miconazole Liquid Continuous,030f2a31-334b-a6d8-e063-6394a90a98fc
+335,"2 mg: if you are under 18 years of age, ask a doctor before use. No studies have been done to show if this product will work for you.",Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+336,"2 mg: before using this product, read the enclosed User's Guide for complete directions and other important information",Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+337,2 mg: begin using the lozenge on your quit day,Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+338,"2 mg: if you smoke your first cigarette within 30 minutes of waking up, use 4 mg nicotine lozenge",Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+339,"2 mg: if you smoke your first cigarette more than 30 minutes after waking up, use 2 mg nicotine lozenge according to the following 12 week schedule",Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+340,Weeks 1 to 6: Weeks 7 to 9; Weeks 10 to 12,Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+341,1 lozenge every 1 to 2 hours: 1 lozenge every 2 to 4 hours; 1 lozenge every 4 to 8 hours,Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+342,2 mg: nicotine lozenge is a medicine and must be used a certain way to get the best results,Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+343,2 mg: place the lozenge in your mouth and allow the lozenge to slowly dissolve (about 20-30 minutes). Minimize swallowing. Do not chew or swallow lozenge.,Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+344,2 mg: you may feel a warm or tingling sensation,Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+345,2 mg: occasionally move the lozenge from one side of your mouth to the other until completely dissolved (about 20-30 minutes),Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+346,2 mg: do not eat or drink 15 minutes before using or while the lozenge is in your mouth,Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+347,"2 mg: to improve your chances of quitting, use at least 9 lozenges per day for the first 6 weeks",Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+348,"2 mg: do not use more than one lozenge at a time or continuously use one lozenge after another since this may cause you hiccups, heartburn, nausea or other side effects",Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+349,2 mg: do not use more than 5 lozenges in 6 hours. Do not use more than 20 lozenges per day.,Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+350,"2 mg: it is important to complete treatment. If you feel you need to use the lozenge for a longer period to keep from smoking, talk to your health care provider.",Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+351,"4 mg: if you are under 18 years of age, ask a doctor before use. No studies have been done to show if this product will work for you.",Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+352,"4 mg: before using this product, read the enclosed User's Guide for complete directions and other important information",Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+353,4 mg: begin using the lozenge on your quit day,Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+354,"4 mg: if you smoke your first cigarette more than 30 minutes after waking up, use 2 mg nicotine lozenge",Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+355,"4 mg: if you smoke your first cigarette within 30 minutes of waking up, use 4 mg nicotine lozenge according to the following 12 week schedule",Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+356,4 mg: nicotine lozenge is a medicine and must be used a certain way to get the best results,Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+357,4 mg: place the lozenge in your mouth and allow the lozenge to slowly dissolve (about 20-30 minutes). Minimize swallowing. Do not chew or swallow lozenge .,Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+358,4 mg: you may feel a warm or tingling sensation,Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+359,4 mg: occasionally move the lozenge from one side of your mouth to the other until completely dissolved (about 20-30 minutes),Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+360,4 mg: do not eat or drink 15 minutes before using or while the lozenge is in your mouth,Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+361,"4 mg: to improve your chances of quitting, use at least 9 lozenges per day for the first 6 weeks",Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+362,"4 mg: do not use more than one lozenge at a time or continuously use one lozenge after another since this may cause you hiccups, heartburn, nausea or other side effects",Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+363,4 mg: do not use more than 5 lozenges in 6 hours. Do not use more than 20 lozenges per day .,Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+364,"4 mg: it is important to complete treatment. If you feel you need to use the lozenge for a longer period to keep from smoking, talk to your health care provider.",Directions,nicotine,Nicotine Polacrilex,003b863c-06b0-715d-ccc2-b7da4deac621
+365,"if you are under 18 years of age, ask a doctor before use. No studies have been done to show if this product will work for you.",Directions,nicotine,nicotine,00b40bb3-3785-4a53-804e-633795e87f71
+366,"before using this product, read the enclosed User's Guide for complete directions and other important information",Directions,nicotine,nicotine,00b40bb3-3785-4a53-804e-633795e87f71
+367,begin using the lozenge on your quit day,Directions,nicotine,nicotine,00b40bb3-3785-4a53-804e-633795e87f71
+368,"if you smoke your first cigarette more than 30 minutes after waking up, use 2 mg nicotine lozenge",Directions,nicotine,nicotine,00b40bb3-3785-4a53-804e-633795e87f71
+369,"if you smoke your first cigarette within 30 minutes of waking up, use 4 mg nicotine lozenge according to the following 12 week schedule",Directions,nicotine,nicotine,00b40bb3-3785-4a53-804e-633795e87f71
+370,nicotine lozenge is a medicine and must be used a certain way to get the best results,Directions,nicotine,nicotine,00b40bb3-3785-4a53-804e-633795e87f71
+371,place the lozenge in your mouth and allow the lozenge to slowly dissolve (about 20-30 minutes). Minimize swallowing. Do not chew or swallow lozenge.,Directions,nicotine,nicotine,00b40bb3-3785-4a53-804e-633795e87f71
+372,you may feel a warm or tingling sensation,Directions,nicotine,nicotine,00b40bb3-3785-4a53-804e-633795e87f71
+373,occasionally move the lozenge from one side of your mouth to the other until completely dissolved (about 20-30 minutes),Directions,nicotine,nicotine,00b40bb3-3785-4a53-804e-633795e87f71
+374,do not eat or drink 15 minutes before using or while the lozenge is in your mouth,Directions,nicotine,nicotine,00b40bb3-3785-4a53-804e-633795e87f71
+375,"to improve your chances of quitting, use at least 9 lozenges per day for the first 6 weeks",Directions,nicotine,nicotine,00b40bb3-3785-4a53-804e-633795e87f71
+376,"do not use more than one lozenge at a time or continuously use one lozenge after another since this may cause you hiccups, heartburn, nausea or other side effects",Directions,nicotine,nicotine,00b40bb3-3785-4a53-804e-633795e87f71
+377,do not use more than 5 lozenges in 6 hours. Do not use more than 20 lozenges per day.,Directions,nicotine,nicotine,00b40bb3-3785-4a53-804e-633795e87f71
+378,"it is important to complete treatment. If you feel you need to use the lozenge for a longer period to keep from smoking, talk to your health care provider.",Directions,nicotine,nicotine,00b40bb3-3785-4a53-804e-633795e87f71
