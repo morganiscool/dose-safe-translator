@@ -21,11 +21,14 @@ def read_barcode(image_bytes):
     image.thumbnail((MAX_SIDE, MAX_SIDE))
     formats = [zxingcpp.BarcodeFormat.UPCA, zxingcpp.BarcodeFormat.UPCE, zxingcpp.BarcodeFormat.EAN13,
                zxingcpp.BarcodeFormat.EAN8, zxingcpp.BarcodeFormat.DataMatrix]
-    for found in zxingcpp.read_barcodes(image, formats=formats):
-        text = found.text.strip()
-        gtin = re.search(r"\(01\)(\d{14})", text) or re.match(r"^01(\d{14})", text)
-        if gtin:
-            return gtin[1]
-        if text.isdigit() and len(text) in (8, 12, 13):
-            return text
+    # zxing-cpp also tries the photo turned by 90°, 180° and 270°, which covers a barcode held up to
+    # about 30° off. In our tests a box held at 35° to 55° wasn't read, so try once more turned 45°.
+    for attempt in (image, image.rotate(45, expand=True, fillcolor=255)):
+        for found in zxingcpp.read_barcodes(attempt, formats=formats):
+            text = found.text.strip()
+            gtin = re.search(r"\(01\)(\d{14})", text) or re.match(r"^01(\d{14})", text)
+            if gtin:
+                return gtin[1]
+            if text.isdigit() and len(text) in (8, 12, 13):
+                return text
     return None

@@ -141,7 +141,7 @@ main > section { overflow: clip; }
 .intro-note { color: var(--muted); max-width: 46ch; }
 .pass { position: absolute; z-index: 1; }
 .pass img { width: 100%; object-fit: cover; }
-.pass figcaption, .watch-film figcaption, .limits-photo figcaption { margin-top: 10px; font-size: var(--small); color: var(--muted); }
+.pass figcaption, .watch-film figcaption, .limits-case figcaption { margin-top: 10px; font-size: var(--small); color: var(--muted); }
 .pass-1 { left: var(--margin); top: 26svh; width: 22vw; }
 .pass-1 img { aspect-ratio: 4 / 5; object-position: 20% 50%; }
 .pass-2 { right: var(--margin); top: 82svh; width: 24vw; }
@@ -240,8 +240,15 @@ main > section { overflow: clip; }
 .limit.gap { margin-top: 18px; }
 .limit dt { color: var(--muted); font-weight: 600; }
 .limit .val { text-align: right; font-weight: 700; }
-.limits-photo { grid-column: 1 / 5; grid-row: 2; align-self: end; width: 22vw; }
-.limits-photo img { aspect-ratio: 4 / 5; object-fit: cover; }
+/* The first limit as the app showed it: a Translation Facts card, framed like the Drug Facts label. */
+.limits-case { grid-column: 1 / 6; grid-row: 2; align-self: end; margin-top: 96px; }
+.case-card { background: var(--paper); border: 3px solid var(--ink); padding: 20px 22px 22px; display: grid; gap: 4px; }
+.case-k { font-size: var(--small); font-weight: 800; margin-top: 10px; }
+.case-k:first-child { margin-top: 0; }
+.case-line { font-size: var(--small); line-height: 1.45; }
+.case-tr { font-size: 20px; font-weight: 600; line-height: 1.35; }
+.case-line mark { background: none; color: inherit; font-weight: 800; text-decoration: underline 3px; text-underline-offset: 4px; }
+.case-verdict { margin-top: 16px; padding: 10px 12px; border: 3px solid var(--ink); font-weight: 800; line-height: 1.3; }
 
 /* ---- Try it: the sentence with a blank --------------------------------------------------- */
 .try { padding: var(--section-pad) var(--margin); background: var(--carton); color: var(--on-dark); }
@@ -276,8 +283,8 @@ main > section { overflow: clip; }
 .try-sentence input:focus-visible, .try-sentence button:focus-visible { outline: 3px solid var(--on-dark); outline-offset: 4px; }
 .try-note { margin-top: 28px; color: var(--on-dark-muted); max-width: 60ch; }
 
-/* ---- Close: the invitation over the cropped name ------------------------------------------ */
-.close { position: relative; min-height: 100svh; overflow: hidden; padding: var(--section-pad) var(--margin) 0; background: var(--ink); color: var(--on-dark); display: flex; flex-direction: column; }
+/* ---- Close: the invitation over the name, which spans the whole width -------------------- */
+.close { position: relative; min-height: 100svh; overflow: hidden; container-type: inline-size; padding: var(--section-pad) var(--margin) 0; background: var(--ink); color: var(--on-dark); display: flex; flex-direction: column; }
 .close-top { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px; }
 .close-top > div { grid-column: 1 / 8; display: grid; gap: 32px; justify-items: start; }
 .invite { font-size: var(--l); }
@@ -289,13 +296,14 @@ main > section { overflow: clip; }
 .close-legal { margin-top: auto; padding-top: 64px; display: grid; gap: 10px; font-size: var(--small); max-width: 110ch; }
 .credits a { text-decoration: underline; }
 .close-name {
-  font-size: 26vw;
+  font-size: 20vw;                 /* for browsers without container units */
+  font-size: calc(100cqw / 4.75);  /* "Dose-Safe" is about 4.6em wide: the whole word fits */
   font-weight: 900;
   letter-spacing: -0.06em;
   line-height: 0.8;
   white-space: nowrap;
   margin: 20px 0 0 -0.04em;
-  transform: translateY(24%);
+  padding-bottom: 0.3em;           /* the letters reach below the short line height */
 }
 
 /* ---- Motion: each section's parts arrive once, staggered ------------------------------------ */
@@ -320,6 +328,7 @@ main > section { overflow: clip; }
   .watch-copy, .watch-film { grid-column: 1 / -1; }
   .stats h2, .ledger, .stats-note { grid-column: 1 / -1; }
   .limit-table { grid-column: 5 / 13; }
+  .limits-case { grid-column: 1 / -1; grid-row: auto; max-width: 560px; margin-top: 64px; }
   .table-name { display: none; }
   .facts { width: 60%; }
 }
@@ -347,8 +356,7 @@ main > section { overflow: clip; }
   .limit-table { grid-column: 1 / -1; margin-top: 48px; }
   .limit { grid-template-columns: minmax(0, 1fr) auto; }
   .limit dt { grid-column: 1 / -1; font-size: var(--small); }
-  .limits-photo { grid-column: 1 / -1; grid-row: auto; width: 60%; margin: 48px 0 0 auto; }
+  .limits-case { margin-top: 48px; }
   .try-sentence input { display: block; width: 100%; font-size: 0.55em; height: 1.6em; margin: 8px 0; }
   .close-top > div, .close-links { grid-column: 1 / -1; }
-  .close-name { font-size: 34vw; }
 }

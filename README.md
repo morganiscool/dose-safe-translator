@@ -35,9 +35,12 @@ targeted safety checks catch more.**
 
 ## What we built
 
-A tool for a **pharmacist at the counter** whose patient doesn't read English. It covers 28 languages:
-Spanish and Vietnamese are tested on real label instructions; the other 26, from Arabic and Hindi to
-Korean and Indonesian, work the same way but are marked "not tested yet".
+A tool that **double-checks a translated medicine label the way a careful pharmacist would**, for a
+patient who doesn't read English. It translates each instruction on the label, translates it back, and
+checks that every number, "not" and age or dose limit made it through, then tells the pharmacist which
+translations still need a person to check them. It covers 28 languages: Spanish and Vietnamese are
+tested on real label instructions; the other 26, from Arabic and Hindi to Korean and Indonesian, work
+the same way but are marked "not tested yet".
 
 - **In:** an English instruction from a medicine label, e.g. *"do not take more than 6 caplets in 24 hours"*.
 - **Out:** the translation, the translation turned back into English, nine safety checks, and a verdict:

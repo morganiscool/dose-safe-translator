@@ -94,7 +94,7 @@
 
   <!-- Showcase: the carton in front of the type. -->
   <section class="showcase" data-ink="dark" aria-labelledby="showcase-title">
-    <h2 id="showcase-title" class="stack-line stack-head reveal">377 real lines</h2>
+    <h2 id="showcase-title" class="stack-line stack-head reveal">378 real lines</h2>
     <div class="stack" aria-hidden="true">
       <span class="stack-line muted">from 66 US</span>
       <span class="stack-line muted">drug labels</span>
@@ -130,15 +130,27 @@
       <div class="limit reveal"><dt>Missed</dt><dd>“laxative” came back as “slimming”</dd><dd class="val">no check fired</dd></div>
       <div class="limit reveal"><dt>False alarm</dt><dd>correct “menos de 12 años”</dd><dd class="val">flagged anyway</dd></div>
       <div class="limit reveal"><dt>Meaning</dt><dd>a “not” in the wrong place</dd><dd class="val">passes the check</dd></div>
-      <div class="limit gap reveal"><dt>Word lists</dt><dd>written without native speakers</dd><dd class="val">all 5 languages</dd></div>
+      <div class="limit gap reveal"><dt>Word lists</dt><dd>written without native speakers</dd><dd class="val">all 28 languages</dd></div>
       <div class="limit reveal"><dt>Tested</dt><dd>Spanish and Vietnamese</dd><dd class="val">150 lines each</dd></div>
-      <div class="limit reveal"><dt>Not tested</dt><dd>Tagalog, Haitian Creole, Chinese</dd><dd class="val">the app says so</dd></div>
+      <div class="limit reveal"><dt>Not tested</dt><dd>the other 26, from Arabic to Urdu</dd><dd class="val">the app says so</dd></div>
+      <div class="limit gap reveal"><dt>Label photos</dt><dd>reading tested on made-up photos</dd><dd class="val">not real ones yet</dd></div>
+      <div class="limit reveal"><dt>Barcodes</dt><dd>listed on a third of openFDA labels</dd><dd class="val">the NDC works too</dd></div>
       <div class="limit gap reveal"><dt>Ratings</dt><dd>a fluent speaker, blind</dd><dd class="val">in progress</dd></div>
       <div class="limit reveal"><dt>Model</dt><dd>NLLB-200, 600M, free from Meta</dd><dd class="val">non-commercial</dd></div>
     </dl>
-    <figure class="limits-photo reveal">
-      <img src="/static/media/archive/apothecary-jar.webp" width="1000" height="1250" alt="A blue and white glazed apothecary jar from Mexico, 1700 to 1750" loading="lazy">
-      <figcaption>Apothecary jar, Mexico, 1700–1750. The Met.</figcaption>
+    <!-- The first limit, as the app showed it: every check passed and the medicine changed. -->
+    <figure class="limits-case reveal">
+      <div class="case-card">
+        <p class="case-k">The label says</p>
+        <p class="case-line">laxative products should not be used for a period longer than 1 week unless directed by a doctor.</p>
+        <p class="case-k">Vietnamese</p>
+        <p class="case-line case-tr" lang="vi">các sản phẩm làm nạc không nên được sử dụng trong thời gian dài hơn 1 tuần trừ khi được bác sĩ chỉ định.</p>
+        <p class="case-k">Back to English</p>
+        <p class="case-line"><mark>slimming</mark> products should not be used for more than one week unless prescribed by a doctor.</p>
+        <p class="case-verdict">No problems found by the automatic checks: 9 of 9 passed</p>
+      </div>
+      <figcaption>A real miss, from the app in safer mode: every number, “not” and limit came through, so no
+        check fired. Only someone who reads Vietnamese would catch that “laxative” became “slimming”.</figcaption>
     </figure>
   </section>
 
@@ -153,7 +165,11 @@
         <span>and</span> <button type="submit">check it</button>
       </p>
     </form>
-    <p class="try-note">Opens the translator with your line. Have a medicine box? <a href="/translate?mode=photo">Photograph its barcode</a> and the whole label's Purpose, Uses, Directions and Do not use lines are translated and checked. It runs on the team's computer, so it answers while that computer is on.</p>
+    <p class="try-note">Opens the translator with your line, in any of 28 languages (Spanish and Vietnamese are
+      tested; the app marks the rest). No time to type? <a href="/translate">Photograph the label's Directions</a>
+      and pick a line, or <a href="/translate?mode=photo">photograph the box's barcode</a> and the whole label's
+      Purpose, Uses, Directions and Do not use lines are translated and checked. It runs on the team's computer,
+      so it answers while that computer is on.</p>
   </section>
 </main>
 
@@ -172,7 +188,7 @@
   </div>
   <div class="close-legal">
     <p>Prototype – not medical advice. A Veritas AI International High School Hackathon 2026 project, AI + Languages track.</p>
-    <p class="credits">Pictures: <a href="https://commons.wikimedia.org/wiki/File:Interior_of_Katz_drug_store._Kansas_City,_Mo_-_NARA_-_283621.jpg">“Interior of Katz drug store. Kansas City, Mo”</a> and <a href="https://commons.wikimedia.org/wiki/File:Interior_of_Katz_drug_store._Kansas_City,_Mo_-_NARA_-_283622.jpg">its sales floor</a>, <a href="https://creativecommons.org/publicdomain/mark/1.0/">public domain</a>, via Wikimedia Commons; <a href="https://commons.wikimedia.org/wiki/File:CHS-41356_Exterior_view_of_Thrifty_Drug_Store_and_A%26P_Market_Sunset_%26_Fairfax_Los_Angeles_circa_1939.jpg">“Exterior view of Thrifty Drug Store… Los Angeles”</a> by Jim Lewis, <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.en">CC0</a>, via Wikimedia Commons; <a href="https://www.metmuseum.org/art/collection/search/3460">“Apothecary Jar”</a>, Mexican maker, 1700–1750, <a href="https://creativecommons.org/publicdomain/zero/1.0/">public domain (CC0)</a>, The Metropolitan Museum of Art. The carton and caplets are 3D renders made for this page.</p>
+    <p class="credits">Pictures: <a href="https://commons.wikimedia.org/wiki/File:Interior_of_Katz_drug_store._Kansas_City,_Mo_-_NARA_-_283621.jpg">“Interior of Katz drug store. Kansas City, Mo”</a> and <a href="https://commons.wikimedia.org/wiki/File:Interior_of_Katz_drug_store._Kansas_City,_Mo_-_NARA_-_283622.jpg">its sales floor</a>, <a href="https://creativecommons.org/publicdomain/mark/1.0/">public domain</a>, via Wikimedia Commons; <a href="https://commons.wikimedia.org/wiki/File:CHS-41356_Exterior_view_of_Thrifty_Drug_Store_and_A%26P_Market_Sunset_%26_Fairfax_Los_Angeles_circa_1939.jpg">“Exterior view of Thrifty Drug Store… Los Angeles”</a> by Jim Lewis, <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.en">CC0</a>, via Wikimedia Commons. The carton and caplets are 3D renders made for this page.</p>
   </div>
   <p class="close-name" aria-hidden="true">Dose-Safe</p>
 </footer>

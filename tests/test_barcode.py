@@ -23,6 +23,9 @@ def test_read_barcode_from_photos():
     from dose_safe.barcode import read_barcode
     assert read_barcode(photo_of(zxingcpp.BarcodeFormat.UPCA, "070038610953")) == "0070038610953"
     assert read_barcode(photo_of(zxingcpp.BarcodeFormat.UPCA, "070038610953", angle=90)) == "0070038610953"
+    # A box held diagonally: zxing-cpp alone missed 35° to 55°.
+    for angle in (40, 45, 50, 135):
+        assert read_barcode(photo_of(zxingcpp.BarcodeFormat.UPCA, "070038610953", angle=angle)) == "0070038610953"
     assert read_barcode(photo_of(zxingcpp.BarcodeFormat.DataMatrix, "(01)00070038610953(17)271231")) == \
         "00070038610953"
 
