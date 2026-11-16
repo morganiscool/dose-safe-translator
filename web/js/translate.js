@@ -16,6 +16,7 @@ const language = $("language");
 const safer = $("safer");
 const submit = $("submit");
 const statusLine = $("status");
+const noServer = $("no-server");  // shown on a copy of the site without a server (Netlify)
 const result = $("result");
 const barcodeInput = $("barcode");
 const labelGo = $("label-translate");
@@ -180,6 +181,12 @@ function checkDetail(detail) {
 async function pollStatus() {
   try {
     const response = await fetch("/api/status");
+    if (response.status === 404) {
+      // This copy of the site is only the pages (Netlify): there is no translator to wait for.
+      setStatus(t("This copy of the website has no translation model, so it can't translate."), "error");
+      noServer.hidden = false;
+      return;
+    }
     const body = await response.json();
     if (!language.options.length) fillLanguages(body.languages);
     showTextReader(body.photo_reader);

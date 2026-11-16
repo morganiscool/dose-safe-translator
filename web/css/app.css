@@ -685,3 +685,6 @@ input[type="text"] { font-variant-numeric: tabular-nums; }
 [dir="rtl"] select { background-position: left 16px center; }
 [dir="rtl"] .site-language select { background-position: left 10px center; }
 [dir="rtl"] .switch input:checked + .track::after { transform: translateX(-20px); }
+
+/* A copy of the site without a server (Netlify): where to translate instead. */
+.no-server { margin-top: 8px; font-weight: 700; }
