@@ -378,8 +378,8 @@ of `web/_redirects` forwards the translator's requests to it.
 
 Click **Open in Colab** at the top (or upload `dose_safe.ipynb` to Colab) → **Runtime → Change runtime
 type → T4 GPU** → **Run all**.
-The first run downloads the model (about 2.5 GB) and takes about 10–15 minutes. Set `TEAM_LANGUAGE` in
-section 2 first.
+The first run downloads the model (about 2.5 GB) and takes about 10–15 minutes. Nothing needs
+changing first.
 
 The app at the end prints a public link ending in `.gradio.live`. Open it in a new tab or on a phone; it
 works while the notebook is running. (The `localhost` link Colab also shows only works inside Colab.) If
