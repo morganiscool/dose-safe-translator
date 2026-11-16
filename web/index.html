@@ -9,19 +9,27 @@
 <link rel="preload" href="/static/fonts/PublicSans-Variable.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="stylesheet" href="/static/css/landing.css">
 <script>document.documentElement.classList.add("js");</script>
+<script>try{var l=localStorage.getItem("dose-safe-site-language")||navigator.language||"en";if(!/^en\b/i.test(l)){document.documentElement.classList.add("i18n-pending");setTimeout(function(){document.documentElement.classList.remove("i18n-pending")},2500)}}catch(e){}</script>
+<script src="/static/js/i18n.js" defer></script>
 <script src="/static/js/landing.js" defer></script>
 </head>
 <body>
 <header class="site-bar" id="site-bar">
-  <a class="wordmark" href="/">
+  <a class="wordmark" href="/" translate="no">
     <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" fill="currentColor"/><rect x="2" y="7" width="20" height="3" class="mark-cut"/><rect x="5" y="13" width="14" height="1.6" class="mark-cut"/><rect x="5" y="16.5" width="10" height="1.6" class="mark-cut"/></svg>
-    Dose-Safe Translator
+    <span class="wordmark-text">Dose-Safe Translator</span>
   </a>
   <nav aria-label="Sections">
     <a href="#how">How it works</a>
     <a href="#results">Results</a>
     <a href="#limits">Limits</a>
   </nav>
+  <label class="site-language">
+    <svg class="globe" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M2.5 12h19M12 2.5c3 3.2 3 15.8 0 19M12 2.5c-3 3.2-3 15.8 0 19" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+    <span class="visually-hidden">Website language</span>
+    <span class="site-language-short" aria-hidden="true" translate="no"></span>
+    <select id="site-language"></select>
+  </label>
   <a class="button" href="/translate">Try the translator</a>
 </header>
 
@@ -31,7 +39,7 @@
     <div class="field field-top" aria-hidden="true"></div>
     <div class="field field-bottom" aria-hidden="true"></div>
     <div class="hero-type">
-      <h1 id="hero-title" class="hero-line">
+      <h1 id="hero-title" class="hero-line" translate="no" lang="en" dir="ltr">
         <span class="row on-paper">Do not take <span class="slot"><video src="/static/media/word-flip.mp4" poster="/static/media/word-flip-poster.webp" width="720" height="288" autoplay muted loop playsinline aria-hidden="true"></video><span class="visually-hidden">more</span></span></span>
         <span class="row on-carton">than 6 caplets.</span>
       </h1>
@@ -44,7 +52,7 @@
     <div class="intro-pin">
       <h2 id="intro-title" class="reveal">Free translation can flip a direction</h2>
       <p class="statement reveal">In a UCSF study, Google Translate turned “hold the kidney medicine” into “keep taking the medication”.</p>
-      <p class="intro-note reveal">A <em>Pediatrics</em> study found errors in about half of Spanish prescription labels made by pharmacy translation software.</p>
+      <p class="intro-note reveal" data-i18n-html>A <em>Pediatrics</em> study found errors in about half of Spanish prescription labels made by pharmacy translation software.</p>
     </div>
     <figure class="pass pass-1 reveal">
       <img src="/static/media/archive/katz-counter.webp" width="1600" height="1273" alt="Black-and-white photograph of a busy drugstore counter with signs reading Don't Take a Chance" loading="lazy">
@@ -108,7 +116,7 @@
 
   <!-- Results: the figures as a ledger. -->
   <section class="stats" id="results" data-ink="light" aria-labelledby="stats-title">
-    <h2 id="stats-title" class="reveal"><span class="soft">What got</span> flagged</h2>
+    <h2 id="stats-title" class="reveal" data-i18n-html><span class="soft">What got</span> flagged</h2>
     <table class="ledger">
       <caption class="visually-hidden">What the checks flagged in our test run</caption>
       <tbody>
@@ -124,7 +132,7 @@
 
   <!-- Limits: an honest table. -->
   <section class="limits" id="limits" data-ink="dark" aria-labelledby="limits-title">
-    <h2 id="limits-title" class="reveal">Where it still gets <br>things wrong</h2>
+    <h2 id="limits-title" class="reveal" data-i18n-html>Where it still gets <br>things wrong</h2>
     <p class="table-name">Limits</p>
     <dl class="limit-table">
       <div class="limit reveal"><dt>Missed</dt><dd>“laxative” came back as “slimming”</dd><dd class="val">no check fired</dd></div>
@@ -132,7 +140,7 @@
       <div class="limit reveal"><dt>Meaning</dt><dd>a “not” in the wrong place</dd><dd class="val">passes the check</dd></div>
       <div class="limit gap reveal"><dt>Word lists</dt><dd>written without native speakers</dd><dd class="val">all 28 languages</dd></div>
       <div class="limit reveal"><dt>Tested</dt><dd>Spanish, Vietnamese, Chinese</dd><dd class="val">150 lines each</dd></div>
-      <div class="limit reveal"><dt>Not tested</dt><dd>the other 25, from Arabic to Urdu</dd><dd class="val">the app says so</dd></div>
+      <div class="limit reveal"><dt>Other languages</dt><dd>25, from Arabic to Urdu</dd><dd class="val">40 test lines each</dd></div>
       <div class="limit gap reveal"><dt>Label photos</dt><dd>reading tested on made-up photos</dd><dd class="val">not real ones yet</dd></div>
       <div class="limit reveal"><dt>Barcodes</dt><dd>listed on a third of openFDA labels</dd><dd class="val">the NDC works too</dd></div>
       <div class="limit gap reveal"><dt>Ratings</dt><dd>a fluent speaker, blind</dd><dd class="val">in progress</dd></div>
@@ -142,11 +150,11 @@
     <figure class="limits-case reveal">
       <div class="case-card">
         <p class="case-k">The label says</p>
-        <p class="case-line">laxative products should not be used for a period longer than 1 week unless directed by a doctor.</p>
+        <p class="case-line" translate="no" lang="en" dir="ltr">laxative products should not be used for a period longer than 1 week unless directed by a doctor.</p>
         <p class="case-k">Vietnamese</p>
-        <p class="case-line case-tr" lang="vi">các sản phẩm làm nạc không nên được sử dụng trong thời gian dài hơn 1 tuần trừ khi được bác sĩ chỉ định.</p>
+        <p class="case-line case-tr" lang="vi" translate="no" dir="ltr">các sản phẩm làm nạc không nên được sử dụng trong thời gian dài hơn 1 tuần trừ khi được bác sĩ chỉ định.</p>
         <p class="case-k">Back to English</p>
-        <p class="case-line"><mark>slimming</mark> products should not be used for more than one week unless prescribed by a doctor.</p>
+        <p class="case-line" translate="no" lang="en" dir="ltr"><mark>slimming</mark> products should not be used for more than one week unless prescribed by a doctor.</p>
         <p class="case-verdict">No problems found by the automatic checks: 9 of 9 passed</p>
       </div>
       <figcaption>A real miss, from the app in safer mode: every number, “not” and limit came through, so no
@@ -161,12 +169,11 @@
       <p class="try-sentence">
         <span>Paste a label line</span>
         <label class="visually-hidden" for="try-line">A medicine instruction in English</label>
-        <input id="try-line" name="q" type="text" placeholder="children under 12 years: ask a doctor" autocomplete="off">
+        <input id="try-line" name="q" type="text" placeholder="children under 12 years: ask a doctor" autocomplete="off" translate="no" dir="ltr">
         <span>and</span> <button type="submit">check it</button>
       </p>
     </form>
-    <p class="try-note">Opens the translator with your line, in any of 28 languages (Spanish, Vietnamese and
-      Chinese are tested; the app marks the rest). No time to type? <a href="/translate">Photograph the label's Directions</a>
+    <p class="try-note" data-i18n-html>Opens the translator with your line, in any of 28 languages. No time to type? <a href="/translate">Photograph the label's Directions</a>
       and pick a line, or <a href="/translate?mode=photo">photograph the box's barcode</a> and the whole label's
       Purpose, Uses, Directions and Do not use lines are translated and checked. It runs on the team's computer,
       so it answers while that computer is on.</p>
@@ -176,7 +183,7 @@
 <footer class="close" data-ink="light" aria-labelledby="close-title">
   <div class="close-top">
     <div>
-      <h2 id="close-title" class="invite">Bring it to <br>the counter</h2>
+      <h2 id="close-title" class="invite" data-i18n-html>Bring it to <br>the counter</h2>
       <a class="button button-invert" href="/translate">Try the translator</a>
     </div>
     <ul class="close-links">
@@ -188,9 +195,9 @@
   </div>
   <div class="close-legal">
     <p>Prototype – not medical advice. A Veritas AI International High School Hackathon 2026 project, AI + Languages track.</p>
-    <p class="credits">Pictures: <a href="https://commons.wikimedia.org/wiki/File:Interior_of_Katz_drug_store._Kansas_City,_Mo_-_NARA_-_283621.jpg">“Interior of Katz drug store. Kansas City, Mo”</a> and <a href="https://commons.wikimedia.org/wiki/File:Interior_of_Katz_drug_store._Kansas_City,_Mo_-_NARA_-_283622.jpg">its sales floor</a>, <a href="https://creativecommons.org/publicdomain/mark/1.0/">public domain</a>, via Wikimedia Commons; <a href="https://commons.wikimedia.org/wiki/File:CHS-41356_Exterior_view_of_Thrifty_Drug_Store_and_A%26P_Market_Sunset_%26_Fairfax_Los_Angeles_circa_1939.jpg">“Exterior view of Thrifty Drug Store… Los Angeles”</a> by Jim Lewis, <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.en">CC0</a>, via Wikimedia Commons. The carton and caplets are 3D renders made for this page.</p>
+    <p class="credits" data-i18n-html>Pictures: <a href="https://commons.wikimedia.org/wiki/File:Interior_of_Katz_drug_store._Kansas_City,_Mo_-_NARA_-_283621.jpg">“Interior of Katz drug store. Kansas City, Mo”</a> and <a href="https://commons.wikimedia.org/wiki/File:Interior_of_Katz_drug_store._Kansas_City,_Mo_-_NARA_-_283622.jpg">its sales floor</a>, <a href="https://creativecommons.org/publicdomain/mark/1.0/">public domain</a>, via Wikimedia Commons; <a href="https://commons.wikimedia.org/wiki/File:CHS-41356_Exterior_view_of_Thrifty_Drug_Store_and_A%26P_Market_Sunset_%26_Fairfax_Los_Angeles_circa_1939.jpg">“Exterior view of Thrifty Drug Store… Los Angeles”</a> by Jim Lewis, <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.en">CC0</a>, via Wikimedia Commons. The carton and caplets are 3D renders made for this page.</p>
   </div>
-  <p class="close-name" aria-hidden="true">Dose-Safe</p>
+  <p class="close-name" aria-hidden="true" translate="no">Dose-Safe</p>
 </footer>
 </body>
 </html>

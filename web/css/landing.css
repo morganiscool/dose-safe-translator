@@ -78,9 +78,17 @@ h2 { font-size: var(--l); font-weight: 900; line-height: 1; letter-spacing: -0.0
 .mark { width: 24px; height: 24px; }
 .mark-cut { fill: var(--paper); transition: fill 300ms ease; }
 .site-bar[data-ink="light"] .mark-cut { fill: var(--ink); }
-.site-bar nav { display: flex; gap: 24px; margin-left: auto; }
+.site-bar nav { display: flex; gap: 24px; margin-inline-start: auto; }
 .site-bar nav a { font-weight: 600; font-size: var(--small); text-decoration: none; }
 .site-bar nav a:hover { text-decoration: underline; }
+/* Each part on one line. When they don't all fit (a long translation, a narrow phone), landing.js
+   drops the section links first ("crowded"), then lets words wrap ("cramped"), then shows only the
+   wordmark's mark ("squeezed"). */
+.js .site-bar > *, .js .site-bar nav a { white-space: nowrap; }
+.site-bar.crowded nav { display: none; }
+.site-bar.crowded .wordmark { margin-inline-end: auto; }
+.site-bar.cramped > * { white-space: normal; line-height: 1.2; }  /* two lines still fit the bar */
+.site-bar.squeezed .wordmark-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 
 main > section { overflow: clip; }
 .intro { overflow: visible; }
@@ -142,11 +150,11 @@ main > section { overflow: clip; }
 .pass { position: absolute; z-index: 1; }
 .pass img { width: 100%; object-fit: cover; }
 .pass figcaption, .watch-film figcaption, .limits-case figcaption { margin-top: 10px; font-size: var(--small); color: var(--muted); }
-.pass-1 { left: var(--margin); top: 26svh; width: 22vw; }
+.pass-1 { inset-inline-start: var(--margin); top: 26svh; width: 22vw; }
 .pass-1 img { aspect-ratio: 4 / 5; object-position: 20% 50%; }
-.pass-2 { right: var(--margin); top: 82svh; width: 24vw; }
+.pass-2 { inset-inline-end: var(--margin); top: 82svh; width: 24vw; }
 .pass-2 img { aspect-ratio: 16 / 10; }
-.pass-3 { left: calc(var(--margin) + 2vw); top: 138svh; width: 19vw; }
+.pass-3 { inset-inline-start: calc(var(--margin) + 2vw); top: 138svh; width: 19vw; }
 .pass-3 img { aspect-ratio: 1 / 1; }
 
 /* ---- How it works: the seconds, to scale ----------------------------------------------- */
@@ -165,7 +173,8 @@ main > section { overflow: clip; }
 .stage-1 .stage-time { background: var(--carton); }
 .stage-2 .stage-time { background: var(--carton-deep); }
 .stage-3 .stage-time { background: var(--ink); }
-.stage-text { margin-top: 14px; max-width: 24ch; }
+.stage-text { margin-top: 14px; max-width: 24ch; overflow-wrap: break-word; }
+:root:not(:lang(en)) .stage-text { hyphens: auto; }
 .how-note { margin-top: 48px; max-width: 70ch; color: var(--muted); }
 
 /* ---- Watch: the explainer film ---------------------------------------------------------- */
@@ -192,7 +201,9 @@ main > section { overflow: clip; }
   font-weight: 900;
   line-height: 0.9;
   letter-spacing: -0.045em;
-  white-space: nowrap;
+  /* English fits each line on one line; a longer translation wraps instead of being cut off. */
+  text-wrap: balance;
+  overflow-wrap: break-word;
 }
 .stack-head { color: var(--ink); }
 .stack { position: relative; z-index: 1; }
@@ -200,7 +211,7 @@ main > section { overflow: clip; }
 .carton {
   position: absolute;
   z-index: 2;
-  right: var(--margin);
+  inset-inline-end: var(--margin);
   top: calc(var(--section-pad) + 0.6 * var(--xl));
   width: 40vw;
   transform: rotate(-4deg);
@@ -221,8 +232,8 @@ main > section { overflow: clip; }
 .ledger { grid-column: 7 / 13; align-self: center; border-collapse: collapse; font-variant-numeric: tabular-nums lining-nums; }
 .ledger td { padding: 14px 0; vertical-align: baseline; }
 .ledger .whole { width: 1.6em; font-size: var(--l); }
-.whole { text-align: right; font-weight: 900; line-height: 1; letter-spacing: -0.03em; }
-.cap { font-size: var(--body); line-height: 1.35; padding-left: 20px; color: var(--on-dark); }
+.whole { text-align: end; font-weight: 900; line-height: 1; letter-spacing: -0.03em; }
+.cap { font-size: var(--body); line-height: 1.35; padding-inline-start: 20px; color: var(--on-dark); }
 .stats-note { grid-column: 7 / 13; color: var(--on-dark-muted); font-size: var(--small); max-width: 60ch; }
 
 /* ---- Limits: the statement, the table pushed right --------------------------------------- */
@@ -234,12 +245,20 @@ main > section { overflow: clip; }
   background: var(--tint);
 }
 .limits h2 { grid-column: 1 / -1; text-indent: 3vw; line-height: 0.98; }
-.table-name { grid-column: 7 / 8; grid-row: 2; margin-top: 96px; font-size: var(--small); font-weight: 800; }
-.limit-table { grid-column: 8 / 13; grid-row: 2; margin-top: 96px; display: grid; gap: 26px; }
-.limit { display: grid; grid-template-columns: 9em minmax(0, 1fr) auto; gap: 16px; align-items: baseline; }
+/* Two columns wide and set against the table, so a long translation of "Limits" still fits. */
+.table-name { grid-column: 6 / 8; grid-row: 2; justify-self: end; text-align: end; margin-top: 96px;
+              font-size: var(--small); font-weight: 800; }
+.limit-table { grid-column: 8 / 13; grid-row: 2; margin-top: 96px; display: grid; gap: 26px; container-type: inline-size; }
+/* The value column takes what it needs, up to 40%, so a long translation can't squeeze the middle one out. */
+.limit { display: grid; grid-template-columns: 9em minmax(0, 1fr) fit-content(40%); gap: 16px; align-items: baseline; }
+/* A narrow table puts each row's name above it. */
+@container (max-width: 519px) {
+  .limit { grid-template-columns: minmax(0, 1fr) fit-content(45%); }
+  .limit dt { grid-column: 1 / -1; font-size: var(--small); }
+}
 .limit.gap { margin-top: 18px; }
 .limit dt { color: var(--muted); font-weight: 600; }
-.limit .val { text-align: right; font-weight: 700; }
+.limit .val { text-align: end; font-weight: 700; }
 /* The first limit as the app showed it: a Translation Facts card, framed like the Drug Facts label. */
 .limits-case { grid-column: 1 / 6; grid-row: 2; align-self: end; margin-top: 96px; }
 .case-card { background: var(--paper); border: 3px solid var(--ink); padding: 20px 22px 22px; display: grid; gap: 4px; }
@@ -336,27 +355,51 @@ main > section { overflow: clip; }
   :root { --xl: 11.4vw; --l: 9.5vw; --m: 21px; --section-pad: 88px; }
   .site-bar { gap: 14px; height: 60px; }
   .site-bar nav { display: none; }
-  .wordmark { font-size: 16px; margin-right: auto; }
+  .wordmark { font-size: 16px; margin-inline-end: auto; }
   .button { padding: 10px 14px; }
   .hero-sub { bottom: 40px; font-size: 17px; max-width: 30ch; }
   .intro { height: auto; padding: var(--section-pad) var(--margin); }
   .intro-pin { position: static; height: auto; width: 100%; }
   .pass { position: static; margin-top: 50px; }
   .pass-1 { width: 64%; }
-  .pass-2 { width: 78%; margin-left: auto; }
+  .pass-2 { width: 78%; margin-inline-start: auto; }
   .pass-3 { width: 52%; }
   .stages { flex-direction: column; height: auto; }
   .stage { min-width: 0; }
   .stage-time { height: calc(var(--grow) * 7svh + 40px); min-height: 72px; }
-  .carton { position: relative; right: auto; top: auto; display: block; width: 78vw; margin: 24px -8vw 0 auto; }
+  .carton { position: relative; inset-inline-end: auto; top: auto; display: block; width: 78vw; margin: 24px 0 0;
+            margin-inline-start: auto; margin-inline-end: -8vw; }
   .facts { width: 100%; margin-top: 32px; }
   .ledger .whole { width: 1.4em; }
-  .cap { padding-left: 14px; }
+  .cap { padding-inline-start: 14px; }
   .limits h2 { text-indent: 0; }
   .limit-table { grid-column: 1 / -1; margin-top: 48px; }
-  .limit { grid-template-columns: minmax(0, 1fr) auto; }
-  .limit dt { grid-column: 1 / -1; font-size: var(--small); }
   .limits-case { margin-top: 48px; }
   .try-sentence input { display: block; width: 100%; font-size: 0.55em; height: 1.6em; margin: 8px 0; }
   .close-top > div, .close-links { grid-column: 1 / -1; }
+}
+
+/* ---- The website's language (header menu); its ink follows the field, like the rest of the bar --- */
+.i18n-pending body { visibility: hidden; }  /* for a moment, while a translation loads */
+.site-language { display: flex; align-items: center; gap: 6px; font-size: var(--small); font-weight: 600; }
+.site-language .globe { width: 18px; height: 18px; flex: none; }
+.site-language select {
+  appearance: none;
+  border: 2px solid currentColor;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+.site-language option { color: var(--ink); background: var(--paper); }
+.site-language-short { display: none; }
+@media (max-width: 640px) {
+  /* On a phone the menu shows a short name ("EN", "中文"); the list it opens has the full names. */
+  .site-language { position: relative; border: 2px solid currentColor; padding: 5px 8px; white-space: nowrap; }
+  .site-language .globe { width: 16px; height: 16px; }
+  .site-language-short { display: inline; font-weight: 700; }
+  .site-language select { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; font-size: 16px; }
+  .site-language:has(select:focus-visible) { outline: 3px solid currentColor; outline-offset: 4px; }
 }

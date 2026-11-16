@@ -77,8 +77,8 @@ LANGUAGES = {
         "limits": {"under/less": ["以下", "不满", "未满", "少于", "低于", "小于", "不到"],
                    "over/more": ["以上", "超过", "多于", "高于", "大于", "最多", "超出"]},
     },
-    # ---- Added Nov 15, 2026. Not yet tested on real label instructions or checked by native
-    # speakers: the app marks them "not tested yet".
+    # ---- Added Nov 15, 2026. Tuned on the model's translations of 40 label instructions each;
+    # native speakers haven't checked these lists yet.
     "Chinese (Traditional)": {
         "code": "zho_Hant", "flores": ["cmn_Hant", "zho_Hant"], "cjk": True, "lang": "zh-Hant",
         "negations": ["不", "勿", "別", "沒", "禁"],
@@ -400,7 +400,7 @@ ENGLISH = {
                              "maximum", "most", "longer"]},
 }
 
-# Languages we have run on real label instructions (notebook sections 6-7: 150 instructions each) and
-# whose results we have read; Chinese (Simplified) was added on Nov 15, 2026 (README, "Results"). The
-# others work, but nobody has looked at their results yet, so the app says so.
+# Languages we have run on 150 real label instructions each (notebook sections 6-7) and whose results
+# we have read; Chinese (Simplified) was added on Nov 15, 2026 (README, "Results"). The API reports
+# this; the app shows every language the same way.
 TESTED_LANGUAGES = ["Spanish", "Vietnamese", "Chinese (Simplified)"]

@@ -1,10 +1,12 @@
 // Dose-Safe Translator: the translator screen. Talks to server.py's /api/status, /api/check,
 // /api/label, /api/check-lines and /api/read-text. Everything the model, the label, the photo reader
-// or the user wrote is put on the page with textContent, never as HTML.
+// or the user wrote is put on the page with textContent, never as HTML. The website's own words go
+// through t() (i18n.js), so they show in the language chosen in the header.
 
 const LANG_CODES = { "Spanish": "es", "Vietnamese": "vi", "Tagalog": "tl", "Haitian Creole": "ht",
                      "Chinese (Simplified)": "zh-Hans" };
 const LANGS = {};  // name → {lang, rtl} for every language, from /api/status
+const { t, phrase } = I18N;
 const MAX_LINES = 20;  // lines per /api/check-lines request (the server's limit)
 const $ = (id) => document.getElementById(id);
 const work = document.querySelector(".work");
@@ -38,10 +40,10 @@ function setBusy(on, what = "") {
 
 function updateButtons() {
   if (mode === "line") {
-    submit.textContent = busyWith === "line" ? "Checking…" : "Translate and check";
+    submit.textContent = busyWith === "line" ? t("Checking…") : t("Translate and check");
     submit.disabled = busy || !ready;
   } else {
-    submit.textContent = busyWith === "find" ? "Finding the label…" : "Find the label";
+    submit.textContent = busyWith === "find" ? t("Finding the label…") : t("Find the label");
     submit.disabled = busy;  // finding a label doesn't need the translation model
   }
   // Once a label is on screen, "Translate the label" is the one black slab; finding another steps back.
@@ -50,9 +52,9 @@ function updateButtons() {
   const checking = fromPhoto && !$("read-check").hidden;
   labelGo.disabled = busy || !ready || (checking && !$("read-confirm").checked);
   $("read-edit").disabled = busy;
-  labelGo.textContent = !ready ? "Translating turns on when the model is ready"
-    : fromPhoto ? `Translate these lines into ${language.value}`
-    : `Translate the label into ${language.value}`;
+  labelGo.textContent = !ready ? t("Translating turns on when the model is ready")
+    : fromPhoto ? t("Translate these lines into {language}", { language: langName(language.value) })
+    : t("Translate the label into {language}", { language: langName(language.value) });
 }
 
 // The language tag and writing direction for text in a language.
@@ -61,21 +63,117 @@ function langOf(name) {
   return { lang: info.lang || LANG_CODES[name] || "", dir: info.rtl ? "rtl" : "ltr" };
 }
 
-// Tested languages first, then the rest in alphabetical order.
+// A patient language's name in the website's language.
+function langName(name) {
+  const info = LANGS[name] || {};
+  return I18N.languageName(name, info.lang || LANG_CODES[name]);
+}
+
+// Every language, in alphabetical order of its name in the website's language.
 function fillLanguages(list) {
-  const groups = [["Tested on real label instructions", list.filter((l) => l.tested)],
-                  ["Not tested yet", list.filter((l) => !l.tested).sort((a, b) => a.name.localeCompare(b.name))]];
-  for (const [title, members] of groups) {
-    if (!members.length) continue;
-    const group = document.createElement("optgroup");
-    group.label = title;
-    for (const lang of members) {
-      group.append(new Option(lang.tested ? lang.name : `${lang.name} (not tested yet)`, lang.name));
-      LANGS[lang.name] = lang;
-    }
-    language.append(group);
-  }
+  for (const lang of list) LANGS[lang.name] = lang;
+  const named = list.map((lang) => [langName(lang.name), lang.name]);
+  named.sort((a, b) => a[0].localeCompare(b[0], I18N.lang));
+  for (const [shown, name] of named) language.append(new Option(shown, name));
   language.value = "Vietnamese";
+}
+
+// ---- Text from the server, shown in the website's language ---------------------------------
+// The server answers in English. Fixed messages are translated as they are; a message with a number
+// or a barcode in it is matched against a template first. Anything unknown stays in English.
+const CHECK_NAMES = [phrase("Numbers kept"), phrase("“Not” kept"), phrase("Under / over kept"),
+  phrase("Actually translated"), phrase("Numbers survive the round trip"), phrase("“Not” survives the round trip"),
+  phrase("Units survive the round trip"), phrase("Under / over survives the round trip"),
+  phrase("Back-translation matches"), phrase("Photo read clearly")];
+const SECTION_NAMES = [phrase("Purpose"), phrase("Uses"), phrase("Directions"), phrase("Do not use"),
+  phrase("Directions (read from the photo)")];
+const DETAIL_WORDS = [phrase("under/less"), phrase("over/more"), phrase("hours"), phrase("days"), phrase("weeks"),
+  phrase("months"), phrase("minutes"), phrase("teaspoons"), phrase("tablespoons"), phrase("letters mixed into a number")];
+const SERVER_MESSAGES = [
+  phrase("That photo didn't upload properly. Try taking it again."), phrase("Unknown language"),
+  phrase("Type a medicine instruction in English first"), phrase("One of the lines is empty"),
+  phrase("No barcode found in the photo. Hold the box closer so the barcode fills about half the picture, with no glare on it, or type the number under the barcode."),
+  phrase("No barcode found in the photo."),
+  phrase("That photo couldn't be opened. Take it again, or use a JPEG or PNG picture."),
+  phrase("No barcode or printed directions could be read in this photo. Photograph the barcode, or the Directions panel up close, flat and in focus, with no glare."),
+  phrase("Take a photo of the barcode, or type its number."), phrase("Choose a photo first"),
+  phrase("That file isn't a photo the app can open. Use a JPEG or PNG."),
+  phrase("That photo is too big. Try one under 15 MB."),
+  phrase("Couldn't download the label from DailyMed. Try again in a minute."),
+  phrase("That isn't a barcode number. Type the digits under the barcode, or the NDC number printed on the box (it looks like 12345-678-90)."),
+  phrase("That barcode is all zeros, which some labels use as a blank. Type the NDC number printed on the box instead."),
+  phrase("The FDA's label database didn't answer properly. Try again in a minute."),
+  phrase("That isn't a DailyMed label id."),
+  phrase("A barcode on a medicine box has 8, 12 or 13 digits. Check the number, or type the NDC number printed on the box (it looks like 12345-678-90)."),
+  phrase("Couldn't reach the FDA's label database. Check the internet connection and try again."),
+  phrase("DailyMed doesn't have this label any more."),
+  phrase("No medicine label with this NDC number is in the FDA's database."),
+];
+const MESSAGE_TEMPLATES = [
+  phrase("No medicine label with the barcode {code} is in the FDA's database. Not every US label lists its barcode there; try the NDC number printed on the box (it looks like 12345-678-90)."),
+  phrase("The barcode {code} isn't from a US box: US and Canadian barcodes start with 0 or 1, and this one starts with {prefix}, so the box was made for another country. The FDA's database only has medicines sold in the US."),
+  phrase("This barcode is listed on {count} different medicine labels in the FDA's database, so it can't tell which one this box is. Type the NDC number printed on the box instead (it looks like 12345-678-90)."),
+];
+const MESSAGE_ENDINGS = [
+  phrase("The reader for printed text is still starting; try this photo again in a minute."),
+  phrase("To use this box anyway, photograph its Directions panel: the printed text is read, and you check it before it's translated."),
+];
+const DETAIL_TEMPLATES = [phrase("missing {numbers}"), phrase("new {numbers}"),
+  phrase("English has {english}, translation has {other}"), phrase("English has {english}, back-translation has {other}"),
+  phrase("no word for {names}"), phrase("lost {names}"), phrase("{score}/100 identical to English"),
+  phrase("similarity {score}/100")];
+
+// The values in `text` for each {name} in an English template, or null if it doesn't fit.
+function matchTemplate(text, template) {
+  const names = [];
+  const source = template.split(/\{(\w+)\}/).map((part, i) => {
+    if (i % 2) { names.push(part); return "(.+?)"; }
+    return part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  }).join("");
+  const match = new RegExp(`^${source}$`).exec(text);
+  return match ? Object.fromEntries(names.map((name, i) => [name, match[i + 1]])) : null;
+}
+
+function serverText(message) {
+  if (typeof message !== "string" || I18N.lang === "en") return message;
+  if (t(message) !== message) return t(message);
+  for (const template of MESSAGE_TEMPLATES) {
+    const values = matchTemplate(message, template);
+    if (values) return t(template, values);
+  }
+  for (const ending of MESSAGE_ENDINGS) {
+    if (message.endsWith(` ${ending}`)) return `${serverText(message.slice(0, -ending.length - 1))} ${t(ending)}`;
+  }
+  return message;
+}
+
+// "52% sure" or "letters mixed into a number": why a word read from a photo should be checked.
+function photoReason(reason) {
+  const sure = /^(\d+)% sure$/.exec(reason);
+  return sure ? t("{percent}% sure", { percent: sure[1] }) : t(reason);
+}
+
+// "“12” (52% sure)": a word read from a photo, and why to check it.
+function photoWarning(warning) {
+  const match = /^“(.*)” \((.*)\)$/.exec(warning);
+  return match ? `“${match[1]}” (${photoReason(match[2])})` : warning;
+}
+
+// A check's detail ("missing 6; new 9", "lost hours, mg", "hard to read: …").
+function checkDetail(detail) {
+  if (!detail || I18N.lang === "en") return detail;
+  if (detail.startsWith("hard to read: ")) {
+    return t("hard to read: {words}", { words: detail.slice(14).split("; ").map(photoWarning).join("; ") });
+  }
+  return detail.split("; ").map((part) => {
+    for (const template of DETAIL_TEMPLATES) {
+      const values = matchTemplate(part, template);
+      if (!values) continue;
+      if ("names" in values) values.names = values.names.split(", ").map((name) => t(name)).join(", ");
+      return t(template, values);
+    }
+    return part;
+  }).join("; ");
 }
 
 // ---- Status: are the model and the photo text reader loaded yet? ---------------------------
@@ -93,14 +191,12 @@ async function pollStatus() {
       return;
     }
     if (body.status === "error") {
-      setStatus("The translation model failed to start. Reload the page in a minute; if it keeps " +
-                "happening, the server needs a restart.", "error");
+      setStatus(t("The translation model failed to start. Reload the page in a minute; if it keeps happening, the server needs a restart."), "error");
       return;
     }
-    setStatus("The translation model is starting up. After the app has been asleep this takes a " +
-              "minute or two; translating turns on when it's ready.", "waiting");
+    setStatus(t("The translation model is starting up. After the app has been asleep this takes a minute or two; translating turns on when it's ready."), "waiting");
   } catch {
-    setStatus("Can't reach the translator. Check your connection; this page will keep trying.", "error");
+    setStatus(t("Can't reach the translator. Check your connection; this page will keep trying."), "error");
   }
   setTimeout(pollStatus, 5000);
 }
@@ -152,7 +248,7 @@ async function checkLine() {
   if (busy || !ready) return;
   const text = english.value.trim();
   if (!text) {
-    setStatus("Type or paste one instruction from the label first.", "error");
+    setStatus(t("Type or paste one instruction from the label first."), "error");
     english.focus();
     return;
   }
@@ -161,12 +257,12 @@ async function checkLine() {
   let shown = false;
   showChecking(true);
   const started = Date.now();
-  const tries = safer.checked ? "5 translations" : "1 translation";
+  const tries = safer.checked ? t("5 translations") : t("1 translation");
   // Said once (and announced once); only the seconds count changes.
   setStatus("");
-  $("checking-text").textContent = `Translating into ${language.value} (${tries}), translating back into ` +
-    `English and running ${fromPhoto ? 10 : 9} checks. Usually 10–40 seconds.`;
-  const tick = () => { $("checking-seconds").textContent = `${Math.round((Date.now() - started) / 1000)} s`; };
+  $("checking-text").textContent = t("Translating into {language} ({tries}), translating back into English and running {count} checks. Usually 10–40 seconds.",
+    { language: langName(language.value), tries, count: fromPhoto ? 10 : 9 });
+  const tick = () => { $("checking-seconds").textContent = t("{seconds} s", { seconds: Math.round((Date.now() - started) / 1000) }); };
   tick();
   const timer = setInterval(tick, 1000);
   try {
@@ -185,7 +281,7 @@ async function checkLine() {
     }
     const body = await response.json();
     if (!response.ok) {
-      setStatus(typeof body.detail === "string" ? body.detail : "That didn't work. Check the instruction and try again.", "error");
+      setStatus(typeof body.detail === "string" ? serverText(body.detail) : t("That didn't work. Check the instruction and try again."), "error");
       return;
     }
     setStatus("");
@@ -193,7 +289,7 @@ async function checkLine() {
     show(body);
     shown = true;
   } catch {
-    setStatus("The check didn't finish: the connection dropped. Try again.", "error");
+    setStatus(t("The check didn't finish: the connection dropped. Try again."), "error");
   } finally {
     clearInterval(timer);
     setBusy(false);
@@ -267,13 +363,15 @@ function renderChecks(list, checks) {
     item.dataset.ok = check.ok;
     const state = document.createElement("span");
     state.className = "state";
-    state.textContent = check.ok ? "Passed" : "Failed";
+    state.textContent = check.ok ? t("Passed") : t("Failed");
     const name = document.createElement("span");
     name.className = "name";
-    name.textContent = check.name;
+    name.textContent = t(check.name);
     const where = document.createElement("span");
     where.className = "where";
-    where.textContent = check.ok ? `checks the ${check.looks_at}` : `${check.detail} · checks the ${check.looks_at}`;
+    const looksAt = { translation: phrase("checks the translation"), "back-translation": phrase("checks the back-translation"),
+                      photo: phrase("checks the photo") }[check.looks_at] || `checks the ${check.looks_at}`;
+    where.textContent = check.ok ? t(looksAt) : `${checkDetail(check.detail)} · ${t(looksAt)}`;
     item.append(state, name, where);
     list.append(item);
   }
@@ -288,14 +386,11 @@ function show(body) {
   void result.offsetWidth;
   result.classList.add("animate");
   const { lang, dir } = langOf(body.language);
-  $("translation-label").textContent = body.language;
-  $("untested").hidden = body.language_tested;
-  $("untested-language").textContent = body.language;
+  $("translation-label").textContent = langName(body.language);
 
   if (body.verdict === "too_long") {
-    $("verdict-title").textContent = "Too long to check in one go";
-    $("verdict-detail").textContent = "The model would cut off the end of this text without telling " +
-      "you. Split it into separate instructions (one bullet from the label at a time) and check each.";
+    $("verdict-title").textContent = t("Too long to check in one go");
+    $("verdict-detail").textContent = t("The model would cut off the end of this text without telling you. Split it into separate instructions (one bullet from the label at a time) and check each.");
     $("facts").hidden = true;
     $("print").hidden = true;
     $("verdict").focus();
@@ -306,13 +401,12 @@ function show(body) {
 
   const failed = body.checks.filter((c) => !c.ok);
   if (body.verdict === "check") {
-    $("verdict-title").textContent = "Ask a pharmacist or interpreter to check this translation";
-    $("verdict-detail").textContent = `${failed.length} of ${body.checks.length} checks failed: ` +
-      failed.map((c) => c.name).join(", ") + ".";
+    $("verdict-title").textContent = t("Ask a pharmacist or interpreter to check this translation");
+    $("verdict-detail").textContent = t("{failed} of {total} checks failed: {names}.",
+      { failed: failed.length, total: body.checks.length, names: failed.map((c) => t(c.name)).join(", ") });
   } else {
-    $("verdict-title").textContent = "No problems found by the automatic checks";
-    $("verdict-detail").textContent = "These checks can't understand meaning. A pharmacist should " +
-      "still confirm the translation before it goes to the patient.";
+    $("verdict-title").textContent = t("No problems found by the automatic checks");
+    $("verdict-detail").textContent = t("These checks can't understand meaning. A pharmacist should still confirm the translation before it goes to the patient.");
   }
 
   const translation = $("translation");
@@ -324,13 +418,12 @@ function show(body) {
   renderChecks($("checks"), body.checks);
 
   $("meta").textContent = (body.candidates_tried > 1
-    ? (body.changed ? `Safer mode tried ${body.candidates_tried} translations and picked one that ` +
-                      `isn't the model's first choice.`
-                    : `Safer mode tried ${body.candidates_tried} translations; the model's first choice had the fewest problems.`)
-    : "The model's first choice.") + ` Took ${body.seconds} s.`;
+    ? (body.changed ? t("Safer mode tried {count} translations and picked one that isn't the model's first choice.", { count: body.candidates_tried })
+                    : t("Safer mode tried {count} translations; the model's first choice had the fewest problems.", { count: body.candidates_tried }))
+    : t("The model's first choice.")) + " " + t("Took {seconds} s.", { seconds: body.seconds });
 
   // The printed slip for the patient.
-  $("slip-language").textContent = body.language;
+  $("slip-language").textContent = langName(body.language);
   const slipText = $("slip-translation");
   slipText.textContent = body.translation;
   slipText.lang = lang;
@@ -338,14 +431,14 @@ function show(body) {
   $("slip-english").textContent = body.english;
   $("slip-date").textContent = today();
   $("slip-verdict").textContent = body.verdict === "check"
-    ? "Not yet confirmed: the automatic checks found problems."
-    : "The automatic checks found no problems.";
+    ? t("Not yet confirmed: the automatic checks found problems.")
+    : t("The automatic checks found no problems.");
 
   $("verdict").focus();
 }
 
 function today() {
-  return new Date().toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+  return new Date().toLocaleDateString(I18N.lang, { year: "numeric", month: "long", day: "numeric" });
 }
 
 $("print").addEventListener("click", () => {
@@ -386,17 +479,17 @@ async function usePhoto(file) {
   if (!file || busy) return;
   const dataUrl = await photoToDataUrl(file);
   if (!dataUrl) {
-    setStatus("This photo can't be opened here. Take it with the camera, or use a JPEG or PNG picture.", "error");
+    setStatus(t("This photo can't be opened here. Take it with the camera, or use a JPEG or PNG picture."), "error");
     return;
   }
   const preview = $("photo-preview");
   const thumbnail = new Image();
-  thumbnail.alt = "Your photo";
+  thumbnail.alt = t("Your photo");
   thumbnail.src = dataUrl;
   preview.querySelector("img")?.remove();
   preview.prepend(thumbnail);
   preview.hidden = false;
-  $("photo-preview-text").textContent = "Reading the photo…";
+  $("photo-preview-text").textContent = t("Reading the photo…");
   findLabel({ image: dataUrl });
 }
 
@@ -421,7 +514,7 @@ for (const button of document.querySelectorAll("[data-sample-photo]")) {
       const response = await fetch(button.dataset.samplePhoto);
       usePhoto(await response.blob());
     } catch {
-      setStatus("Couldn't load the sample photo. Check the connection and try again.", "error");
+      setStatus(t("Couldn't load the sample photo. Check the connection and try again."), "error");
     }
   });
 }
@@ -429,13 +522,13 @@ for (const button of document.querySelectorAll("[data-sample-photo]")) {
 async function findLabel(request) {
   if (busy) return;
   if ("code" in request && !request.code.trim()) {
-    setStatus("Take a photo of the barcode, or type its number first.", "error");
+    setStatus(t("Take a photo of the barcode, or type its number first."), "error");
     barcodeInput.focus();
     return;
   }
   setBusy(true, "find");
-  setStatus(request.image ? "Reading the photo: the barcode first, then the printed text if the barcode " +
-                            "has no US label. Printed text takes a few seconds." : "Finding the label…", "working");
+  setStatus(request.image ? t("Reading the photo: the barcode first, then the printed text if the barcode has no US label. Printed text takes a few seconds.")
+    : t("Finding the label…"), "working");
   try {
     const response = await fetch("/api/label", {
       method: "POST",
@@ -444,25 +537,25 @@ async function findLabel(request) {
     });
     const body = await response.json().catch(() => ({}));
     if (!response.ok) {
-      setStatus(typeof body.detail === "string" ? body.detail : "That didn't work. Try again.", "error");
-      if (request.image) $("photo-preview-text").textContent = "Nothing usable was found in this photo.";
+      setStatus(typeof body.detail === "string" ? serverText(body.detail) : t("That didn't work. Try again."), "error");
+      if (request.image) $("photo-preview-text").textContent = t("Nothing usable was found in this photo.");
       return;
     }
     setStatus("");
     if (body.source === "photo_text") {
       if (request.image) {
         $("photo-preview-text").textContent = body.barcode
-          ? `Read the barcode ${body.barcode}; it has no US label, so the printed text was read.`
-          : "Read the printed text.";
+          ? t("Read the barcode {code}; it has no US label, so the printed text was read.", { code: body.barcode })
+          : t("Read the printed text.");
       }
       showReadText(body);
       return;
     }
-    if (request.image) $("photo-preview-text").textContent = `Read the barcode ${body.barcode}.`;
+    if (request.image) $("photo-preview-text").textContent = t("Read the barcode {code}.", { code: body.barcode });
     barcodeInput.value = body.barcode;
     showLabel(body);
   } catch {
-    setStatus("Couldn't reach the server. Check the connection and try again.", "error");
+    setStatus(t("Couldn't reach the server. Check the connection and try again."), "error");
   } finally {
     setBusy(false);
   }
@@ -477,7 +570,6 @@ function resetLabelPanel() {
   delete box.dataset.verdict;
   box.classList.remove("animate");
   $("label-verdict").hidden = true;
-  $("label-untested").hidden = true;
   $("label-meta").textContent = "";
   $("label-print").hidden = true;
   $("read-check").hidden = true;
@@ -493,28 +585,27 @@ function showLabel(body) {
 
   const product = body.product;
   const brand = $("product-brand");
-  brand.textContent = product.brand || titleCase(product.generic) || "Medicine label";
+  brand.textContent = product.brand || titleCase(product.generic) || t("Medicine label");
   brand.tabIndex = -1;
   $("product-active").textContent = body.active_ingredients.join("; ") || titleCase(product.generic);
   const meta = $("product-meta");
   meta.replaceChildren();
-  const facts = [product.manufacturer, `barcode ${body.barcode}`].filter(Boolean).join(" · ");
+  const facts = [product.manufacturer, t("barcode {code}", { code: body.barcode })].filter(Boolean).join(" · ");
   meta.append(facts ? `${facts} · ` : "");
   if (/^https:\/\/dailymed\.nlm\.nih\.gov\//.test(product.dailymed_url || "")) {
     const link = document.createElement("a");
     link.href = product.dailymed_url;
     link.target = "_blank";
     link.rel = "noopener";
-    link.textContent = "the full label on DailyMed";
+    link.textContent = t("the full label on DailyMed");
     meta.append(link);
   }
-  if (product.matches > 1) meta.append(` · ${product.matches} versions of this label list the barcode; this is the newest.`);
+  if (product.matches > 1) meta.append(" · " + t("{count} versions of this label list the barcode; this is the newest.", { count: product.matches }));
 
   renderSections(body.sections);
   if (!body.sections.length) {
     labelGo.hidden = true;
-    setLabelProgress("This label has no Purpose, Uses, Directions or Do not use section that could be read. " +
-                     "Open the full label on DailyMed, or check its lines one at a time.", "error");
+    setLabelProgress(t("This label has no Purpose, Uses, Directions or Do not use section that could be read. Open the full label on DailyMed, or check its lines one at a time."), "error");
   } else {
     labelGo.hidden = false;
   }
@@ -539,13 +630,13 @@ function showReadText(body) {
   resetLabelPanel();
   renderSections([]);
   const brand = $("product-brand");
-  brand.textContent = "Directions read from your photo";
+  brand.textContent = t("Directions read from your photo");
   brand.tabIndex = -1;
   const count = body.instructions.length;
-  $("product-active").textContent = `${count} ${count === 1 ? "line" : "lines"} of printed text`;
+  $("product-active").textContent = count === 1 ? t("1 line of printed text") : t("{count} lines of printed text", { count });
   $("product-meta").textContent = body.barcode_note
-    ? `${body.barcode_note} So the printed text in the photo was read instead.`
-    : "There was no barcode in the photo, so its printed text was read.";
+    ? `${serverText(body.barcode_note)} ${t("So the printed text in the photo was read instead.")}`
+    : t("There was no barcode in the photo, so its printed text was read.");
   $("product-confirm").hidden = true;
   $("read-not-english").hidden = body.looks_english !== false;
   readItems = body.instructions.map((item) => ({ text: item.text, words: item.words }));
@@ -575,12 +666,12 @@ function renderReadLines() {
     head.className = "read-line-head";
     const name = document.createElement("label");
     name.htmlFor = `read-line-${n}`;
-    name.textContent = `Line ${n}`;
+    name.textContent = t("Line {number}", { number: n });
     const remove = document.createElement("button");
     remove.type = "button";
     remove.className = "text-button";
-    remove.textContent = "Remove";
-    remove.setAttribute("aria-label", `Remove line ${n}`);
+    remove.textContent = t("Remove");
+    remove.setAttribute("aria-label", t("Remove line {number}", { number: n }));
     remove.addEventListener("click", () => {
       syncReadItems();
       readItems.splice(i, 1);
@@ -595,6 +686,7 @@ function renderReadLines() {
     box.maxLength = 2000;
     box.value = item.text;
     box.spellcheck = false;
+    box.dir = "ltr";  // English, whatever the website's language
     row.append(head, box);
     const unsure = item.words.filter((w) => w.check);
     if (unsure.length) {
@@ -603,14 +695,14 @@ function renderReadLines() {
       note.className = "read-note";
       note.id = `read-line-${n}-note`;
       box.setAttribute("aria-describedby", note.id);
-      note.append("Hard to read in the photo: ");
+      note.append(t("Hard to read in the photo:") + " ");
       unsure.forEach((w, k) => {
         const word = document.createElement("span");
         word.className = "unsure";
         word.textContent = w.text;
-        note.append(word, ` ${w.check}${k < unsure.length - 1 ? ", " : "."}`);
+        note.append(word, ` ${photoReason(w.check)}${k < unsure.length - 1 ? ", " : "."}`);
       });
-      note.append(" Compare with the box.");
+      note.append(" " + t("Compare with the box."));
       row.append(note);
       flagged.push({ n, unsure });
     }
@@ -618,20 +710,20 @@ function renderReadLines() {
   });
   const total = flagged.reduce((sum, f) => sum + f.unsure.length, 0);
   $("read-summary").dataset.unsure = total ? "true" : "false";
-  $("read-summary-title").textContent = !readItems.length ? "No lines left"
-    : total ? `${total} ${total === 1 ? "word was" : "words were"} hard to read`
-    : "Every word was read clearly";
-  $("read-summary-detail").textContent = total
-    ? `Compare ${total === 1 ? "it" : "them"}, and every other line, with the box and fix any mistake. A misread ` +
-      "number would pass every translation check."
-    : "Still compare every line with the box: a word the reader skipped entirely can't be marked.";
+  $("read-summary-title").textContent = !readItems.length ? t("No lines left")
+    : total === 1 ? t("1 word was hard to read") : total ? t("{count} words were hard to read", { count: total })
+    : t("Every word was read clearly");
+  $("read-summary-detail").textContent = total === 1
+    ? t("Compare it, and every other line, with the box and fix any mistake. A misread number would pass every translation check.")
+    : total ? t("Compare them, and every other line, with the box and fix any mistake. A misread number would pass every translation check.")
+    : t("Still compare every line with the box: a word the reader skipped entirely can't be marked.");
   const links = $("read-summary-list");
   links.replaceChildren();
   for (const f of flagged) {
     const entry = document.createElement("li");
     const link = document.createElement("a");
     link.href = `#read-line-${f.n}`;
-    link.textContent = `Line ${f.n}: ${f.unsure.map((w) => `“${w.text}”`).join(", ")}`;
+    link.textContent = `${t("Line {number}", { number: f.n })}: ${f.unsure.map((w) => `“${w.text}”`).join(", ")}`;
     link.addEventListener("click", (event) => {
       event.preventDefault();
       $(`read-line-${f.n}`).focus();
@@ -655,11 +747,11 @@ function applyReadText() {
   syncReadItems();
   const texts = readItems.map((item) => item.text.replace(/\s+/g, " ").trim()).filter(Boolean);
   if (!texts.length) {
-    setLabelProgress("There's no text to translate. Add a line, or take another photo.", "error");
+    setLabelProgress(t("There's no text to translate. Add a line, or take another photo."), "error");
     return false;
   }
   if (!$("read-confirm").checked) return false;
-  label.sections = [{ name: "Directions (read from the photo)", lines: texts }];
+  label.sections = [{ name: phrase("Directions (read from the photo)"), lines: texts }];
   renderSections(label.sections);
   $("read-check").hidden = true;
   $("read-edit").hidden = false;
@@ -673,7 +765,6 @@ $("read-edit").addEventListener("click", () => {
   delete box.dataset.verdict;
   box.classList.remove("animate");
   $("label-verdict").hidden = true;
-  $("label-untested").hidden = true;
   $("label-meta").textContent = "";
   $("label-print").hidden = true;
   setLabelProgress("");
@@ -699,7 +790,7 @@ function renderSections(sections) {
     bar.setAttribute("aria-hidden", "true");
     const heading = document.createElement("h3");
     heading.className = "label-heading";
-    heading.textContent = section.name;
+    heading.textContent = t(section.name);
     const list = document.createElement("ul");
     list.className = "label-lines";
     for (const text of section.lines) {
@@ -713,6 +804,7 @@ function renderSections(sections) {
       const englishText = document.createElement("p");
       englishText.className = "line-english";
       englishText.textContent = text;
+      englishText.dir = "ltr";
       content.append(translation, englishText);
       item.append(state, content);
       list.append(item);
@@ -725,12 +817,45 @@ function renderSections(sections) {
   });
 }
 
-const STATE_WORDS = { waiting: "Waiting", working: "Translating", passed: "Passed", failed: "Failed",
-                      too_long: "Too long" };
+const STATE_WORDS = { waiting: phrase("Waiting"), working: phrase("Translating"), passed: phrase("Passed"),
+                      failed: phrase("Failed"), too_long: phrase("Too long") };
+
+// Some languages have a state word longer than the English column ("Menerjemahkan" in Indonesian).
+// Measure the longest one, so the column fits it and a state never runs into the text beside it.
+function fitStateColumns() {
+  const probe = document.createElement("div");
+  probe.setAttribute("aria-hidden", "true");
+  probe.style.cssText = "position: absolute; visibility: hidden; top: 0; left: 0;";
+  const columns = [
+    { list: "label-lines", data: "state", words: STATE_WORDS, width: "--line-state-width" },
+    { list: "checks", data: "ok", words: { true: phrase("Passed"), false: phrase("Failed") }, width: "--check-state-width" },
+  ];
+  for (const column of columns) {
+    column.element = document.createElement("ul");
+    column.element.className = column.list;
+    for (const [value, key] of Object.entries(column.words)) {
+      const item = document.createElement("li");
+      item.dataset[column.data] = value;
+      const state = document.createElement("span");
+      state.className = "state";
+      state.style.width = "min-content";  // the longest word, with the box's padding and border
+      state.textContent = t(key);
+      item.append(state);
+      column.element.append(item);
+    }
+    probe.append(column.element);
+  }
+  document.body.append(probe);
+  for (const column of columns) {
+    const widths = [...column.element.querySelectorAll(".state")].map((state) => state.getBoundingClientRect().width);
+    document.documentElement.style.setProperty(column.width, `${Math.ceil(Math.max(...widths))}px`);
+  }
+  probe.remove();
+}
 
 function setLineState(line, state) {
   line.item.dataset.state = state;
-  line.state.textContent = STATE_WORDS[state];
+  line.state.textContent = t(STATE_WORDS[state]);
 }
 
 function clearLine(line) {
@@ -763,7 +888,6 @@ async function translateLabel() {
   delete box.dataset.verdict;
   box.classList.remove("animate");
   $("label-verdict").hidden = true;
-  $("label-untested").hidden = true;
   $("label-print").hidden = true;
   $("label-meta").textContent = "";
   lines.forEach(clearLine);
@@ -771,12 +895,11 @@ async function translateLabel() {
   showLabelChecking(true);
 
   const started = Date.now();
-  const seconds = () => `${Math.round((Date.now() - started) / 1000)} s`;
+  const seconds = () => t("{seconds} s", { seconds: Math.round((Date.now() - started) / 1000) });
   let doing = "";
   const tick = () => { $("label-seconds").textContent = seconds(); };
   const timer = setInterval(tick, 1000);
   const answers = new Map();
-  let tested = true;
   let stopped = "";
   try {
     sections: for (const [s, section] of label.sections.entries()) {
@@ -784,8 +907,8 @@ async function translateLabel() {
       for (let start = 0; start < sectionLines.length; start += MAX_LINES) {
         const chunk = sectionLines.slice(start, start + MAX_LINES);
         chunk.forEach((line) => setLineState(line, "working"));
-        doing = `Translating ${section.name} (part ${s + 1} of ${label.sections.length}) into ${targetLanguage}, ` +
-          "translating it back and running 9 checks on each line.";
+        doing = t("Translating {section} (part {part} of {parts}) into {language}, translating it back and running 9 checks on each line.",
+          { section: t(section.name), part: s + 1, parts: label.sections.length, language: langName(targetLanguage) });
         setLabelProgress(doing, "", seconds());
         const response = await fetch("/api/check-lines", {
           method: "POST",
@@ -795,15 +918,14 @@ async function translateLabel() {
         if (response.status === 503) {
           ready = false;
           pollStatus();
-          stopped = "The translation model is starting up again. Press the button once it's ready.";
+          stopped = t("The translation model is starting up again. Press the button once it's ready.");
           break sections;
         }
         const body = await response.json().catch(() => ({}));
         if (!response.ok) {
-          stopped = typeof body.detail === "string" ? body.detail : "That didn't work. Try again.";
+          stopped = typeof body.detail === "string" ? serverText(body.detail) : t("That didn't work. Try again.");
           break sections;
         }
-        tested = body.language_tested;
         body.results.forEach((answer, k) => {
           showLine(chunk[k], answer, targetLanguage);
           answers.set(chunk[k], answer);
@@ -811,7 +933,7 @@ async function translateLabel() {
       }
     }
   } catch {
-    stopped = "The translation didn't finish: the connection dropped. Try again.";
+    stopped = t("The translation didn't finish: the connection dropped. Try again.");
   } finally {
     clearInterval(timer);
     showLabelChecking(false);
@@ -824,7 +946,7 @@ async function translateLabel() {
     return;
   }
   setLabelProgress("");
-  labelRun = { language: targetLanguage, safer: saferOn, answers, tested, seconds: Math.round((Date.now() - started) / 1000) };
+  labelRun = { language: targetLanguage, safer: saferOn, answers, seconds: Math.round((Date.now() - started) / 1000) };
   showLabelVerdict();
 }
 
@@ -846,8 +968,7 @@ function showLine(line, answer, targetLanguage) {
     setLineState(line, "too_long");
     const note = document.createElement("p");
     note.className = "hint line-note";
-    note.textContent = "Too long to check in one go, so it's left in English. Split it and check each part " +
-      "under One label line.";
+    note.textContent = t("Too long to check in one go, so it's left in English. Split it and check each part under One label line.");
     line.content.append(note);
     line.extra.push(note);
     return;
@@ -860,35 +981,30 @@ function showLine(line, answer, targetLanguage) {
   if (failed.length) {
     const names = document.createElement("p");
     names.className = "line-failed";
-    names.textContent = `${failed.length} of ${answer.checks.length} checks failed: ${failed.map((c) => c.name).join(", ")}`;
+    names.textContent = t("{failed} of {total} checks failed: {names}",
+      { failed: failed.length, total: answer.checks.length, names: failed.map((c) => t(c.name)).join(", ") });
     parts.push(names);
   }
   const details = document.createElement("details");
   details.className = "line-details";
   const summary = document.createElement("summary");
-  summary.textContent = "Round trip and checks";
-  const rows = [["English", answer.english, answer.back_translation, "lost"],
-                ["Back to English", answer.back_translation, answer.english, "changed"]].map(([name, text, other, mark]) => {
+  summary.textContent = t("Round trip and checks");
+  const rows = [[phrase("English"), answer.english, answer.back_translation, "lost"],
+                [phrase("Back to English"), answer.back_translation, answer.english, "changed"]].map(([name, text, other, mark]) => {
     const row = document.createElement("div");
     row.className = "row";
     const k = document.createElement("p");
     k.className = "k";
-    k.textContent = name;
+    k.textContent = t(name);
     const trip = document.createElement("p");
     trip.className = "trip";
+    trip.dir = "ltr";
     markRoundTrip(trip, text, other, mark);
     row.append(k, trip);
     return row;
   });
-  const tripKey = document.createElement("p");
-  tripKey.className = "trip-key";
-  const struck = document.createElement("span");
-  struck.className = "lost";
-  struck.textContent = "Struck";
-  const underlined = document.createElement("span");
-  underlined.className = "changed";
-  underlined.textContent = "underlined";
-  tripKey.append(struck, " words didn't make the round trip; ", underlined, " words came back different.");
+  // The same sentence as on the page, in the website's language (from the team's translation files).
+  const tripKey = document.querySelector(".result .trip-key, #facts .trip-key").cloneNode(true);
   const checks = document.createElement("ul");
   checks.className = "checks";
   renderChecks(checks, answer.checks);
@@ -905,34 +1021,30 @@ function showLabelVerdict() {
   const total = answers.length;
   const failed = answers.filter((a) => a.verdict === "check").length;
   const long = answers.filter((a) => a.verdict === "too_long").length;
-  const longNote = long ? ` ${long === 1 ? "1 line was" : `${long} lines were`} too long to check and ` +
-    `${long === 1 ? "is" : "are"} left in English.` : "";
+  const longNote = !long ? "" : " " + (long === 1 ? t("1 line was too long to check and is left in English.")
+    : t("{count} lines were too long to check and are left in English.", { count: long }));
   if (failed) {
     box.dataset.verdict = "check";
-    $("label-verdict-title").textContent = "Ask a pharmacist or interpreter to check this translation";
-    $("label-verdict-detail").textContent = `${failed} of ${total} lines failed at least one check; ` +
-      `they're marked Failed below.${longNote}`;
+    $("label-verdict-title").textContent = t("Ask a pharmacist or interpreter to check this translation");
+    $("label-verdict-detail").textContent = t("{failed} of {total} lines failed at least one check; they're marked Failed below.",
+      { failed, total }) + longNote;
   } else if (long) {
     box.dataset.verdict = "too_long";
-    $("label-verdict-title").textContent = "Part of this label wasn't translated";
-    $("label-verdict-detail").textContent = `${longNote.trim()} The other lines passed every check; a ` +
-      "pharmacist should still confirm them.";
+    $("label-verdict-title").textContent = t("Part of this label wasn't translated");
+    $("label-verdict-detail").textContent = `${longNote.trim()} ${t("The other lines passed every check; a pharmacist should still confirm them.")}`;
   } else {
     box.dataset.verdict = "no_problems_found";
-    $("label-verdict-title").textContent = "No problems found by the automatic checks";
-    $("label-verdict-detail").textContent = `All ${total} lines passed all 9 checks. These checks can't ` +
-      "understand meaning. A pharmacist should still confirm the translation before it goes to the patient.";
+    $("label-verdict-title").textContent = t("No problems found by the automatic checks");
+    $("label-verdict-detail").textContent = t("All {total} lines passed all 9 checks. These checks can't understand meaning. A pharmacist should still confirm the translation before it goes to the patient.", { total });
   }
   const verdict = $("label-verdict");
   verdict.hidden = false;
   void box.offsetWidth;
   box.classList.add("animate");
-  $("label-untested").hidden = labelRun.tested;
-  $("label-untested-language").textContent = labelRun.language;
   $("label-meta").textContent = (label.source === "photo_text"
-    ? "The English was read from your photo and corrected by you. " : "") + (labelRun.safer
-    ? "Safer mode tried 5 translations of each line and kept the one with the fewest problems."
-    : "The model's first choice for each line.") + ` ${total} lines took ${labelRun.seconds} s.`;
+    ? t("The English was read from your photo and corrected by you.") + " " : "") + (labelRun.safer
+    ? t("Safer mode tried 5 translations of each line and kept the one with the fewest problems.")
+    : t("The model's first choice for each line.")) + " " + t("{count} lines took {seconds} s.", { count: total, seconds: labelRun.seconds });
   $("label-print").hidden = false;
   fillLabelSlip();
   verdict.focus();
@@ -952,12 +1064,12 @@ for (const control of [language, safer]) {
 // The printed slip for the whole label: each line in the patient's language, the English small under it.
 function fillLabelSlip() {
   const { lang, dir } = langOf(labelRun.language);
-  $("lslip-language").textContent = labelRun.language;
+  $("lslip-language").textContent = langName(labelRun.language);
   const fromPhoto = label.source === "photo_text";
-  $("lslip-product").textContent = fromPhoto ? "Directions printed on the box"
+  $("lslip-product").textContent = fromPhoto ? t("Directions printed on the box")
     : [$("product-brand").textContent, $("product-active").textContent].filter(Boolean).join(" · ");
-  $("lslip-source").textContent = fromPhoto ? "Read from a photo of the box and checked by the pharmacist"
-    : "Label from DailyMed";
+  $("lslip-source").textContent = fromPhoto ? t("Read from a photo of the box and checked by the pharmacist")
+    : t("Label from DailyMed");
   const host = $("lslip-sections");
   host.replaceChildren();
   label.sections.forEach((section, s) => {
@@ -965,7 +1077,7 @@ function fillLabelSlip() {
     part.className = "lslip-section";
     const heading = document.createElement("p");
     heading.className = "lslip-heading";
-    heading.textContent = section.name;
+    heading.textContent = t(section.name);
     part.append(heading);
     for (const line of lines.filter((l) => l.section === s)) {
       const answer = labelRun.answers.get(line);
@@ -975,6 +1087,7 @@ function fillLabelSlip() {
       translated.className = "lslip-translation";
       const englishText = document.createElement("p");
       englishText.className = "lslip-english";
+      englishText.dir = "ltr";
       englishText.textContent = line.english;
       if (answer.verdict === "too_long") {
         translated.textContent = line.english;
@@ -988,7 +1101,7 @@ function fillLabelSlip() {
       if (answer.verdict !== "no_problems_found") {
         const flag = document.createElement("span");
         flag.className = "lslip-flag";
-        flag.textContent = answer.verdict === "too_long" ? "Not translated: too long" : "Check this line";
+        flag.textContent = answer.verdict === "too_long" ? t("Not translated: too long") : t("Check this line");
         entry.append(flag);
       }
       part.append(entry);
@@ -997,9 +1110,9 @@ function fillLabelSlip() {
   });
   const failed = [...labelRun.answers.values()].filter((a) => a.verdict !== "no_problems_found").length;
   $("lslip-verdict").textContent = failed
-    ? `Not yet confirmed: the automatic checks found problems in ${failed} of ${labelRun.answers.size} lines, ` +
-      "marked for the pharmacist."
-    : "The automatic checks found no problems.";
+    ? t("Not yet confirmed: the automatic checks found problems in {failed} of {total} lines, marked for the pharmacist.",
+      { failed, total: labelRun.answers.size })
+    : t("The automatic checks found no problems.");
   $("lslip-date").textContent = today();
 }
 
@@ -1024,7 +1137,7 @@ function setOcrStatus(text, kind = "") {
 function setOcrBusy(on) {
   ocrBusy = on;
   ocrButton.disabled = ocrExample.disabled = on || !ocrReady;
-  ocrButton.textContent = on ? "Reading the photo…" : "Take or choose a photo";
+  ocrButton.textContent = on ? t("Reading the photo…") : t("Take or choose a photo");
 }
 
 function showTextReader(state) {
@@ -1032,12 +1145,11 @@ function showTextReader(state) {
   if (!ocrBusy) setOcrBusy(false);
   ocrButton.hidden = ocrExample.hidden = state === "off";
   if (state === "off") {
-    setOcrStatus("Reading photos of the label's text is off on this copy of the app (the reader isn't " +
-                 "installed). Typing still works.");
+    setOcrStatus(t("Reading photos of the label's text is off on this copy of the app (the reader isn't installed). Typing still works."));
   } else if (state === "error") {
-    setOcrStatus("The photo reader failed to start. Typing still works.", "error");
+    setOcrStatus(t("The photo reader failed to start. Typing still works."), "error");
   } else if (state === "warming_up") {
-    setOcrStatus("The photo reader is starting up; its buttons turn on when it's ready.", "waiting");
+    setOcrStatus(t("The photo reader is starting up; its buttons turn on when it's ready."), "waiting");
   } else if (!ocrBusy && (ocrStatus.dataset.kind === "waiting" || !ocrStatus.dataset.kind)) {
     setOcrStatus("");
   }
@@ -1062,10 +1174,11 @@ async function shrink(file) {
 }
 
 let ocrPreviewUrl = "";
-async function readTextPhoto(file, what = "the photo") {
+// `reading` says what is being read, e.g. "Reading your photo… usually 5–30 seconds."
+async function readTextPhoto(file, reading) {
   if (!ocrReady || ocrBusy) return;
   setOcrBusy(true);
-  setOcrStatus(`Reading ${what}… usually 5–30 seconds.`, "waiting");
+  setOcrStatus(t(reading), "waiting");
   if (ocrPreviewUrl) URL.revokeObjectURL(ocrPreviewUrl);
   ocrPreviewUrl = URL.createObjectURL(file);
   $("ocr-preview").src = ocrPreviewUrl;
@@ -1078,13 +1191,13 @@ async function readTextPhoto(file, what = "the photo") {
     });
     const body = await response.json().catch(() => ({}));
     if (!response.ok) {
-      setOcrStatus(response.status !== 503 && typeof body.detail === "string" ? body.detail
-        : "The photo reader isn't available right now. Typing still works.", "error");
+      setOcrStatus(response.status !== 503 && typeof body.detail === "string" ? serverText(body.detail)
+        : t("The photo reader isn't available right now. Typing still works."), "error");
       return;
     }
     showOcrLines(body.instructions);
   } catch {
-    setOcrStatus("The photo didn't finish uploading: the connection dropped. Try again.", "error");
+    setOcrStatus(t("The photo didn't finish uploading: the connection dropped. Try again."), "error");
   } finally {
     setOcrBusy(false);
   }
@@ -1097,26 +1210,29 @@ function showOcrLines(instructions) {
   $("ocr-result").hidden = false;
   if (!instructions.length) {
     $("ocr-summary").textContent = "";
-    setOcrStatus("No text found. Try a closer, sharper photo of the Directions, held flat.", "error");
+    setOcrStatus(t("No text found. Try a closer, sharper photo of the Directions, held flat."), "error");
     return;
   }
   setOcrStatus("");
   const unsure = instructions.reduce((n, item) => n + item.unsure.length, 0);
-  $("ocr-summary").textContent = `Read ${instructions.length} line${instructions.length === 1 ? "" : "s"}. ` +
-    (unsure ? `${unsure} word${unsure === 1 ? " was" : "s were"} hard to read (in red). `
-            : "No word was hard to read, but still compare each line with the label. ") +
-    "Pick a line to put it in the box above.";
+  $("ocr-summary").textContent = [
+    instructions.length === 1 ? t("Read 1 line.") : t("Read {count} lines.", { count: instructions.length }),
+    unsure === 1 ? t("1 word was hard to read (in red).") : unsure ? t("{count} words were hard to read (in red).", { count: unsure })
+      : t("No word was hard to read, but still compare each line with the label."),
+    t("Pick a line to put it in the box above."),
+  ].join(" ");
   instructions.forEach((item, index) => {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "ocr-line";
+    button.dir = "ltr";
     button.setAttribute("aria-pressed", "false");
     item.words.forEach((word, i) => {
       if (i) button.append(" ");
       if (word.warning) {
         const mark = document.createElement("mark");
         mark.textContent = word.text;
-        mark.title = word.warning;
+        mark.title = photoWarning(word.warning);
         button.append(mark);
       } else {
         button.append(word.text);
@@ -1125,7 +1241,7 @@ function showOcrLines(instructions) {
     if (item.unsure.length) {
       const note = document.createElement("span");
       note.className = "ocr-line-note";
-      note.textContent = "Check: " + item.unsure.map((u) => u.warning).join(", ");
+      note.textContent = `${t("Check:")} ${item.unsure.map((u) => photoWarning(u.warning)).join(", ")}`;
       button.append(note);
     }
     button.addEventListener("click", () => useOcrLine(item, button, index));
@@ -1144,9 +1260,9 @@ function useOcrLine(item, button, index) {
     other.setAttribute("aria-pressed", String(other === button));
   }
   const toCheck = item.unsure.map((u) => u.warning.split(" (")[0]).join(", ");
-  setStatus(`Line ${index + 1} from the photo is in the box. ` + (item.unsure.length
-    ? `Compare ${toCheck} with the label and fix it if needed, then check it.`
-    : "Compare it with the label, then check it."));
+  setStatus(t("Line {number} from the photo is in the box.", { number: index + 1 }) + " " + (item.unsure.length
+    ? t("Compare {words} with the label and fix it if needed, then check it.", { words: toCheck })
+    : t("Compare it with the label, then check it.")));
   english.focus();
   english.scrollIntoView({ block: "center", behavior: reducedMotion.matches ? "auto" : "smooth" });
 }
@@ -1177,15 +1293,15 @@ ocrButton.addEventListener("click", () => ocrFile.click());
 ocrFile.addEventListener("change", () => {
   const file = ocrFile.files[0];
   ocrFile.value = "";
-  if (file) readTextPhoto(file, "your photo");
+  if (file) readTextPhoto(file, phrase("Reading your photo… usually 5–30 seconds."));
 });
 ocrExample.addEventListener("click", async () => {
   try {
     const response = await fetch("/static/media/example-label.jpg", { cache: "no-cache" });
     if (!response.ok) throw new Error("missing");
-    readTextPhoto(await response.blob(), "the example photo");
+    readTextPhoto(await response.blob(), phrase("Reading the example photo… usually 5–30 seconds."));
   } catch {
-    setOcrStatus("The example photo didn't load. Try your own photo instead.", "error");
+    setOcrStatus(t("The example photo didn't load. Try your own photo instead."), "error");
   }
 });
 // In One label line, a photo pasted anywhere on the page (Ctrl + V) is read too.
@@ -1193,7 +1309,7 @@ document.addEventListener("paste", (event) => {
   const file = [...(event.clipboardData?.files || [])].find((f) => f.type.startsWith("image/"));
   if (mode === "line" && file && ocrReady && !ocrBusy) {
     event.preventDefault();
-    readTextPhoto(file, "the pasted photo");
+    readTextPhoto(file, phrase("Reading the pasted photo… usually 5–30 seconds."));
   }
 });
 
@@ -1206,5 +1322,8 @@ if (sent && sent.trim()) {
   english.focus();
 }
 if (params.get("mode") === "photo") setMode("photo");
-updateButtons();
-pollStatus();
+I18N.ready.then(() => {
+  fitStateColumns();
+  updateButtons();
+  pollStatus();
+});

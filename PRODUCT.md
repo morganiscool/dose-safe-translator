@@ -31,7 +31,7 @@ It doesn't claim translations are correct. It flags the specific kinds of mistak
 
 ## Capabilities and Constraints
 
-- Languages: 28 (the first five were Spanish, Vietnamese, Tagalog, Haitian Creole and Chinese (Simplified); 23 more were added on Nov 15, 2026). Spanish, Vietnamese and Chinese (Simplified) have been run on 150 real label instructions each; the app marks the rest "not tested yet". No language's word lists have been checked by a native speaker yet.
+- Languages: 28 (the first five were Spanish, Vietnamese, Tagalog, Haitian Creole and Chinese (Simplified); 23 more were added on Nov 15, 2026). Spanish, Vietnamese and Chinese (Simplified) have been run on 150 real label instructions each; the other 25 have word lists tuned on 40 label instructions each. No language's word lists have been checked by a native speaker yet.
 - Nine checks. Four look at the translation: numbers kept, "not" kept, under/over kept, actually translated. Five look at the back-translation: numbers, "not", units and under/over survive the round trip, and the back-translation matches (chrF ≥ 40).
 - Inputs longer than 256 model tokens are refused, not cut off.
 - Photo mode (added Nov 15, 2026): a photo of the box's barcode, or a typed barcode or NDC number, finds the official label (openFDA → DailyMed). The pharmacist confirms the product, then every line of its Purpose, Uses, Directions and Do not use sections is translated and checked, and the whole label prints as one slip. It shows only the label's own words, never generated claims; "Uses" lists symptoms and conditions, not viruses. A barcode shared by different products is refused rather than guessed. A 10-line label takes about 100 s in safer mode on a laptop CPU.

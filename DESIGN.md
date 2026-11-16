@@ -210,7 +210,7 @@ A government-label palette: one saturated carton blue, paper white, near-black i
 - **Paper White** (panel): working panels, inputs, text on carton and on ink, the secondary button. The landing calls the same value `--paper`.
 - **Label Ink** (ink): all body text, the 3px frame, 10px bars, 2px rules, 2px control borders, the primary slab, the underline on words that came back different, the "too long" verdict plate, the landing's ink fields (Results, close).
 - **Muted Ink** (muted): hints, the meta line, the check's "checks the…" line, figure captions, the muted lines of the landing's stacked headline.
-- **Label Tint** (tint): example-line buttons, the untested-language note, secondary-button hover, the landing's Intro and Limits fields.
+- **Label Tint** (tint): example-line buttons, secondary-button hover, the landing's Intro and Limits fields.
 - **Tint Rule** (tint-strong): 1px dividers between check rows, example-line hover.
 - **On-Carton Muted** (on-carton-muted): inactive nav links and the prototype note on the blue bar; soft text on carton and ink fields on the landing.
 - **Disabled Grey** (disabled): the primary slab while it can't be pressed.
@@ -254,9 +254,9 @@ A government-label palette: one saturated carton blue, paper white, near-black i
 
 **Translator.** The 1600px maximum shell is laid out as 40px margins, a 440px instruction column, a 24px gutter and a fluid facts column. The facts panel stretches to the column height. At 1100px or less the form column narrows to 360px, the panel's key/value rows stack, and the checks drop to one column. At 860px or less the form and the panel stack. At 640px or less the margins go to 16px, the panel padding to 18px, and the bar wraps the wordmark, nav and prototype note onto separate lines.
 
-Inside the facts panel, rows are a 170px key column and a fluid value column on a 16px gap, aligned on the baseline. The checks sit in two CSS columns with a 32px gap; each check is a 72px state column beside its name and detail. Rhythm is mostly 8/12/16/24/32px.
+Inside the facts panel, rows are a 170px key column and a fluid value column on a 16px gap, aligned on the baseline. The checks sit in two CSS columns with a 32px gap; each check is a state column (72px, wider when the site's language has a longer state word) beside its name and detail. Rhythm is mostly 8/12/16/24/32px.
 
-**Landing (surface-specific).** Sections are full-bleed fields of a single colour (paper, tint, carton, ink) with clamp-based section padding and margins. A 12-column grid with a 24px gap places copy against media. Five type steps carry the hierarchy (display, headline, statement, body 18px, small 16px). The fixed 72px bar takes the colour and ink of the field under it. At 900px or less the split grids stack; at 640px or less the type steps switch to vw values, the nav hides, and pinned and absolutely placed figures fall back into the flow.
+**Landing (surface-specific).** Sections are full-bleed fields of a single colour (paper, tint, carton, ink) with clamp-based section padding and margins. A 12-column grid with a 24px gap places copy against media. Five type steps carry the hierarchy (display, headline, statement, body 18px, small 16px). The fixed 72px bar takes the colour and ink of the field under it. At 900px or less the split grids stack; at 640px or less the type steps switch to vw values, the nav hides, and pinned and absolutely placed figures fall back into the flow. The Limits table puts each row's name above it whenever the table itself is narrower than 520px.
 
 **Print.** The patient slip replaces the screen: a 3pt black frame, 8pt bar, the translation at 26pt leading, the English below for the pharmacist, the verdict sentence, and a "Checked by" line.
 
@@ -292,7 +292,6 @@ Heavy, flat slabs.
 - **Instruction panel:** white, unframed on the carton ground, 28px 32px 32px padding.
 - **Translation Facts panel:** white, 3px ink frame, 22px 28px 28px padding, 32px/900 title, then a 10px bar.
 - **Shadow Strategy:** none (see Elevation & Depth).
-- **Untested note:** a tint block, 12px 14px padding, 15px text.
 
 ### Inputs / Fields
 - **Style:** 2px ink border, white fill, square, 18px text, 12px 14px padding. The select draws its own 2px chevron.
@@ -301,8 +300,8 @@ Heavy, flat slabs.
 - **Error:** the status line under the button goes bold; it never turns red.
 
 ### Navigation
-- **Translator bar:** carton blue, 64px tall. Wordmark 20px/900 with the label-panel mark; nav links 15px/600 in on-carton-muted, white on hover; the current page is white with a 3px white bottom border. "Prototype – not medical advice" always sits on the bar.
-- **Landing bar:** fixed, 72px, taking the colour and ink of the field beneath it; it hides the nav under 640px but keeps the "Try the translator" button.
+- **Translator bar:** carton blue, 64px tall. Wordmark 20px/900 with the label-panel mark; nav links 15px/600 in on-carton-muted, white on hover; the current page is white with a 3px white bottom border. "Prototype – not medical advice" always sits on the bar, beside the website-language menu (a globe and each language's own name).
+- **Landing bar:** fixed, 72px, taking the colour and ink of the field beneath it; it hides the nav under 640px but keeps the "Try the translator" button. The website-language menu sits before the button (on a phone, a globe and a short name such as "EN" or "中文"). Each part stays on one line; when they don't fit (a long translation, a narrow phone), the nav goes first, then words wrap, then the wordmark keeps only its mark.
 
 ### Verdict Plate (signature)
 A 3px-framed plate holding one sentence (22px/800) and a detail line.

@@ -39,8 +39,8 @@ A tool that **double-checks a translated medicine label the way a careful pharma
 patient who doesn't read English. It translates each instruction on the label, translates it back, and
 checks that every number, "not" and age or dose limit made it through, then tells the pharmacist which
 translations still need a person to check them. It covers 28 languages: Spanish, Vietnamese and
-Chinese (Simplified) are tested on real label instructions; the other 25, from Arabic and Hindi to Korean
-and Indonesian, work the same way but are marked "not tested yet".
+Chinese (Simplified) are tested on 150 real label instructions each; the other 25, from Arabic and Hindi
+to Korean and Indonesian, work the same way, with word lists tuned on 40 label instructions each.
 
 - **In:** an English instruction from a medicine label, e.g. *"do not take more than 6 caplets in 24 hours"*.
 - **Out:** the translation, the translation turned back into English, nine safety checks, and a verdict:
@@ -62,6 +62,10 @@ and Indonesian, work the same way but are marked "not tested yet".
   photo has no barcode, or one the database doesn't know, the app reads the box's printed directions with
   the notebook's photo reader (EasyOCR, the same rules), marks the words it wasn't sure about, and has
   the pharmacist correct every line and tick that they compared it with the box before it's translated.
+- **The website in 13 languages** (web app): a language menu in the header shows the site itself in
+  English, Español, Français, Português, Bahasa Indonesia, Tagalog, Tiếng Việt, 中文, 한국어, 日本語,
+  Русский, العربية (right to left) or हिन्दी, so people who don't read English can use it too. The label
+  lines and the round trip's English stay in English, because that is what the checks compare.
 
 There are two ways to try it: a Gradio app at the end of the notebook, which prints a public
 `….gradio.live` link that also works on a phone, and a web app built for the pharmacy counter (see
@@ -154,8 +158,8 @@ In that quick test, the checks flagged 5–20% of the translations in most langu
 Persian, German, Thai, Korean, Japanese and Chinese (Traditional). The failures we read were mostly real
 problems: a dropped "Do not use", Korean and Persian turning "not more than 3 to 4 times daily" into
 "more than", a Japanese "every 1/2 hour" that became "every minute". Nobody who speaks these languages
-has checked the lists yet, so the app marks them "not tested yet". When unsure, a list leaves a word
-out: a missing word causes a false alarm, a wrong word could let a dangerous translation through.
+has checked the lists yet. When unsure, a list leaves a word out: a missing word causes a false
+alarm, a wrong word could let a dangerous translation through.
 
 **Evaluation.** A fluent speaker of a tested language rates each translation blind (they don't know
 which version made it or whether it was flagged): 2 = correct, 1 = small mistake but same meaning,
@@ -292,6 +296,13 @@ did on Nov 15), the next run installs the new packages first. The window then pr
 an `https://….trycloudflare.com` link anyone can open. The link works only while that window is
 open and the PC is awake, and it changes each time you start it. A check takes about 10–40
 seconds on a normal laptop.
+
+**Website language.** The menu starts in the browser's language and remembers the choice. Each
+language is one file in `web/i18n/`, with the English text as the key; anything missing shows in
+English. After changing the site's text, run `python scripts/i18n_keys.py` and
+`python -m pytest tests/test_i18n.py`, which lists the phrases still to translate. The 12 translations
+were made with an AI model and haven't been checked by native speakers yet; `?i18n=pseudo` on any
+page shows every translated phrase in ⟦ ⟧, to spot text that was missed.
 
 **Just on your own computer:** `pip install -r requirements-app.txt`, then
 `uvicorn server:app --port 7860` and open http://localhost:7860/translate.
