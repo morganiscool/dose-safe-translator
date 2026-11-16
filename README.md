@@ -17,7 +17,7 @@ pinned: false
 **Website:** [dose-safe.netlify.app](https://dose-safe.netlify.app) shows both pages in 13 languages. Checking a
 translation needs the model, so to try that, use Google Colab (steps below).
 
-**Track:** Languages
+**Track:** AI + Languages
 **Team:** _names_
 
 > This project is a prototype and is not medical advice.
