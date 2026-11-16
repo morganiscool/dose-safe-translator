@@ -14,6 +14,9 @@ pinned: false
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/morganiscool/dose-safe-translator/blob/main/dose_safe.ipynb)
 
+**Website:** [dose-safe.netlify.app](https://dose-safe.netlify.app) shows both pages in 13 languages. Checking a
+translation needs the model, so to try that, use Google Colab (steps below).
+
 **Track:** Languages
 **Team:** _names_
 
@@ -365,7 +368,7 @@ of an "Allergy Relief" diphenhydramine label, printed and roughened like a phone
 **On Hugging Face:** the repo is set up as a Docker Space (`Dockerfile` and the settings at the
 top of this file), but new Docker Spaces now need a paid PRO account.
 
-**On Netlify (the pages only):** in Netlify, choose **Add new site → Import an existing project**, pick this
+**On Netlify (the pages only)**, like ours at https://dose-safe.netlify.app: in Netlify, choose **Add new site → Import an existing project**, pick this
 repository and deploy; `netlify.toml` publishes the `web` folder as it is, with no build. Netlify can't run
 the model, so that copy shows both pages in all 13 languages, but checking a translation needs `server.py`
 running somewhere (or the Colab notebook). If a server is running at a fixed https address, the last line
