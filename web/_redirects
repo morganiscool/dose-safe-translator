@@ -1,0 +1,8 @@
+# Netlify (also when this folder is dragged onto app.netlify.com/drop): serve the pages and files
+# the way server.py does.
+/static/*   /:splat          200
+/translate  /translate.html  200
+
+# Translating needs a running server.py. To use one from Netlify, forward the translator's requests
+# to its address by removing the # below and putting the server's https address in:
+# /api/*  https://YOUR-SERVER-ADDRESS/api/:splat  200

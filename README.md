@@ -365,6 +365,12 @@ of an "Allergy Relief" diphenhydramine label, printed and roughened like a phone
 **On Hugging Face:** the repo is set up as a Docker Space (`Dockerfile` and the settings at the
 top of this file), but new Docker Spaces now need a paid PRO account.
 
+**On Netlify (the pages only):** in Netlify, choose **Add new site → Import an existing project**, pick this
+repository and deploy; `netlify.toml` publishes the `web` folder as it is, with no build. Netlify can't run
+the model, so that copy shows both pages in all 13 languages, but checking a translation needs `server.py`
+running somewhere (or the Colab notebook). If a server is running at a fixed https address, the last line
+of `web/_redirects` forwards the translator's requests to it.
+
 ## How to run the notebook
 
 Click **Open in Colab** at the top (or upload `dose_safe.ipynb` to Colab) → **Runtime → Change runtime

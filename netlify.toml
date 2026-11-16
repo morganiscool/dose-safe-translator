@@ -1,0 +1,18 @@
+# Netlify serves the website's pages and files (the web folder) as they are: nothing is built or
+# installed. Translating needs the Python server and the model (server.py), which Netlify can't run,
+# so a Netlify copy shows the pages; checking a translation works in Colab or on a running server.
+[build]
+  base = "web"
+  publish = "."
+  command = ""
+
+# The pages ask for their files under /static/, the way server.py serves them.
+[[redirects]]
+  from = "/static/*"
+  to = "/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/translate"
+  to = "/translate.html"
+  status = 200
