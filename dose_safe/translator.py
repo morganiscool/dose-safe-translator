@@ -16,17 +16,24 @@ MAX_TOKENS = 256  # longer input would be cut off by the model without warning, 
 
 
 class NllbTranslator:
-    def __init__(self, model_name=MODEL_NAME, device=None):
+    def __init__(self, model_name=MODEL_NAME, device=None, model=None):
+        """Loads the model, or uses `model` if it is already loaded on `device` (the notebook passes
+        the one it loaded, so its website doesn't hold a second copy). The tokenizer is always our
+        own: translate() sets its language."""
         import torch
-        from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
+        from transformers import AutoTokenizer
 
         self._torch = torch
         self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
-        model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
-        if self.device == "cuda":
-            model = model.half()  # half precision: faster on GPU
-        self.model = model.to(self.device).eval()
+        if model is None:
+            from transformers import AutoModelForSeq2SeqLM
+
+            model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+            if self.device == "cuda":
+                model = model.half()  # half precision: faster on GPU
+            model = model.to(self.device)
+        self.model = model.eval()
         self._lock = threading.Lock()  # translate() sets tokenizer.src_lang, so one call at a time
 
     def token_count(self, text):

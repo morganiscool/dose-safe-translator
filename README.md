@@ -15,7 +15,8 @@ pinned: false
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/morganiscool/dose-safe-translator/blob/main/dose_safe.ipynb)
 
 **Website:** [dose-safe.netlify.app](https://dose-safe.netlify.app) shows both pages in 13 languages. Checking a
-translation needs the model, so to try that, use Google Colab (steps below).
+translation needs the model, so to try that, run the Colab notebook (steps below): its last section
+opens this same website, translating.
 
 **Track:** AI + Languages
 **Team:** _names_
@@ -41,6 +42,9 @@ need a Google account; there's nothing to install.
    English, and the safety checks. The **📷 Photo of the label** tab reads a label's Directions from
    a photo: pick an example photo or upload one, click **1 · Read the label**, check the text, then
    click **2 · Translate and check every line**.
+7. For the full website (the same pages as dose-safe.netlify.app, in 13 languages, with photo
+   and barcode modes), click **Open the Dose-Safe Translator website** under section 12, at the very
+   bottom. It opens in a new tab and translates with the notebook's model.
 
 If the link stops working, Colab has ended the session: run the last cell again for a new link. The
 `localhost` link Colab also shows only works inside Colab. Without a free GPU it still runs, only
