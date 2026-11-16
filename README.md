@@ -19,6 +19,31 @@ pinned: false
 
 > This project is a prototype and is not medical advice.
 
+## Try it in Google Colab (judges, start here)
+
+It runs on Google's free computers, so it doesn't depend on our team's computer being on. You only
+need a Google account; there's nothing to install.
+
+1. Click **Open in Colab** above.
+2. Choose **Runtime → Change runtime type → T4 GPU → Save**.
+3. Choose **Runtime → Run all**. If Colab warns that the notebook wasn't written by Google, click
+   **Run anyway**.
+4. Wait about 10–15 minutes. The notebook downloads the translation model (about 2.5 GB), then
+   translates and checks 150 real label instructions in Spanish and Vietnamese; the results appear
+   in sections 6–7 as it goes.
+5. At the bottom, section 11 prints a public link ending in `.gradio.live`. Open it in a new tab or on
+   a phone (the app also appears right under that cell).
+6. In the app, type or pick an English instruction from a medicine label, choose the patient's
+   language and click **Translate and check**. You get the translation, the translation back into
+   English, and the safety checks. The **📷 Photo of the label** tab reads a label's Directions from
+   a photo: pick an example photo or upload one, click **1 · Read the label**, check the text, then
+   click **2 · Translate and check every line**.
+
+If the link stops working, Colab has ended the session: run the last cell again for a new link. The
+`localhost` link Colab also shows only works inside Colab. Without a free GPU it still runs, only
+much slower. If Colab says you have too many active sessions, end the old ones under
+**Runtime → Manage sessions**.
+
 ## The problem
 
 Pharmacists in the US regularly hand over-the-counter medicine directions to patients who don't read
